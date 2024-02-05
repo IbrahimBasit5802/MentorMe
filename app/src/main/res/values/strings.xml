@@ -39,4 +39,12 @@
     <string name="send_text">Send</string>
     <string name="remember_text">"Remember your password? "</string>
     <string name="new_login_text"><u>Login</u></string>
+    <string name="reset_password_heading_text">Reset Password?</string>
+    <string name="reset_password_sub_heading_text">Please type a new password and re-enter the password. Type something you will remember!</string>
+    <string name="new_password_label_text">New Password</string>
+    <string name="enter_new_password_hint_text">Enter New Password</string>
+    <string name="confirm_password_label_text">Confirm Password</string>
+    <string name="re_enter_password_text">Re-enter Password</string>
+    <string name="reset_password_button_text">Reset Password</string>
+    <string name="don_t_want_to_reset_your_password_text">"Don't want to reset your password? "</string>
 </resources>
