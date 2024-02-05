@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background Shape -->
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#FFFFFF"/> <!-- Background color -->
+            <corners android:radius="15dp"/> <!-- Rounded corners -->
+            <padding android:left="16dp" android:top="12dp" android:right="16dp" android:bottom="12dp"/>
+        </shape>
+    </item>
+
+    <!-- Vector Drawable (down_arrow.xml) -->
+    <item android:drawable="@drawable/down_arrow" android:gravity="end"/>
+</layer-list>

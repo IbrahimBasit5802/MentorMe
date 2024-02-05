@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval"
+
+
+    >
+
+    <!-- Set the fill color to transparent for no fill -->
+    <solid android:color="@android:color/transparent"
+        />
+    <!-- Define the stroke for the border with a specific color and width -->
+    <stroke android:color="@color/headingTextColor" android:width="1dp" />
+</shape>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="headingTextColor">#086369</color>
+    <color name="appTitleColor">#30aeb7</color>
+    <color name="splashScreenBgColor">#daf7f7</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="textFieldHintTextColor">#868080</color>
+    <color name="secondaryTextColor">#000000</color>
+    <color name="primaryButtonColor">#086369</color>
+    <color name="containerColor">#41bbc3</color>
+    <color name="titleColor">#2ea7af</color>
+    <color name="linkColor">#086369</color>
+    <color name="circleColor">#b9e8e2</color>
+    <color name="digitColor">#86d6da</color>
+    <color name="overlapCircleColor">#9ee3da</color>
+    <color name="titleColorSecond">#ffc303</color>
+</resources>
