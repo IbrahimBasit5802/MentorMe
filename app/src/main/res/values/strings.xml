@@ -47,4 +47,6 @@
     <string name="re_enter_password_text">Re-enter Password</string>
     <string name="reset_password_button_text">Reset Password</string>
     <string name="don_t_want_to_reset_your_password_text">"Don't want to reset your password? "</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

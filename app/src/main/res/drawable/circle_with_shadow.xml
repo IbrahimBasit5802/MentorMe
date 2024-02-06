@@ -3,7 +3,6 @@
 
     <!-- Shadow Layer -->
 
-
     <!-- Icon Background Layer -->
     <item android:bottom="2dp" android:left="1dp" android:right="1dp" android:top="1dp">
         <shape android:shape="oval">
@@ -13,5 +12,7 @@
                 android:height="56dp"/>
         </shape>
     </item>
+
+
 
 </layer-list>
