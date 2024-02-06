@@ -1,14 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/splashScreenBgColor"
     tools:context=".HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+   <ScrollView
+       android:layout_width="match_parent"
+       android:fillViewport="true"
+       android:layout_height="match_parent">
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+
+           <View
+               android:layout_width="0dp"
+               android:layout_height="0dp"
+               android:background="@drawable/bubbles"
+               app:layout_constraintHeight_default="percent"
+               app:layout_constraintHeight_percent="0.25"
+               app:layout_constraintStart_toStartOf="parent"
+               android:id="@+id/bubbles"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintWidth_default="percent"
+               app:layout_constraintWidth_percent="0.5" />
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/hello_text"
+                android:fontFamily="@font/dmsans_bold"
+               android:text="@string/hello_text"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="32sp"
+
+               app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="85dp" />
+
+           <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/name_text"
+                android:fontFamily="@font/dmsans_bold"
+                android:text="@string/home_name_text"
+                android:textStyle="bold"
+                android:textColor="@color/headingTextColor"
+                android:textSize="32sp"
+                app:layout_constraintStart_toEndOf="@id/hello_text"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="85dp" />
+
+           <View
+               android:layout_width="36dp"
+               android:layout_height="36dp"
+                android:id="@+id/notification_button"
+                android:background="@drawable/notification_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="85dp" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/quote_text"
+                android:fontFamily="@font/dmsans_regular"
+                android:text="@string/quote_text"
+                android:textColor="@color/headingTextColor"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hello_text"
+
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp" />
+
+               <HorizontalScrollView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                     app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/bubbles"
+                     android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                   android:id="@+id/horizontal_scroll_view"
+                     android:scrollbars="none">
+                   <LinearLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:orientation="horizontal">
+
+                       <Button
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_marginRight="10dp"
+                           android:padding="15dp"
+                           android:minWidth="0dp"
+                           android:textFontWeight="500"
+                           android:backgroundTint="@color/headingTextColor"
+                           android:textColor="@color/primaryTextColor"
+                           android:background="@drawable/chip_background"
+                           android:textAllCaps="false"
+                           android:text="All" />
+
+                       <Button
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:background="@drawable/chip_background"
+                           android:layout_marginRight="10dp"
+                           android:padding="8dp"
+                           android:textAllCaps="false"
+                           android:textColor="@color/headingTextColor"
+                           android:textFontWeight="500"
+                           android:text="Education" />
+
+                       <Button
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:background="@drawable/chip_background"
+                           android:layout_marginRight="10dp"
+                           android:padding="8dp"
+                           android:textAllCaps="false"
+                           android:textColor="@color/headingTextColor"
+                           android:textFontWeight="500"
+
+                           android:text="Entrepreneurship" />
+
+                       <Button
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:background="@drawable/chip_background"
+                           android:layout_marginRight="10dp"
+                           android:padding="8dp"
+                           android:textAllCaps="false"
+                           android:textColor="@color/headingTextColor"
+                           android:textFontWeight="500"
+
+                           android:text="Personal Growth" />
+
+                       <!-- Add more buttons or views here as needed -->
+                   </LinearLayout>
+
+               </HorizontalScrollView>
+
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+                android:id="@+id/featured_text"
+                android:text="@string/featured_text"
+               android:textStyle="bold"
+                android:textColor="@color/headingTextColor"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+               android:layout_marginStart="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view" />
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+                android:id="@+id/view_all_text"
+                android:text="@string/view_all_text"
+                android:textColor="@color/headingTextColor"
+                android:textSize="12sp"
+               android:textStyle="bold"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBaseline_toBaselineOf="@id/featured_text" />
+
+
+
+       </androidx.constraintlayout.widget.ConstraintLayout>
+   </ScrollView>
+
 
 </FrameLayout>

@@ -49,4 +49,9 @@
     <string name="don_t_want_to_reset_your_password_text">"Don't want to reset your password? "</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_text">"Hello, "</string>
+    <string name="home_name_text">Ali</string>
+    <string name="quote_text">Ready for mentorship? Let\'s begin the journey!</string>
+    <string name="featured_text">Top Mentors for you</string>
+    <string name="view_all_text">View All</string>
 </resources>
