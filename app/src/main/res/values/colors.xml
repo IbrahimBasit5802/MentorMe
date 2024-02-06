@@ -15,4 +15,5 @@
     <color name="digitColor">#86d6da</color>
     <color name="overlapCircleColor">#9ee3da</color>
     <color name="titleColorSecond">#ffc303</color>
+    <color name="cardBgColor">#d5d5d5</color>
 </resources>

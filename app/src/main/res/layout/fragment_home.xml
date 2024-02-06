@@ -172,7 +172,35 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBaseline_toBaselineOf="@id/featured_text" />
 
+           <HorizontalScrollView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/featured_text"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/mentor_scroll_view">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:weightSum="10"
+                android:orientation="horizontal">
+
+              <View
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:layout_marginEnd="10dp"
+                  android:background="@drawable/card_sub_container"
+                    android:layout_marginStart="10dp">
+
+              </View>
+
+            </LinearLayout>
+
+
+           </HorizontalScrollView>
 
        </androidx.constraintlayout.widget.ConstraintLayout>
    </ScrollView>

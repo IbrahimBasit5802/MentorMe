@@ -54,4 +54,18 @@
     <string name="quote_text">Ready for mentorship? Let\'s begin the journey!</string>
     <string name="featured_text">Top Mentors for you</string>
     <string name="view_all_text">View All</string>
+    <string name="search_heading">Let\'s Find...</string>
+    <string name="search_text"><b>Search</b></string>
+    <string name="recent_searches">Recent searches</string>
+    <string name="recent_text1">Mentor 1</string>
+    <string-array name="names">
+        <item>John Cooper</item>
+        <item>Martina Watson</item>
+        <!-- More names -->
+    </string-array>
+    <string-array name="roles">
+        <item>UX Designer @ Google</item>
+        <item>Lead - Technology Officer</item>
+        <!-- More roles -->
+    </string-array>
 </resources>
