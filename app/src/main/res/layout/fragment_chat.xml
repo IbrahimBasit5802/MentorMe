@@ -16,6 +16,7 @@
        <androidx.constraintlayout.widget.ConstraintLayout
            android:layout_width="match_parent"
            android:layout_height="0dp"
+           android:id="@+id/upperPart"
            app:layout_constraintHeight_percent="0.25"
            app:layout_constraintTop_toTopOf="parent"
            app:layout_constraintStart_toStartOf="parent">
@@ -177,7 +178,6 @@
                            android:layout_height="70dp"
                            android:src="@drawable/jack_icon"
                            android:layout_gravity="center"/>
-
                        <View
                            android:layout_width="20dp"
                            android:layout_height="20dp"
@@ -224,6 +224,201 @@
 
 
 
+
+       </androidx.constraintlayout.widget.ConstraintLayout>
+
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+              app:layout_constraintHeight_percent="0.75"
+              app:layout_constraintTop_toBottomOf="@id/upperPart"
+                app:layout_constraintStart_toStartOf="parent">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="All Messages"
+                android:textSize="14sp"
+               android:textStyle="bold"
+                android:textColor="@color/subHeadingChatColor"
+                android:id="@+id/allMessages"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="20dp"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/chatScrollView"
+            android:scrollbars="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/allMessages"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/jack_icon"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"/>
+
+                    <TextView
+                        android:id="@+id/name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="John Cooper"
+
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/headingTextColor"
+                        android:layout_toEndOf="@id/profile_image"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/message_status_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/name_text"
+                        android:layout_marginTop="8dp"
+                        android:paddingTop="20dp"
+                        android:layout_toEndOf="@id/profile_image"
+                        android:text="1 New Message"
+                        android:layout_marginVertical="8dp"
+                        android:textColor="#ab3b3b"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#98e4db"
+                    android:padding="8dp" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profile_image2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/jack_profile"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="16dp"/>
+
+                    <TextView
+                        android:id="@+id/name_text2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jack Watson"
+
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/headingTextColor"
+                        android:layout_toEndOf="@id/profile_image2"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/message_status_text2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/name_text2"
+                        android:layout_marginTop="8dp"
+                        android:paddingTop="20dp"
+                        android:layout_toEndOf="@id/profile_image2"
+                        android:text="No New Messages"
+                        android:layout_marginVertical="8dp"
+                        android:textColor="@color/subHeadingChatColor"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#98e4db"
+                    android:padding="8dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profile_image3"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/emma_profile"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="16dp"/>
+
+                    <TextView
+                        android:id="@+id/name_text3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Emma Phillips"
+
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/headingTextColor"
+                        android:layout_toEndOf="@id/profile_image3"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/message_status_text3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/name_text3"
+                        android:layout_marginTop="8dp"
+                        android:paddingTop="20dp"
+                        android:layout_toEndOf="@id/profile_image3"
+                        android:text="No New Messages"
+                        android:layout_marginVertical="8dp"
+                        android:textColor="@color/subHeadingChatColor"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#98e4db"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+
+
+        </ScrollView>
 
        </androidx.constraintlayout.widget.ConstraintLayout>
 
