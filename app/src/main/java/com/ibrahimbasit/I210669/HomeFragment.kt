@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.core.content.ContextCompat
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,12 +31,47 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    private lateinit var buttonsList: List<Button>
+    private var selectedButton: Button? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        // Initialize your buttons
+        val allButton = view.findViewById<Button>(R.id.all_button)
+        val educationButton = view.findViewById<Button>(R.id.education_button)
+        val entreButton = view.findViewById<Button>(R.id.entrepreneurship_button)
+        val personalGrowthButton = view.findViewById<Button>(R.id.personal_growth_button)
+
+
+        setSelectedButton(allButton)
+        // ... Initialize other buttons ...
+
+        // Add all buttons to a list
+        buttonsList = listOf(allButton, educationButton, entreButton, personalGrowthButton)
+
+        // Set up click listeners
+        buttonsList.forEach { button ->
+            button.setOnClickListener { clickedButton ->
+                setSelectedButton(clickedButton as Button)
+            }
+        }
+
+        return view
+    }
+
+    private fun setSelectedButton(button: Button) {
+        // Change background and text color of the clicked button
+        selectedButton?.let {
+            it.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.chipColor)
+            it.setTextColor(ContextCompat.getColor(requireContext(), R.color.headingTextColor))
+        }
+
+        button.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.headingTextColor)
+        button.setTextColor(ContextCompat.getColor(requireContext(), R.color.primaryTextColor))
+
+        // Keep reference to the selected button
+        selectedButton = button
     }
 
     companion object {
