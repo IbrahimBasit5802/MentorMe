@@ -35,6 +35,7 @@
            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:text="Chats"
                 android:textSize="32sp"
                android:textStyle="bold"
@@ -278,7 +279,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="John Cooper"
-
+                        android:fontFamily="@font/opensans_extrabold"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/headingTextColor"
@@ -331,7 +332,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Jack Watson"
-
+                        android:fontFamily="@font/opensans_extrabold"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/headingTextColor"
@@ -383,6 +384,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Emma Phillips"
+                        android:fontFamily="@font/opensans_extrabold"
 
                         android:textSize="18sp"
                         android:textStyle="bold"
