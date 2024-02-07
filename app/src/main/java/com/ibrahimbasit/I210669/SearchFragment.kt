@@ -48,6 +48,12 @@ class SearchFragment : Fragment() {
 
         val mentorText : TextView = view.findViewById(R.id.recent_text1)
 
+        val backButton : View = view.findViewById(R.id.back_arrow)
+
+        backButton.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         mentorText.setOnClickListener {
             performSearch(mentorText.text.toString())
         }

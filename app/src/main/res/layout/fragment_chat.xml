@@ -3,12 +3,230 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/splashScreenBgColor"
     tools:context=".ChatFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_height="match_parent"
+
+       android:layout_width="match_parent">
+
+
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           app:layout_constraintHeight_percent="0.25"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintStart_toStartOf="parent">
+
+           <View
+               android:layout_width="24dp"
+               android:layout_height="24dp"
+                android:background="@drawable/arrow_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/back_button"
+                />
+
+           <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chats"
+                android:textSize="32sp"
+               android:textStyle="bold"
+                android:textColor="@color/headingTextColor"
+                android:id="@+id/headingText"
+                app:layout_constraintStart_toEndOf="@id/back_button"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="12dp"
+                />
+
+           <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My community"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/subHeadingChatColor"
+                android:id="@+id/subHeadingText"
+                app:layout_constraintStart_toStartOf="@id/back_button"
+                app:layout_constraintTop_toBottomOf="@id/headingText"
+                android:layout_marginTop="15dp"/>
+
+
+
+           <HorizontalScrollView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/statusScrollView"
+               android:scrollbars="none"
+                app:layout_constraintStart_toStartOf="@id/subHeadingText"
+                app:layout_constraintTop_toBottomOf="@id/subHeadingText"
+                android:layout_marginTop="20dp"
+               >
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                   <FrameLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginEnd="20dp"
+                       app:layout_constraintStart_toStartOf="@id/subHeadingText"
+                       app:layout_constraintTop_toBottomOf="@id/subHeadingText"
+                       android:layout_marginTop="10dp"
+                       >
+                       <View
+                           android:layout_width="70dp"
+                           android:layout_height="70dp"
+                           android:background="@drawable/custom_status_border"
+                           android:id="@+id/status_border"
+                           />
+                       <ImageView
+                           android:layout_width="60dp"
+                           android:layout_height="70dp"
+                           android:src="@drawable/jack_icon"
+                           android:layout_gravity="center"/>
+
+                       <View
+                           android:layout_width="20dp"
+                           android:layout_height="20dp"
+                           android:background="@drawable/custom_status_badge"
+                           android:layout_gravity="top|end"/>
+
+                   </FrameLayout>
+
+                   <FrameLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginEnd="20dp"
+
+                       app:layout_constraintStart_toStartOf="@id/subHeadingText"
+                       app:layout_constraintTop_toBottomOf="@id/subHeadingText"
+                       android:layout_marginTop="10dp"
+                       >
+                       <View
+                           android:layout_width="70dp"
+                           android:layout_height="70dp"
+                           android:background="@drawable/custom_status_border"
+                           android:id="@+id/status_border2"
+                           />
+                       <ImageView
+                           android:layout_width="60dp"
+                           android:layout_height="70dp"
+                           android:src="@drawable/jack_icon"
+                           android:layout_gravity="center"/>
+
+                       <View
+                           android:layout_width="20dp"
+                           android:layout_height="20dp"
+                           android:background="@drawable/custom_status_badge"
+                           android:layout_gravity="top|end"/>
+
+                   </FrameLayout>
+                   <FrameLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginEnd="20dp"
+
+                       app:layout_constraintStart_toStartOf="@id/subHeadingText"
+                       app:layout_constraintTop_toBottomOf="@id/subHeadingText"
+                       android:layout_marginTop="10dp"
+                       >
+                       <View
+                           android:layout_width="70dp"
+                           android:layout_height="70dp"
+                           android:background="@drawable/custom_status_border"
+                           android:id="@+id/status_border3"
+                           />
+                       <ImageView
+                           android:layout_width="60dp"
+                           android:layout_height="70dp"
+                           android:src="@drawable/jack_icon"
+                           android:layout_gravity="center"/>
+
+                       <View
+                           android:layout_width="20dp"
+                           android:layout_height="20dp"
+                           android:background="@drawable/custom_status_badge"
+                           android:layout_gravity="top|end"/>
+
+                   </FrameLayout>
+                   <FrameLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginEnd="20dp"
+
+                       app:layout_constraintStart_toStartOf="@id/subHeadingText"
+                       app:layout_constraintTop_toBottomOf="@id/subHeadingText"
+                       android:layout_marginTop="10dp"
+                       >
+                       <View
+                           android:layout_width="70dp"
+                           android:layout_height="70dp"
+                           android:background="@drawable/custom_status_border"
+                           android:id="@+id/status_border4"
+                           />
+                       <ImageView
+                           android:layout_width="60dp"
+                           android:layout_height="70dp"
+                           android:src="@drawable/jack_icon"
+                           android:layout_gravity="center"/>
+
+                       <View
+                           android:layout_width="20dp"
+                           android:layout_height="20dp"
+                           android:background="@drawable/custom_badge_gray"
+                           android:layout_gravity="top|end"/>
+
+                   </FrameLayout>
+                   <FrameLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginEnd="20dp"
+
+                       app:layout_constraintStart_toStartOf="@id/subHeadingText"
+                       app:layout_constraintTop_toBottomOf="@id/subHeadingText"
+                       android:layout_marginTop="10dp"
+                       >
+                       <View
+                           android:layout_width="70dp"
+                           android:layout_height="70dp"
+                           android:background="@drawable/custom_status_border"
+                           android:id="@+id/status_border5"
+                           />
+                       <ImageView
+                           android:layout_width="60dp"
+                           android:layout_height="70dp"
+                           android:src="@drawable/jack_icon"
+                           android:layout_gravity="center"/>
+
+                       <View
+                           android:layout_width="20dp"
+                           android:layout_height="20dp"
+                           android:background="@drawable/custom_status_badge"
+                           android:layout_gravity="top|end"/>
+
+                   </FrameLayout>
+
+               </LinearLayout>
+
+           </HorizontalScrollView>
+
+
+
+
+
+
+
+
+       </androidx.constraintlayout.widget.ConstraintLayout>
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

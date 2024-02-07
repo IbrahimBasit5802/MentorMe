@@ -18,5 +18,6 @@
     <color name="cardBgColor">#d5d5d5</color>
     <color name="availableTextColor">#2ea400</color>
     <color name="unavailableTextColor">#868080</color>
+    <color name="subHeadingChatColor">#576363</color>
 
 </resources>
