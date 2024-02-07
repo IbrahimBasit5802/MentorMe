@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,14 +29,35 @@ class ChatFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat, container, false)
+        val view = inflater.inflate(R.layout.fragment_chat, container, false)
+
+        val clickListener = View.OnClickListener { clickedView ->
+            val tag = clickedView.tag.toString()
+
+
+            val chatPersonFragment = ChatPersonFragment.newInstance(tag, "param2")
+            fragmentManager?.beginTransaction()
+                ?.replace(R.id.frame_layout, chatPersonFragment)
+                ?.addToBackStack(null)
+                ?.commit()
+        }
+
+        val scrollViewLayout = view.findViewById<LinearLayout>(R.id.chatList)
+
+        for (i in 0 until scrollViewLayout.childCount) {
+            val child = scrollViewLayout.getChildAt(i)
+            child.setOnClickListener(clickListener)
+        }
+
+        return view
     }
 
     companion object {

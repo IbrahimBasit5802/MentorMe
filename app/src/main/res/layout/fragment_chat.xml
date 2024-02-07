@@ -257,11 +257,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:id="@+id/chatList"
+                >
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:tag="item1"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:padding="8dp"
                     >
 
@@ -315,6 +319,9 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:tag="item2"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:padding="8dp"
                     >
 
@@ -367,6 +374,9 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:tag="item3"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:padding="8dp"
                     >
 
