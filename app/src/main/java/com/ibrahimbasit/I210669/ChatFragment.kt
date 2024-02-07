@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 
@@ -50,11 +52,30 @@ class ChatFragment : Fragment() {
                 ?.commit()
         }
 
+
+        val clickListener2 = View.OnClickListener { clickedView ->
+            val tag = clickedView.tag.toString()
+
+
+            val communityChatFragment = CommunityChatFragment.newInstance(tag, "param2")
+            fragmentManager?.beginTransaction()
+                ?.replace(R.id.frame_layout, communityChatFragment)
+                ?.addToBackStack(null)
+                ?.commit()
+        }
+
         val scrollViewLayout = view.findViewById<LinearLayout>(R.id.chatList)
+
+        val communityScrollView = view.findViewById<LinearLayout>(R.id.communityList)
 
         for (i in 0 until scrollViewLayout.childCount) {
             val child = scrollViewLayout.getChildAt(i)
             child.setOnClickListener(clickListener)
+        }
+
+        for (i in 0 until communityScrollView.childCount) {
+            val child = communityScrollView.getChildAt(i)
+            child.setOnClickListener(clickListener2)
         }
 
         return view
