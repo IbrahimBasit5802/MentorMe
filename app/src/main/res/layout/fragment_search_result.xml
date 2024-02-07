@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".SearchResultFragment">
+
+     <androidx.constraintlayout.widget.ConstraintLayout
+         android:layout_height="match_parent"
+         android:layout_width="match_parent"
+         >
+
+
+         <androidx.constraintlayout.widget.ConstraintLayout
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             app:layout_constraintHeight_percent="0.25"
+             android:background="@color/splashScreenBgColor"
+             android:id="@+id/upperPart"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+
+             >
+
+         <View
+             android:layout_width="0dp"
+             android:layout_height="0dp"
+             android:background="@drawable/bubbles"
+             app:layout_constraintHeight_default="percent"
+             app:layout_constraintHeight_percent="0.9"
+             app:layout_constraintStart_toStartOf="parent"
+             android:id="@+id/bubbles"
+             app:layout_constraintTop_toTopOf="parent"
+             app:layout_constraintWidth_default="percent"
+             app:layout_constraintWidth_percent="0.5" />
+
+         <View
+             android:layout_width="24dp"
+             android:layout_height="24dp"
+             android:background="@drawable/arrow_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/backButton"
+             android:layout_marginStart="20dp"
+             android:layout_marginTop="60dp"
+                />
+
+         <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search Result"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textColor="@color/headingTextColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/backButton"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:id="@+id/searchResultTitle"
+                />
+
+
+         <com.google.android.material.textfield.TextInputEditText
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Filter"
+             android:textStyle="bold"
+             android:inputType=""
+             android:textAlignment="center"
+             android:fontFamily="@font/dmsans_bold"
+             android:textSize="14sp"
+             android:padding="10dp"
+             android:drawableEnd="@drawable/filter_down_arrow"
+             android:textColor="@color/headingTextColor"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/searchResultTitle"
+             android:layout_marginEnd="20dp"
+             android:background="@drawable/filter_chip"/>
+         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+         <androidx.constraintlayout.widget.ConstraintLayout
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.75"
+                app:layout_constraintTop_toBottomOf="@id/upperPart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/lowerPart"
+                android:background="@color/splashScreenBgColor">
+
+
+             <androidx.recyclerview.widget.RecyclerView
+                 android:id="@+id/search_results_recyclerview"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent" />
+
+         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+     </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
