@@ -22,7 +22,7 @@
 
                android:background="@drawable/bubbles"
                app:layout_constraintHeight_default="percent"
-               app:layout_constraintHeight_percent="0.25"
+               app:layout_constraintHeight_percent="0.2"
                app:layout_constraintStart_toStartOf="parent"
                android:id="@+id/bubbles"
                app:layout_constraintTop_toTopOf="parent"
