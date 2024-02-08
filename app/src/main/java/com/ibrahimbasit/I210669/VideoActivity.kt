@@ -8,11 +8,11 @@ import android.view.View
 import android.widget.HorizontalScrollView
 import android.widget.TextView
 
-class CameraActivity : AppCompatActivity() {
+class VideoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera)
+        setContentView(R.layout.activity_video)
 
 
         val closeButton : View = findViewById<View>(R.id.closeButton)
@@ -24,9 +24,9 @@ class CameraActivity : AppCompatActivity() {
         val textViewPortrait = findViewById<TextView>(R.id.portrait)
         val textViewSquare = findViewById<TextView>(R.id.textViewSquare)
 
-        val videoButton : View = findViewById(R.id.videoButton)
-        videoButton.setOnClickListener {
-            val intent = Intent(this, VideoActivity::class.java)
+        val cameraButton : View = findViewById(R.id.cameraButton)
+        cameraButton.setOnClickListener {
+            val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }
         // ... other text views
@@ -38,7 +38,7 @@ class CameraActivity : AppCompatActivity() {
         val scrollView = findViewById<HorizontalScrollView>(R.id.options)
 
 
-        allTextViews[2].isSelected = true
+        allTextViews[1].isSelected = true
 
         allTextViews.forEach { textView ->
             textView.setOnClickListener {
