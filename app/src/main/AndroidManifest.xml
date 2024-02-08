@@ -13,7 +13,7 @@
         android:theme="@style/Theme.I210669"
         tools:targetApi="31">
         <activity
-            android:name=".CallScreenAcitivty"
+            android:name=".CallScreenActivity"
             android:exported="false" />
         <activity
             android:name=".VideoCallActivity"

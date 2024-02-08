@@ -1,5 +1,6 @@
 package com.ibrahimbasit.I210669
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -35,6 +36,32 @@ class CommunityChatFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_community_chat, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val cameraButton: View = view.findViewById(R.id.cameraButton)
+        cameraButton.setOnClickListener {
+            val intent = Intent(activity, CameraActivity::class.java)
+            startActivity(intent)
+        }
+
+        val videoButton: View = view.findViewById(R.id.videoCallButton)
+        videoButton.setOnClickListener {
+            val intent = Intent(activity, VideoCallActivity::class.java)
+            startActivity(intent)
+        }
+        val callButton : View = view.findViewById(R.id.callButton)
+        callButton.setOnClickListener {
+            val intent = Intent(activity, CallScreenActivity::class.java)
+            startActivity(intent)
+        }
+
+        val backButton : View = view.findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     companion object {

@@ -41,6 +41,22 @@ class ChatPersonFragment : Fragment() {
             val intent = Intent(activity, CameraActivity::class.java)
             startActivity(intent)
         }
+
+        val videoButton: View = view.findViewById(R.id.videoCallButton)
+        videoButton.setOnClickListener {
+            val intent = Intent(activity, VideoCallActivity::class.java)
+            startActivity(intent)
+        }
+        val callButton : View = view.findViewById(R.id.callButton)
+        callButton.setOnClickListener {
+            val intent = Intent(activity, CallScreenActivity::class.java)
+            startActivity(intent)
+        }
+
+        val backButton : View = view.findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     override fun onCreateView(
