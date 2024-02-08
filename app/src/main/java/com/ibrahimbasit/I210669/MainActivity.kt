@@ -1,7 +1,10 @@
 package com.ibrahimbasit.I210669
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.ibrahimbasit.I210669.databinding.ActivityMainBinding
 
@@ -34,6 +37,8 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
+
     }
 
     private fun replaceFragment(fragment: Fragment) {

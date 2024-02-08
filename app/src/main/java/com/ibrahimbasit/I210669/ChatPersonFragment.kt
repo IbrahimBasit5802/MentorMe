@@ -1,5 +1,6 @@
 package com.ibrahimbasit.I210669
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,6 +27,19 @@ class ChatPersonFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+
+
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val cameraButton: View = view.findViewById(R.id.cameraButton)
+        cameraButton.setOnClickListener {
+            val intent = Intent(activity, CameraActivity::class.java)
+            startActivity(intent)
         }
     }
 
