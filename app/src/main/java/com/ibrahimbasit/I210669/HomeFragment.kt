@@ -1,5 +1,6 @@
 package com.ibrahimbasit.I210669
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -42,7 +43,12 @@ class HomeFragment : Fragment() {
         val educationButton = view.findViewById<Button>(R.id.education_button)
         val entreButton = view.findViewById<Button>(R.id.entrepreneurship_button)
         val personalGrowthButton = view.findViewById<Button>(R.id.personal_growth_button)
+        val notificationButton : View = view.findViewById(R.id.notification_button)
 
+        notificationButton.setOnClickListener {
+            val intent = Intent(activity, NotificationActivity::class.java)
+            startActivity(intent)
+        }
 
         setSelectedButton(allButton)
         // ... Initialize other buttons ...

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splashScreenBgColor"
+    tools:context=".BookedSessionsActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bubbles"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bubbles"
+        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.5">
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Booked Sessions"
+        android:textColor="@color/headingTextColor"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="10dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="105dp"
+        app:layout_constraintStart_toEndOf="@id/back_button"
+        />
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="110dp"
+        android:background="@drawable/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sessionsScrollView"
+        app:layout_constraintTop_toBottomOf="@id/bubbles"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/sessionsLinearLayout"
+            >
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp">
+                <View
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/jack_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

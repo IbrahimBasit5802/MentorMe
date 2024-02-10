@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splashScreenBgColor"
+    tools:context=".EditProfileActivity">
+
+
+    <View
+        android:id="@+id/container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/containerColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/back_button"
+        android:text=""
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="39dp"
+        android:text="Edit Profile"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBottomOf="@id/back_button"
+        app:layout_constraintBottom_toTopOf="@+id/profile_picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/profile_picture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="540dp"
+        android:background="@drawable/user_profile_picture"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Name"
+        android:id="@+id/name_label"
+        android:textFontWeight="600"
+        android:textColor="@color/headingTextColor"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/profile_picture"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:autofillHints=""
+        android:background="@drawable/text_field_background"
+        android:hint="Ali"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/textFieldHintTextColor"
+        android:id="@+id/name_edit_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_label"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Email"
+        android:id="@+id/email_label"
+        android:textFontWeight="600"
+        android:textColor="@color/headingTextColor"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/name_edit_text"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:autofillHints=""
+        android:background="@drawable/text_field_background"
+        android:hint="ali@gmail.com"
+        android:inputType="textEmailAddress"
+        android:textColorHint="@color/textFieldHintTextColor"
+        android:id="@+id/email_edit_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_label"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Contact Number"
+        android:id="@+id/contact_label"
+        android:textFontWeight="600"
+        android:textColor="@color/headingTextColor"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/email_edit_text"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:autofillHints=""
+        android:background="@drawable/text_field_background"
+        android:hint="+92 321 2242022"
+        android:textStyle="bold"
+        android:inputType="phone"
+        android:textColorHint="@color/textFieldHintTextColor"
+        android:id="@+id/contact_edit_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_label"/>
+
+    <!-- Country Field -->
+    <TextView
+        android:id="@+id/country_label"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="16dp"
+        android:textFontWeight="600"
+        android:text="@string/country_text"
+        android:textColor="@color/headingTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_edit_text"
+        app:layout_constraintVertical_weight="1" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/countryTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:endIconDrawable="@drawable/down_arrow"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/country_label">
+
+        <EditText
+            android:id="@+id/countrySelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@drawable/selector_field_background"
+            android:hint="Pakistan"
+            android:inputType="text"
+            android:textColorHint="@color/textFieldHintTextColor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <!-- City Field -->
+    <TextView
+        android:id="@+id/city_label"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="16dp"
+        android:textFontWeight="600"
+        android:text="@string/city_text"
+        android:textColor="@color/headingTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/countryTextInputLayout"
+        app:layout_constraintVertical_weight="1" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/cityTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:endIconDrawable="@drawable/down_arrow"
+
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/city_label">
+
+        <EditText
+            android:id="@+id/citySelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@drawable/selector_field_background"
+            android:hint="Islamabad"
+            android:inputType="text"
+            android:textColorHint="@color/textFieldHintTextColor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/second_button_background"
+        android:text="Update Profile"
+        android:id="@+id/updateButton"
+        android:textColor="@color/primaryTextColor"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.ibrahimbasit.I210669
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -35,6 +36,22 @@ class ProfileFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val editButton : View = view.findViewById(R.id.edit_profile_button)
+        editButton.setOnClickListener {
+            val intent = Intent(activity, EditProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        val editButton2 : View = view.findViewById(R.id.edit_profile_button2)
+        editButton2.setOnClickListener {
+            val intent = Intent(activity, EditProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     companion object {

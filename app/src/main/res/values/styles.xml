@@ -7,4 +7,12 @@
         <item name="android:maxHeight">47dip</item>
     </style>
 
+    <style name="SessionsImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeBottomLeft">16dp</item>
+        <item name="cornerSizeBottomRight">16dp</item>
+    </style>
+
 </resources>
