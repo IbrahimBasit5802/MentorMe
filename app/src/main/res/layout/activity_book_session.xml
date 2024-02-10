@@ -34,10 +34,9 @@
             android:layout_marginTop="15dp"
             android:layout_marginStart="20dp"
             android:textSize="32sp"
-            android:fontFamily="@font/opensans_bold"
+            android:fontFamily="@font/noto_javanese_bold"
             android:textColor="@color/primaryTextColor"
             android:textStyle="bold"
-            android:letterSpacing="0.05"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/back_button"/>
 
@@ -47,13 +46,11 @@
             android:layout_height="wrap_content"
             android:text="John Cooper"
             android:id="@+id/mentor_name"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:textSize="32sp"
-            android:fontFamily="@font/opensans_bold"
+            android:fontFamily="@font/noto_javanese_bold"
             android:textColor="@color/primaryTextColor"
             android:textStyle="bold"
-            android:letterSpacing="0.05"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text1"/>
 
@@ -74,7 +71,6 @@
             android:layout_width="match_parent"
             android:layout_height="1.5dp"
 
-            android:layout_marginTop="25dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mentor_name"
@@ -89,8 +85,7 @@
             android:id="@+id/text2"
             android:textColor="@color/primaryTextColor"
             android:textSize="24sp"
-            android:fontFamily="@font/opensans_regular"
-            android:letterSpacing="0.05"
+            android:fontFamily="@font/noto_javanese_regular"
             android:layout_marginTop="15dp"
             android:layout_marginStart="20dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -103,9 +98,7 @@
             android:id="@+id/mentor_company"
             android:textColor="@color/primaryTextColor"
             android:textSize="24sp"
-            android:fontFamily="@font/opensans_regular"
-            android:letterSpacing="0.05"
-            android:layout_marginTop="10dp"
+            android:fontFamily="@font/noto_javanese_regular"
             android:layout_marginStart="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text2"/>
@@ -128,7 +121,7 @@
             android:id="@+id/rating"
             android:textColor="@color/primaryTextColor"
             android:textSize="24sp"
-            android:fontFamily="@font/opensans_bold"
+            android:fontFamily="@font/noto_javanese_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider3"
             android:layout_marginEnd="20dp"
@@ -139,7 +132,6 @@
             android:layout_width="match_parent"
             android:layout_height="1.5dp"
 
-            android:layout_marginTop="25dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mentor_company"
@@ -154,27 +146,26 @@
             android:id="@+id/about_me_text"
             android:textColor="@color/primaryTextColor"
             android:textSize="16sp"
-            android:fontFamily="@font/opensans_bold"
+            android:fontFamily="@font/noto_javanese_bold"
             app:layout_constraintTop_toBottomOf="@id/divider4"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintWidth_percent="0.8"
+            app:layout_constraintWidth_percent="0.9"
             android:text="I am a passionate UX designer at Google with a focus on creating user-centric and intuitive interfaces. With 10 years of experience, I have had the opportunity to work on diverse projects that have shaped my understanding of design principles and user experience."
             android:id="@+id/mentor_description"
             android:autoSizeMaxTextSize="18sp"
             android:autoSizeMinTextSize="12sp"
             android:textColor="@color/primaryTextColor"
-            android:fontFamily="@font/opensans_regular"
+            android:fontFamily="@font/noto_javanese_regular"
             app:layout_constraintTop_toBottomOf="@id/about_me_text"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:letterSpacing="0.01"/>
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
     
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -194,7 +185,7 @@
             android:textColor="@color/headingTextColor"
             android:textSize="17sp"
             app:layout_constraintTop_toTopOf="parent"
-            android:fontFamily="@font/opensans_bold"
+            android:fontFamily="@font/noto_javanese_bold"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"/>
@@ -279,6 +270,7 @@
             android:text="Drop a review"
             android:textAlignment="viewStart"
             android:textSize="14sp"
+            android:fontFamily="@font/poppins_semibold"
             android:background="@drawable/third_button_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/leadership"
@@ -298,7 +290,6 @@
             app:layout_constraintTop_toTopOf="@id/review_button"
             app:layout_constraintBottom_toBottomOf="@id/review_button"
             android:layout_marginEnd="20dp"
-            android:layout_marginTop="2dp"
             android:elevation="3dp"
             android:src="@drawable/review_icon"
             android:contentDescription="TODO" />
@@ -310,6 +301,7 @@
             android:text="Join Community"
             android:textAlignment="viewStart"
             android:textSize="14sp"
+            android:fontFamily="@font/poppins_semibold"
             android:background="@drawable/third_button_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/leadership"
@@ -337,6 +329,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/second_button_background"
             android:text="Book a Session"
+            android:fontFamily="@font/poppins_semibold"
             android:id="@+id/bookButton"
             android:textColor="@color/primaryTextColor"
             android:textAllCaps="false"

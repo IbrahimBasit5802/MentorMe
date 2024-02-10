@@ -236,6 +236,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/second_button_background"
         android:text="Update Profile"
+        android:fontFamily="@font/poppins_semibold"
         android:id="@+id/updateButton"
         android:textColor="@color/primaryTextColor"
         android:textAllCaps="false"

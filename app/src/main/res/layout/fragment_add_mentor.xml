@@ -48,6 +48,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:text="Add New Mentor"
+
                 android:textSize="30sp"
                android:id="@+id/headingText"
                android:textColor="@color/headingTextColor"
@@ -291,6 +292,7 @@
                 android:layout_marginTop="48dp"
                 android:background="@drawable/second_button_background"
                 android:text="Upload"
+                android:fontFamily="@font/poppins_semibold"
                 android:id="@+id/uploadButton"
                 android:textColor="@color/primaryTextColor"
                 android:textAllCaps="false"
