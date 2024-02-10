@@ -106,7 +106,8 @@
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            app:layout_constraintHeight_percent="0.06"
+            android:layout_height="0dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
@@ -140,9 +141,9 @@
         <EditText
             android:id="@+id/emailEditText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            app:layout_constraintHeight_percent="0.06"
+            android:layout_height="0dp"
             android:layout_marginStart="24dp"
-
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:autofillHints=""
@@ -173,7 +174,8 @@
         <EditText
             android:id="@+id/contactEditText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            app:layout_constraintHeight_percent="0.06"
+            android:layout_height="0dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
 
@@ -207,7 +209,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/countryTextInputLayout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            app:layout_constraintHeight_percent="0.06"
+            android:layout_height="0dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
@@ -249,7 +252,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cityTextInputLayout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            app:layout_constraintHeight_percent="0.06"
+            android:layout_height="0dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
@@ -290,7 +294,8 @@
         <EditText
             android:id="@+id/passwordEditText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            app:layout_constraintHeight_percent="0.06"
+            android:layout_height="0dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
@@ -322,7 +327,8 @@
         <Button
             android:id="@+id/signUpButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            app:layout_constraintHeight_percent="0.06"
+            android:layout_height="0dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/button_background"
             android:text="@string/sign_up_button_text"
