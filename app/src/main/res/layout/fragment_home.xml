@@ -200,6 +200,7 @@
                     <View
                         android:layout_width="175dp"
                         android:layout_height="175dp"
+
                         android:outlineAmbientShadowColor="#000000"
                         android:outlineProvider="bounds"
                         android:outlineSpotShadowColor="#000000"

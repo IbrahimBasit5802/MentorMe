@@ -1,13 +1,18 @@
 package com.ibrahimbasit.I210669
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RoundRectShape
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,6 +67,34 @@ class HomeFragment : Fragment() {
                 setSelectedButton(clickedButton as Button)
             }
         }
+        val twelveDp = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 20f,
+            context?.getResources()?.getDisplayMetrics() ?: resources.displayMetrics
+        )
+
+        val radius = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 4f,
+            context?.getResources()?.getDisplayMetrics() ?: resources.displayMetrics
+        )
+
+        val shapeDrawable = ShapeDrawable()
+        shapeDrawable.paint.color = Color.parseColor("#d5d5d5")
+        shapeDrawable.paint.setShadowLayer(
+            radius, //blur
+            radius, //dx
+            radius, //dy
+            Color.parseColor("#00000040") //color
+        )
+        val outerRadius = floatArrayOf(
+            twelveDp, twelveDp, //top-left
+            twelveDp, twelveDp, //top-right
+            twelveDp, twelveDp, //bottom-right
+            twelveDp, twelveDp  //bottom-left
+        )
+        shapeDrawable.shape = RoundRectShape(outerRadius, null, null)
+        view.findViewById<View>(R.id.mentorbox).background = shapeDrawable
+        view.findViewById<View>(R.id.mentorbox2).background = shapeDrawable
+        view.findViewById<View>(R.id.mentorbox3).background = shapeDrawable
 
         return view
     }

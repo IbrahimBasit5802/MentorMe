@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,6 +51,12 @@ class ProfileFragment : Fragment() {
         val editButton2 : View = view.findViewById(R.id.edit_profile_button2)
         editButton2.setOnClickListener {
             val intent = Intent(activity, EditProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        val bookedSessionsButton : Button = view.findViewById(R.id.bookedSessionsButton)
+        bookedSessionsButton.setOnClickListener {
+            val intent = Intent(activity, BookedSessionsActivity::class.java)
             startActivity(intent)
         }
     }

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="CustomRatingBarStyle" parent="Widget.AppCompat.RatingBar">
+    <style name="CustomRatingBarStyle" parent="@android:style/Widget.DeviceDefault.RatingBar">
         <item name="android:progressDrawable">@drawable/custom_rating_bar</item>
-        <item name="android:minHeight">15dip</item>
-        <item name="android:maxHeight">47dip</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:maxHeight">48dp</item>
     </style>
+
 
     <style name="SessionsImageView">
         <item name="cornerFamily">rounded</item>
@@ -13,6 +14,10 @@
         <item name="cornerSizeTopRight">16dp</item>
         <item name="cornerSizeBottomLeft">16dp</item>
         <item name="cornerSizeBottomRight">16dp</item>
+    </style>
+
+    <style name="RoundedSquare">
+        <item name="cornerSize">10%</item>
     </style>
 
 </resources>
