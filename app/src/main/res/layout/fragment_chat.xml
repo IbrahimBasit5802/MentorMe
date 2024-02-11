@@ -125,15 +125,27 @@
                            android:background="@drawable/custom_status_border"
                            android:id="@+id/status_border2"
                            />
-                       <ImageView
+
+                       <androidx.cardview.widget.CardView
                            android:layout_width="60dp"
-                           android:layout_height="70dp"
-                           android:src="@drawable/jack_icon"
-                           android:layout_gravity="center"/>
+                           android:layout_height="60dp"
+                           android:layout_gravity="center"
+                            app:cardCornerRadius="100dp">
+
+                           <ImageView
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:scaleType="centerCrop"
+                               android:src="@drawable/person_icon_2"
+                               />
+
+                       </androidx.cardview.widget.CardView>
+
 
                        <View
                            android:layout_width="20dp"
                            android:layout_height="20dp"
+                           android:elevation="2dp"
                            android:background="@drawable/custom_status_badge"
                            android:layout_gravity="top|end"/>
 
@@ -156,11 +168,20 @@
                            android:background="@drawable/custom_status_border"
                            android:id="@+id/status_border3"
                            />
-                       <ImageView
+                       <androidx.cardview.widget.CardView
                            android:layout_width="60dp"
-                           android:layout_height="70dp"
-                           android:src="@drawable/jack_icon"
-                           android:layout_gravity="center"/>
+                           android:layout_height="60dp"
+                           android:layout_gravity="center"
+                           app:cardCornerRadius="100dp">
+
+                           <ImageView
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:scaleType="centerCrop"
+                               android:src="@drawable/person_icon_3"
+                               />
+
+                       </androidx.cardview.widget.CardView>
 
                        <View
                            android:layout_width="20dp"
@@ -187,11 +208,20 @@
                            android:background="@drawable/custom_status_border"
                            android:id="@+id/status_border4"
                            />
-                       <ImageView
+                       <androidx.cardview.widget.CardView
                            android:layout_width="60dp"
-                           android:layout_height="70dp"
-                           android:src="@drawable/jack_icon"
-                           android:layout_gravity="center"/>
+                           android:layout_height="60dp"
+                           android:layout_gravity="center"
+                           app:cardCornerRadius="100dp">
+
+                           <ImageView
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:scaleType="centerCrop"
+                               android:src="@drawable/person_icon_4"
+                               />
+
+                       </androidx.cardview.widget.CardView>
                        <View
                            android:layout_width="20dp"
                            android:layout_height="20dp"
@@ -217,11 +247,20 @@
                            android:background="@drawable/custom_status_border"
                            android:id="@+id/status_border5"
                            />
-                       <ImageView
+                       <androidx.cardview.widget.CardView
                            android:layout_width="60dp"
-                           android:layout_height="70dp"
-                           android:src="@drawable/jack_icon"
-                           android:layout_gravity="center"/>
+                           android:layout_height="60dp"
+                           android:layout_gravity="center"
+                           app:cardCornerRadius="100dp">
+
+                           <ImageView
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:scaleType="centerCrop"
+                               android:src="@drawable/person_icon_5"
+                               />
+
+                       </androidx.cardview.widget.CardView>
 
                        <View
                            android:layout_width="20dp"
