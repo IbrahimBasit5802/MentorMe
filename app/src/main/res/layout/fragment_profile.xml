@@ -193,12 +193,16 @@
 
                 <FrameLayout android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_marginEnd="8dp"
                     >
 
                     <View
                         android:layout_width="175dp"
                         android:layout_height="175dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:background="@drawable/image_container"
                         android:id="@+id/mentorbox"
                         />
@@ -286,11 +290,15 @@
                 <FrameLayout android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_marginEnd="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     >
 
                     <View
                         android:layout_width="175dp"
                         android:layout_height="175dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:background="@drawable/image_container"
                         android:id="@+id/mentorbox2"
                         />
@@ -378,11 +386,14 @@
 
 
                 <FrameLayout android:layout_height="wrap_content"
-
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="wrap_content">
                     <View
                         android:layout_width="175dp"
                         android:layout_height="175dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:background="@drawable/image_container"
                         android:id="@+id/mentorbox3"
                         />
@@ -520,21 +531,12 @@
                         android:textColor="#daf7f7"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"/>
-                    <androidx.appcompat.widget.AppCompatRatingBar
-                        android:id="@+id/ratingBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:numStars="5"
-                        android:rating="4.5"
-                        android:stepSize="0.5"
-                        android:isIndicator="true"
-                        style="@style/CustomRatingBarStyle"
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/profile_rating_1"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="50dp"
-
-                        android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    />
+                        android:layout_marginTop="45dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -575,21 +577,12 @@
                         android:textColor="#daf7f7"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"/>
-                    <androidx.appcompat.widget.AppCompatRatingBar
-                        android:id="@+id/ratingBar3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:numStars="5"
-                        android:rating="4.5"
-                        android:stepSize="0.5"
-                        android:isIndicator="true"
-                        style="@style/CustomRatingBarStyle"
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/profile_rating_2"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="50dp"
-
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        />
+                        android:layout_marginTop="45dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -630,21 +623,12 @@
                         android:textColor="#daf7f7"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"/>
-                    <androidx.appcompat.widget.AppCompatRatingBar
-                        android:id="@+id/ratingBar2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:numStars="5"
-                        android:rating="4.5"
-                        android:stepSize="0.5"
-                        android:isIndicator="true"
-                        style="@style/CustomRatingBarStyle"
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/profile_rating_3"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="50dp"
-
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        />
+                        android:layout_marginTop="45dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"

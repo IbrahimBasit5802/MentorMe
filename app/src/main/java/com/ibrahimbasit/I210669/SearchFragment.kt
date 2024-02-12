@@ -48,6 +48,10 @@ class SearchFragment : Fragment() {
 
         val mentorText : TextView = view.findViewById(R.id.recent_text1)
 
+        val mentorText2 : TextView = view.findViewById(R.id.recent_text2)
+
+        val mentorText3 : TextView = view.findViewById(R.id.recent_text3)
+
         val backButton : View = view.findViewById(R.id.back_arrow)
 
         backButton.setOnClickListener {
@@ -57,6 +61,15 @@ class SearchFragment : Fragment() {
         mentorText.setOnClickListener {
             performSearch(mentorText.text.toString())
         }
+
+        mentorText2.setOnClickListener {
+            performSearch(mentorText2.text.toString())
+        }
+
+        mentorText3.setOnClickListener {
+            performSearch(mentorText3.text.toString())
+        }
+
 
         // Trigger search on action done (for example, clicking the keyboard search button)
         searchEditText.setOnEditorActionListener { _, actionId, _ ->

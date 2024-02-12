@@ -59,6 +59,15 @@ class ProfileFragment : Fragment() {
             val intent = Intent(activity, BookedSessionsActivity::class.java)
             startActivity(intent)
         }
+
+        val clickListener = View.OnClickListener {clickedView ->
+            val intent = Intent(activity, BookSessionActivity::class.java)
+            startActivity(intent)
+        }
+
+        view.findViewById<View>(R.id.mentorbox).setOnClickListener(clickListener)
+        view.findViewById<View>(R.id.mentorbox2).setOnClickListener(clickListener)
+        view.findViewById<View>(R.id.mentorbox3).setOnClickListener(clickListener)
     }
 
     companion object {
