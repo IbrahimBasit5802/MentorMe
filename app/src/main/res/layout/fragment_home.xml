@@ -189,18 +189,21 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:id="@+id/topMentorLinearLayout"
                 android:orientation="horizontal">
 
                 <FrameLayout android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_marginEnd="8dp"
                     >
 
                     <View
                         android:layout_width="175dp"
                         android:layout_height="175dp"
-
+                        android:clickable="true"
+                        android:focusable="true"
                         android:outlineAmbientShadowColor="#000000"
                         android:outlineProvider="bounds"
                         android:outlineSpotShadowColor="#000000"
@@ -299,12 +302,16 @@
 
                 <FrameLayout android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_marginEnd="10dp"
                     >
 
                     <View
                         android:layout_width="175dp"
                         android:layout_height="175dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:background="@drawable/image_container"
                         android:id="@+id/mentorbox2"
                         />
@@ -400,12 +407,16 @@
 
 
                 <FrameLayout android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="wrap_content">
                     <View
                         android:layout_width="175dp"
                         android:layout_height="175dp"
                         android:background="@drawable/image_container"
                         android:id="@+id/mentorbox3"
+                        android:clickable="true"
+                        android:focusable="true"
                         />
                     <androidx.cardview.widget.CardView
                         android:layout_width="170dp"
@@ -541,17 +552,22 @@
                <LinearLayout
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-
+                   android:id="@+id/educationMentorLinearLayout"
                    android:orientation="horizontal">
 
                    <FrameLayout android:layout_height="wrap_content"
                        android:layout_width="wrap_content"
+                       android:tag="item1"
+                       android:clickable="true"
+                       android:focusable="true"
                        android:layout_marginEnd="8dp"
                        >
 
                        <View
                            android:layout_width="175dp"
                            android:layout_height="175dp"
+                           android:clickable="true"
+                           android:focusable="true"
                            android:background="@drawable/image_container"
                            android:id="@+id/education_box"
                            />
@@ -647,6 +663,9 @@
 
                    <FrameLayout android:layout_height="wrap_content"
                        android:layout_width="wrap_content"
+                       android:tag="item2"
+                       android:clickable="true"
+                       android:focusable="true"
                        android:layout_marginEnd="10dp"
                        >
 
@@ -655,6 +674,8 @@
                            android:layout_height="175dp"
                            android:background="@drawable/image_container"
                            android:id="@+id/education_box2"
+                           android:clickable="true"
+                           android:focusable="true"
                            />
                        <androidx.cardview.widget.CardView
                            android:layout_width="170dp"
@@ -749,6 +770,10 @@
 
                    <FrameLayout android:layout_height="wrap_content"
                        android:layout_width="wrap_content"
+                       android:tag="item3"
+                       android:clickable="true"
+                       android:focusable="true"
+
                        >
 
                        <View
@@ -756,6 +781,8 @@
                            android:layout_height="175dp"
                            android:background="@drawable/image_container"
                            android:id="@+id/education_box3"
+                           android:clickable="true"
+                           android:focusable="true"
                            />
                        <androidx.cardview.widget.CardView
                            android:layout_width="170dp"
@@ -894,18 +921,24 @@
                <LinearLayout
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
+                   android:id="@+id/recentMentorLinearLayout"
+
                    android:orientation="horizontal">
 
                    <!-- Mentor Item FrameLayout -->
                    <!-- Repeat this FrameLayout block for each mentor -->
                    <FrameLayout android:layout_height="wrap_content"
                        android:layout_width="wrap_content"
+                       android:clickable="true"
+                       android:focusable="true"
                        android:layout_marginEnd="10dp">
 
                        <!-- Mentor Image Container -->
                        <View
                            android:layout_width="175dp"
                            android:layout_height="175dp"
+                           android:clickable="true"
+                           android:focusable="true"
                            android:background="@drawable/image_container"
                            android:id="@+id/recent_mentor_box1"/>
 
@@ -1002,12 +1035,16 @@
 
                    <FrameLayout android:layout_height="wrap_content"
                        android:layout_width="wrap_content"
+                       android:clickable="true"
+                       android:focusable="true"
                        android:layout_marginEnd="10dp">
 
                        <!-- Mentor Image Container -->
                        <View
                            android:layout_width="175dp"
                            android:layout_height="175dp"
+                           android:clickable="true"
+                           android:focusable="true"
                            android:background="@drawable/image_container"
                            android:id="@+id/recent_mentor_box2"/>
 
@@ -1103,12 +1140,16 @@
 
                    <FrameLayout android:layout_height="wrap_content"
                        android:layout_width="wrap_content"
+                       android:clickable="true"
+                       android:focusable="true"
                        android:layout_marginEnd="10dp">
 
                        <!-- Mentor Image Container -->
                        <View
                            android:layout_width="175dp"
                            android:layout_height="175dp"
+                           android:clickable="true"
+                           android:focusable="true"
                            android:background="@drawable/image_container"
                            android:id="@+id/recent_mentor_box3"/>
 

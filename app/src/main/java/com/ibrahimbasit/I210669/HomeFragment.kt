@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
@@ -95,6 +97,25 @@ class HomeFragment : Fragment() {
         view.findViewById<View>(R.id.mentorbox).background = shapeDrawable
         view.findViewById<View>(R.id.mentorbox2).background = shapeDrawable
         view.findViewById<View>(R.id.mentorbox3).background = shapeDrawable
+
+        val clickListener = View.OnClickListener {clickedView ->
+            val intent = Intent(activity, BookSessionActivity::class.java)
+            startActivity(intent)
+        }
+
+        view.findViewById<View>(R.id.mentorbox).setOnClickListener(clickListener)
+        view.findViewById<View>(R.id.mentorbox2).setOnClickListener(clickListener)
+        view.findViewById<View>(R.id.mentorbox3).setOnClickListener(clickListener)
+
+
+        view.findViewById<View>(R.id.education_box).setOnClickListener(clickListener)
+        view.findViewById<View>(R.id.education_box2).setOnClickListener(clickListener)
+        view.findViewById<View>(R.id.education_box3).setOnClickListener(clickListener)
+
+        view.findViewById<View>(R.id.recent_mentor_box1).setOnClickListener(clickListener)
+        view.findViewById<View>(R.id.recent_mentor_box2).setOnClickListener(clickListener)
+        view.findViewById<View>(R.id.recent_mentor_box3).setOnClickListener(clickListener)
+
 
         return view
     }

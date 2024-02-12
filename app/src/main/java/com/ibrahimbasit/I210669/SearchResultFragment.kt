@@ -1,5 +1,6 @@
 package com.ibrahimbasit.I210669
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -60,14 +61,30 @@ class SearchResultFragment : Fragment() {
         backArrow.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+        val clickListener = View.OnClickListener {
+            val intent = Intent(activity, BookSessionActivity::class.java)
+            startActivity(intent)
+
+        }
         viewManager = LinearLayoutManager(context)
-        viewAdapter = SearchResultAdapter(myDataset)
+        viewAdapter = SearchResultAdapter(myDataset, clickListener)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.search_results_recyclerview).apply {
             layoutManager = viewManager
             adapter = viewAdapter
         }
+
+
+
+        for (i in 0 until recyclerView.childCount) {
+            val child = recyclerView.getChildAt(i)
+            child.setOnClickListener(clickListener)
+        }
+
     }
+
+
+
 
     companion object {
         /**

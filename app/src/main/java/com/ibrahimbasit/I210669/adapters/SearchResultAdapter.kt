@@ -7,16 +7,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.ibrahimbasit.I210669.SearchResultFragment
 import com.ibrahimbasit.I210669.data.SearchResultItem
 
 
-class SearchResultAdapter(private val searchResultItems: List<SearchResultItem>) :
+class SearchResultAdapter(private val searchResultItems: List<SearchResultItem>, private val listener: View.OnClickListener) :
     RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.search_result_item, parent, false)
-        return ViewHolder(view)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.search_result_item, parent, false)
+        return ViewHolder(view, listener) // Pass the listener here
     }
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val (title, subtitle, isAval, price, isFav, avalText) = searchResultItems[position]
@@ -24,6 +25,7 @@ class SearchResultAdapter(private val searchResultItems: List<SearchResultItem>)
         holder.subtitle.text = subtitle
         holder.price.text = price
         holder.availableText.text = avalText
+
 
         if (isAval) {
             holder.availableIcon.setBackgroundResource(R.drawable.availability_indicator)
@@ -45,7 +47,8 @@ class SearchResultAdapter(private val searchResultItems: List<SearchResultItem>)
         return searchResultItems.size
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val listener: View.OnClickListener) : RecyclerView.ViewHolder(itemView) {
+
         var title: TextView
         var subtitle: TextView
         var price: TextView
@@ -60,7 +63,11 @@ class SearchResultAdapter(private val searchResultItems: List<SearchResultItem>)
             availableText = itemView.findViewById<TextView>(R.id.availability_text)
             availableIcon = itemView.findViewById<View>(R.id.availabilityIndicator)
             favoriteIcon = itemView.findViewById<View>(R.id.favoriteIcon)
+            itemView.setOnClickListener(listener)
+
         }
+
+
     }
 }
 

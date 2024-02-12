@@ -14,5 +14,11 @@ class VerifyPhoneActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
+
+        val verifyButton : View = findViewById(R.id.verifyButton);
+        verifyButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

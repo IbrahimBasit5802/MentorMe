@@ -34,6 +34,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.profile -> {
                     replaceFragment(ProfileFragment())
                 }
+
+                R.id.add -> {
+                    replaceFragment(AddMentorFragment())
+                }
             }
             true
         }
