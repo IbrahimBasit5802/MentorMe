@@ -20,5 +20,7 @@
     <color name="unavailableTextColor">#868080</color>
     <color name="subHeadingChatColor">#576363</color>
     <color name="chipColor">#b6dedf</color>
+    <color name="timeSlotColor">#0483a3</color>
+    <color name="timeSloeUnselectedColor">#d8eded</color>
 
 </resources>
