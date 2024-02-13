@@ -20,8 +20,6 @@ class SelectSessionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_session)
-        monthHeader = findViewById<TextView>(R.id.month_header)
-        calendarGrid = findViewById(R.id.calendar_grid)
 
         val backButton : View = findViewById(R.id.backButton)
         backButton.setOnClickListener {
@@ -67,28 +65,14 @@ class SelectSessionActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
-        // Set the month and year
-
-        // Set the month and year
-        monthHeader?.setText("December 2023")
-
-        // Populate the calendar grid with days
-
-        // Populate the calendar grid with days
-        for (i in 0..5) {
-            for (j in 0..6) {
-                val dayCell = TextView(this)
-                dayCell.text = (i * 7 + j + 1).toString()
-
-                // Highlight the current date
-                if (i == 0 && j == 3) {
-                    dayCell.setBackgroundColor((Color.parseColor("#FF0000")))
-                }
-                calendarGrid?.addView(dayCell)
-            }
+        val bookButton : Button = findViewById(R.id.bookSessionButton)
+        bookButton.setOnClickListener {
+            finish()
         }
+
+
+
+
     }
 
     private fun setSelectedButton(button: Button) {
