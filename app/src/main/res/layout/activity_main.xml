@@ -15,6 +15,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+    
+    
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content">
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    
+
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/center_button"
+
+        app:rippleColor="@color/headingTextColor"
+        android:backgroundTint="@color/headingTextColor"
+        app:layout_anchor="@id/bottom_nav_bar"
+        app:layout_anchorGravity="center|bottom"
+        android:elevation="18dp"
+
+        android:translationZ="2dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="25dp"
+        app:fabSize="normal"/>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,7 +66,11 @@
         android:elevation="16dp"
 
 
+
         />
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

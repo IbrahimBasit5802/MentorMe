@@ -189,101 +189,111 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Available Time Slots"
-        android:textSize="18sp"
-        android:id="@+id/availableTimeSlotsLabel"
-        android:layout_marginStart="10dp"
-        android:textColor="@color/secondaryTextColor"
-        android:fontFamily="@font/opensans_bold"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/middlePart"/>
-    
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/timeSlotsScrollView"
-        android:scrollbars="none"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/availableTimeSlotsLabel"
-        >
-        <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/middlePart">
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:layout_width="120dp"
-                android:layout_marginStart="5dp"
-                android:layout_height="40dp"
-                android:text="10.00 AM"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/time_slot_button_background"
-                android:textColor="@color/secondaryTextColor"
-                android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:text="Available Time Slots"
+            android:textSize="18sp"
+            android:id="@+id/availableTimeSlotsLabel"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/secondaryTextColor"
+            android:fontFamily="@font/opensans_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/middlePart"/>
 
-                android:fontFamily="@font/opensans_medium"
-                android:id="@+id/timeSlot1"
-                />
-            <Button
-                android:layout_width="120dp"
-                android:layout_marginStart="5dp"
-                android:layout_height="40dp"
-                android:text="11.00 AM"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/time_slot_button_background"
-                android:textColor="@color/secondaryTextColor"
-                android:layout_gravity="center"
-                android:fontFamily="@font/opensans_medium"
-                android:id="@+id/timeSlot2"
-                />
-            <Button
-                android:layout_width="120dp"
-                android:layout_marginStart="5dp"
-                android:layout_height="40dp"
-                android:text="12.00 PM"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/time_slot_button_background"
-                android:textColor="@color/secondaryTextColor"
-                android:layout_gravity="center"
-                android:fontFamily="@font/opensans_medium"
-                android:id="@+id/timeSlot3"
-                />
-            <Button
-                android:layout_width="100dp"
-                android:layout_marginStart="5dp"
-                android:layout_height="40dp"
-                android:text="01.00 PM"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/time_slot_button_background"
-                android:textColor="@color/secondaryTextColor"
-                android:layout_gravity="center"
-                android:fontFamily="@font/opensans_medium"
-                android:id="@+id/timeSlot4"
-                />
-        </LinearLayout>
-    </HorizontalScrollView>
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/timeSlotsScrollView"
+            android:scrollbars="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/availableTimeSlotsLabel"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_height="40dp"
+                    android:text="10.00 AM"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/time_slot_button_background"
+                    android:textColor="@color/secondaryTextColor"
+                    android:layout_gravity="center"
 
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/second_button_background"
-        android:text="Book Session"
-        android:textColor="@color/primaryTextColor"
-        android:id="@+id/bookSessionButton"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="5dp"
-        />
-"
+                    android:fontFamily="@font/opensans_medium"
+                    android:id="@+id/timeSlot1"
+                    />
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_height="40dp"
+                    android:text="11.00 AM"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/time_slot_button_background"
+                    android:textColor="@color/secondaryTextColor"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/opensans_medium"
+                    android:id="@+id/timeSlot2"
+                    />
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_height="40dp"
+                    android:text="12.00 PM"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/time_slot_button_background"
+                    android:textColor="@color/secondaryTextColor"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/opensans_medium"
+                    android:id="@+id/timeSlot3"
+                    />
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_height="40dp"
+                    android:text="01.00 PM"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/time_slot_button_background"
+                    android:textColor="@color/secondaryTextColor"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/opensans_medium"
+                    android:id="@+id/timeSlot4"
+                    />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/second_button_background"
+            android:text="Book Session"
+            android:textColor="@color/primaryTextColor"
+            android:id="@+id/bookSessionButton"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="5dp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

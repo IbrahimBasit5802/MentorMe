@@ -13,5 +13,10 @@ class FeedbackActivity : AppCompatActivity() {
         submitFeedback.setOnClickListener {
             finish()
         }
+
+        val backButton : Button = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            finish()
+        }
     }
 }

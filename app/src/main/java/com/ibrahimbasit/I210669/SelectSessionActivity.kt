@@ -1,5 +1,6 @@
 package com.ibrahimbasit.I210669//package com.ibrahimbasit.I210669
 //
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -40,6 +41,33 @@ class SelectSessionActivity : AppCompatActivity() {
                 setSelectedButton(clickedButton as Button)
             }
         }
+
+        val chatButton : Button = findViewById(R.id.chatButton)
+        chatButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java).apply {
+                // Add extra to indicate the target fragment
+                putExtra("navigateTo", "ChatPersonFragment")
+            }
+            startActivity(intent)
+        }
+
+        val callButton : Button = findViewById(R.id.phoneButton)
+
+        callButton.setOnClickListener {
+            val intent = Intent(this, CallScreenActivity::class.java)
+
+            startActivity(intent)
+        }
+
+        val videoButton : Button = findViewById(R.id.videoButton)
+
+        videoButton.setOnClickListener {
+            val intent = Intent(this, VideoCallActivity::class.java)
+
+            startActivity(intent)
+        }
+
+
 
         // Set the month and year
 

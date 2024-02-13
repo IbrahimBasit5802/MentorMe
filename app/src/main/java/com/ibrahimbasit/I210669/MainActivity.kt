@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.ibrahimbasit.I210669.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -35,11 +36,18 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(ProfileFragment())
                 }
 
-                R.id.add -> {
-                    replaceFragment(AddMentorFragment())
-                }
+
             }
             true
+        }
+
+        if (intent.getStringExtra("navigateTo") == "ChatPersonFragment") {
+            replaceFragment(ChatPersonFragment())
+        }
+
+        val fabButton : FloatingActionButton = findViewById(R.id.fab_add)
+        fabButton.setOnClickListener {
+            replaceFragment(AddMentorFragment())
         }
 
 
@@ -51,5 +59,6 @@ class MainActivity : AppCompatActivity() {
         transaction.addToBackStack(null)
         transaction.commit()
     }
+
 
 }

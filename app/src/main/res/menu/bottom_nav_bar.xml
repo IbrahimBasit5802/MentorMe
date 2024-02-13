@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 <item
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/home"
+
     android:icon="@drawable/home_icon"
 
     android:title="Home" />
     <item
         android:id="@+id/search"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/search_icon"
         android:iconTint="#46a09e"
         android:title="Search"
         app:showAsAction="always|withText" />
-    <item
-        android:id="@+id/add"
-        android:icon="@drawable/add_icon"
-        android:title=""
-        android:background="@drawable/circle_with_shadow"
 
-        app:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/placeholder"
+        android:title="" />
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

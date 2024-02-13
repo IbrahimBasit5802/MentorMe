@@ -21,5 +21,17 @@ class BookSessionActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
+
+        val dropReview : Button = findViewById(R.id.review_button)
+        dropReview.setOnClickListener {
+            val intent = Intent(this, FeedbackActivity::class.java)
+            startActivity(intent)
+        }
+
+        val joinCommunity : Button = findViewById(R.id.community_button)
+        joinCommunity.setOnClickListener {
+            val intent = Intent(this, CommunityChatFragment::class.java)
+            startActivity(intent)
+        }
     }
 }
