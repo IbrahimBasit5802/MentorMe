@@ -91,6 +91,7 @@
 
             <EditText
                 android:layout_width="wrap_content"
+                android:id="@+id/pin1EditText"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:inputType="number"
@@ -121,6 +122,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:inputType="number"
+                android:id="@+id/pin2EditText"
+
                 android:maxLength="1"
                 android:textColor="@color/secondaryTextColor"
                 />
@@ -148,6 +151,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:inputType="number"
+                android:id="@+id/pin3EditText"
+
                 android:maxLength="1"
                 android:textColor="@color/secondaryTextColor"
                 />
@@ -175,6 +180,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:inputType="number"
+                android:id="@+id/pin4EditText"
+
                 android:maxLength="1"
                 android:textColor="@color/secondaryTextColor"
                 />
@@ -199,6 +206,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:inputType="number"
+                android:id="@+id/pin5EditText"
+
                 android:maxLength="1"
                 android:textColor="@color/secondaryTextColor"
                 />
