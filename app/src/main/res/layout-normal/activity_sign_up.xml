@@ -43,7 +43,7 @@
             android:gravity="center"
             android:text="@string/mentor_text"
             android:textColor="@color/appTitleColor"
-            android:textSize="60sp"
+            android:textSize="40sp"
             app:layout_constraintEnd_toStartOf="@+id/meTextView"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
             android:gravity="center"
             android:text="@string/me_text"
             android:textColor="@color/titleColorSecond"
-            android:textSize="60sp"
+            android:textSize="40sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/mentorTextView"
             app:layout_constraintTop_toTopOf="@+id/mentorTextView" />
@@ -87,7 +87,7 @@
                 android:text="@string/get_started"
                 android:textColor="@color/primaryTextColor"
                 android:textFontWeight="700"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_weight="1" />
@@ -97,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/name_text"
 
                 android:textColor="@color/primaryTextColor"
@@ -113,6 +113,8 @@
             <EditText
                 android:id="@+id/nameEditText"
                 android:layout_width="0dp"
+                android:textSize="10sp"
+
                 app:layout_constraintHeight_percent="0.06"
                 android:layout_height="0dp"
                 android:layout_marginStart="24dp"
@@ -135,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
 
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:autoSizeTextType="uniform"
                 android:text="@string/email_text"
 
@@ -151,6 +153,8 @@
                 app:layout_constraintHeight_percent="0.06"
                 android:layout_height="0dp"
                 android:layout_marginStart="24dp"
+                android:textSize="10sp"
+
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:autofillHints=""
@@ -169,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
 
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:autoSizeTextType="uniform"
                 android:text="@string/contact_number_text"
                 android:textColor="@color/primaryTextColor"
@@ -186,11 +190,13 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
 
+                android:textSize="10sp"
+
                 android:layout_marginEnd="24dp"
                 android:autofillHints=""
                 android:background="@drawable/text_field_background"
                 android:hint="@string/enter_contact_number_hint_text"
-                android:inputType="text"
+                android:inputType="phone"
                 android:textColorHint="@color/textFieldHintTextColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -204,32 +210,34 @@
 
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:autoSizeTextType="uniform"
                 android:text="@string/country_text"
                 android:textColor="@color/primaryTextColor"
                 app:layout_constraintBottom_toTopOf="@id/countryTextInputLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/contactEditText"
-                app:layout_constraintVertical_weight="1" />
+                />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/countryTextInputLayout"
+            <Spinner
                 android:layout_width="0dp"
-                app:layout_constraintHeight_percent="0.06"
                 android:layout_height="0dp"
-                android:background="@drawable/selector_field_background"
+                android:id="@+id/countryTextInputLayout"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
-                app:endIconDrawable="@drawable/down_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/countryLabel">
+                app:layout_constraintTop_toBottomOf="@+id/countryLabel"
+                app:layout_constraintHeight_percent="0.06"
+                android:spinnerMode="dropdown"
+
+                android:textAlignment="viewStart"
+                android:dropDownSelector="@drawable/down_arrow"
+                android:dropDownWidth="match_parent"/>
 
 
 
-            </com.google.android.material.textfield.TextInputLayout>
 
 
             <!-- City Field -->
@@ -239,8 +247,7 @@
 
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:autoSizeTextType="uniform"
+                android:layout_marginTop="12dp"
                 android:text="@string/city_text"
                 android:textColor="@color/primaryTextColor"
                 app:layout_constraintBottom_toTopOf="@id/cityTextInputLayout"
@@ -248,23 +255,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/countryTextInputLayout"
                 app:layout_constraintVertical_weight="1" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/cityTextInputLayout"
+            <Spinner
                 android:layout_width="0dp"
-                app:layout_constraintHeight_percent="0.06"
                 android:layout_height="0dp"
+                android:id="@+id/cityTextInputLayout"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
-                app:endIconDrawable="@drawable/down_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/selector_field_background"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cityLabel">
+                app:layout_constraintTop_toBottomOf="@+id/cityLabel"
+                app:layout_constraintHeight_percent="0.06"
+                android:spinnerMode="dropdown"
+
+                android:textAlignment="viewStart"
+                android:dropDownSelector="@drawable/down_arrow"
+                android:dropDownWidth="match_parent"/>
 
 
-
-            </com.google.android.material.textfield.TextInputLayout>
 
 
             <!-- Password Field -->
@@ -273,7 +281,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:autoSizeTextType="uniform"
                 android:text="@string/password_text"
                 android:textColor="@color/primaryTextColor"
@@ -291,6 +299,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:autofillHints=""
+                android:textSize="10sp"
 
                 android:background="@drawable/text_field_background"
                 android:hint="@string/enter_password_hint_text"
@@ -307,7 +316,7 @@
                 android:id="@+id/passwordFormat"
                 android:text="@string/password_format_text"
                 android:textColor="@color/primaryTextColor"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="7dp"
                 app:layout_constraintStart_toStartOf="@+id/passwordEditText"
@@ -320,7 +329,7 @@
                 android:layout_width="0dp"
                 app:layout_constraintHeight_percent="0.06"
                 android:layout_height="0dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/button_background"
                 android:text="@string/sign_up_button_text"
                 android:textColor="@color/containerColor"
@@ -340,8 +349,8 @@
                 android:id="@+id/loginTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:autoSizeTextType="uniform"
+                android:layout_marginBottom="8dp"
                 android:gravity="center_horizontal"
                 android:text="@string/already_have_an_account_text"
                 android:textColor="@color/primaryTextColor"
@@ -354,8 +363,8 @@
                 android:id="@+id/loginLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:autoSizeTextType="uniform"
+                android:layout_marginBottom="8dp"
                 android:gravity="center_horizontal"
                 android:text="@string/log_in"
                 android:textColor="@color/headingTextColor"
@@ -367,3 +376,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
+

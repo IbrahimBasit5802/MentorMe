@@ -3,8 +3,8 @@ package com.ibrahimbasit.I210669
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.widget.TextView
+import com.ibrahimbasit.I210669.auth.presentation.LoginActivity
 
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

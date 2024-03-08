@@ -1,4 +1,4 @@
-package com.ibrahimbasit.I210669
+package com.ibrahimbasit.I210669.auth.presentation
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +9,14 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.ibrahimbasit.I210669.MainActivity
+import com.ibrahimbasit.I210669.R
+import com.ibrahimbasit.I210669.auth.models.User
 
 class VerifyPhoneActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +39,13 @@ class VerifyPhoneActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.pin2EditText),
             findViewById<EditText>(R.id.pin3EditText),
             findViewById<EditText>(R.id.pin4EditText),
-            findViewById<EditText>(R.id.pin5EditText)
+            findViewById<EditText>(R.id.pin5EditText),
+            findViewById<EditText>(R.id.pin6EditText)
         )
+
+
+
+
 
         editTexts.forEachIndexed { index, editText ->
             editText.addTextChangedListener(object : TextWatcher {
@@ -68,6 +81,53 @@ class VerifyPhoneActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.number8),
             findViewById<TextView>(R.id.number9)
         )
+        var otp = getIntent().getStringExtra("token")
+
+
+
+
+        verifyButton.setOnClickListener {
+            val pin = editTexts.joinToString("") { it.text.toString() }
+            var credential = PhoneAuthProvider.getCredential(otp!!, pin)
+
+            FirebaseAuth.getInstance().signInWithCredential(credential)
+                .addOnSuccessListener {
+                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(
+                        getIntent().getStringExtra("email")!!,
+                        getIntent().getStringExtra("password")!!).addOnSuccessListener {
+                            // get user uuid, create User model, and save it to the database
+                            var user = User(
+                                getIntent().getStringExtra("name")!!,
+                                FirebaseAuth.getInstance().currentUser?.uid!!,
+                                getIntent().getStringExtra("email")!!,
+                                getIntent().getStringExtra("phone")!!,
+                                getIntent().getStringExtra("country")!!,
+                                getIntent().getStringExtra("city")!!,
+
+                            )
+
+                        val db = Firebase.firestore
+                        db.collection("Users").document(FirebaseAuth.getInstance().currentUser?.uid!!).set(user)
+                            .addOnSuccessListener {
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                startActivity(intent)
+                                finish()
+                            }.addOnFailureListener {
+                                Toast.makeText(this, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+                            }
+
+                    }.addOnFailureListener {
+                        Toast.makeText(this, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+
+
 
         numberButtons.forEach { textView ->
             textView.setOnClickListener { numberButtonClicked(textView.text.toString(), editTexts) }

@@ -34,7 +34,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/verify_your_phone_number_text"
             android:textColor="@color/headingTextColor"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:id="@+id/headingText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
             android:textColor="@color/secondaryTextColor"
             app:layout_constraintEnd_toStartOf="@id/spanText2"
             app:layout_constraintStart_toStartOf="parent"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:id="@+id/spanText1"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@+id/headingText" />
@@ -67,20 +67,20 @@
             app:layout_constraintStart_toEndOf="@id/spanText1"
             app:layout_constraintEnd_toEndOf="parent"
             android:gravity="center_horizontal"
-            android:textSize="16sp"
+            android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@+id/headingText" />
 
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="55dp"
+            android:layout_width="50dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/pin1"
             app:layout_constraintEnd_toStartOf="@id/pin2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
 
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/circle"
             android:padding="8dp"
@@ -101,14 +101,14 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/pin2"
-            android:layout_width="55dp"
+            android:layout_width="50dp"
             android:layout_marginEnd="8dp"
 
             app:layout_constraintEnd_toStartOf="@id/pin3"
             app:layout_constraintVertical_chainStyle="packed"
 
             app:layout_constraintStart_toEndOf="@+id/pin1"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/circle"
             android:padding="8dp"
@@ -130,8 +130,8 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/pin3"
-            android:layout_width="55dp"
-            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
             app:layout_constraintEnd_toStartOf="@id/pin4"
             app:layout_constraintVertical_chainStyle="packed"
 
@@ -159,8 +159,8 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/pin4"
-            android:layout_width="55dp"
-            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
             app:layout_constraintVertical_chainStyle="packed"
 
             app:layout_constraintEnd_toStartOf="@id/pin5"
@@ -188,14 +188,15 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/pin5"
-            android:layout_width="55dp"
+            android:layout_width="50dp"
             app:layout_constraintVertical_chainStyle="packed"
 
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/pin6"
             app:layout_constraintStart_toEndOf="@+id/pin4"
 
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/circle"
             android:padding="8dp"
             app:layout_constraintTop_toBottomOf="@id/spanText1"
@@ -211,12 +212,37 @@
                 android:maxLength="1"
                 android:textColor="@color/secondaryTextColor"
                 />
+        </com.google.android.material.textfield.TextInputLayout>        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/pin6"
+            android:layout_width="50dp"
+            app:layout_constraintVertical_chainStyle="packed"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/pin5"
+
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/circle"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@id/spanText1"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            >
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:id="@+id/pin6EditText"
+
+                android:maxLength="1"
+                android:textColor="@color/secondaryTextColor"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             app:layout_constraintVertical_chainStyle="packed"
 
             android:background="@drawable/secondary_button_background"
@@ -244,7 +270,7 @@
             android:id="@+id/resendCodeTextView"
             app:layout_constraintTop_toBottomOf="@+id/verifyButton"
             app:layout_constraintHorizontal_chainStyle="packed"
-            android:textSize="16sp"
+            android:textSize="12sp"
             />
 
         <TextView
@@ -259,7 +285,7 @@
             app:layout_constraintStart_toEndOf="@id/resendCodeTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/verifyButton"
-            android:textSize="16sp"
+            android:textSize="12sp"
             app:layout_constraintHorizontal_chainStyle="packed"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -301,7 +327,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:layout_weight="1"
              />
 
@@ -316,7 +342,7 @@
                     android:text="2"
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:layout_weight="1"
                 />
 
@@ -332,7 +358,7 @@
                     android:text="3"
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:layout_weight="1"
                   />
             </LinearLayout>
@@ -356,7 +382,7 @@
                     android:text="4"
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:layout_weight="1"
                     />
 
@@ -372,7 +398,7 @@
                     android:text="5"
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:layout_weight="1"
                     />
 
@@ -388,7 +414,7 @@
 
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:layout_weight="1"
                     />
             </LinearLayout>
@@ -412,7 +438,7 @@
                     android:text="7"
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:layout_weight="1"
                     />
 
@@ -428,7 +454,7 @@
 
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:layout_weight="1"
                     />
 
@@ -444,7 +470,7 @@
 
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:layout_weight="1"
                     />
             </LinearLayout>
@@ -481,7 +507,7 @@
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:layout_weight="1"
                     />
 

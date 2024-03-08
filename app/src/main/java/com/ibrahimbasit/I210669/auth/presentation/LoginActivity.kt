@@ -1,12 +1,13 @@
-package com.ibrahimbasit.I210669
+package com.ibrahimbasit.I210669.auth.presentation
 
 import android.content.Intent
-import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.ibrahimbasit.I210669.ForgotPasswordActivity
+import com.ibrahimbasit.I210669.MainActivity
+import com.ibrahimbasit.I210669.R
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
