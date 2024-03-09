@@ -7,109 +7,130 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.FirebaseException
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthOptions
-import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.ibrahimbasit.I210669.MainActivity
 import com.ibrahimbasit.I210669.R
+import com.ibrahimbasit.I210669.auth.data.AuthRepository
+import com.ibrahimbasit.I210669.auth.domain.use_cases.SignUpUseCase
+import com.ibrahimbasit.I210669.auth.utils.SignUpViewModelFactory
 import java.util.Locale
-import java.util.concurrent.TimeUnit
-
 
 class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+
+    private lateinit var viewModel: SignUpViewModel
+    private  lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-        val loginLink : TextView = findViewById(R.id.loginLink)
-        var auth = FirebaseAuth.getInstance()
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val firestore = Firebase.firestore
+        val authRepository = AuthRepository(firebaseAuth, firestore)
 
+        val signUpUseCase = SignUpUseCase(authRepository)
+        val viewModelFactory = SignUpViewModelFactory(signUpUseCase)
+
+        // Now use the factory to create the ViewModel
+        viewModel = ViewModelProvider(this, viewModelFactory)[SignUpViewModel::class.java]
+
+        val loginLink: TextView = findViewById(R.id.loginLink)
         val phone = findViewById<EditText>(R.id.contactEditText)
         val email = findViewById<EditText>(R.id.emailEditText)
         val password = findViewById<EditText>(R.id.passwordEditText)
         val name = findViewById<EditText>(R.id.nameEditText)
+        val signupButton: Button = findViewById(R.id.signUpButton)
+        progressBar = findViewById(R.id.signUpProgressBar)
 
-
-
-
-        loginLink.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
-
-        val signupButton : Button = findViewById(R.id.signUpButton)
-
-
-        val countries = getAllCountries() // Get your list of countries
+        val countries = getAllCountries()
         val adapter = ArrayAdapter(this, R.layout.dropdown_item, countries)
         val dropdown = findViewById<Spinner>(R.id.countryTextInputLayout)
-        dropdown.setAdapter(adapter)
-
+        dropdown.adapter = adapter
         dropdown.onItemSelectedListener = this
 
-        val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                auth.signInWithCredential(p0).addOnSuccessListener {
-                    val intent = Intent(this@SignUpActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-
-            override fun onVerificationFailed(p0: FirebaseException) {
-                Toast.makeText(this@SignUpActivity, "Error: ${p0.message}", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
-                super.onCodeSent(p0, p1)
-                val intent = Intent(this@SignUpActivity, VerifyPhoneActivity::class.java)
-                intent.putExtra("token", p0)
-                intent.putExtra("phone", phone.text.toString())
-                intent.putExtra("email", email.text.toString())
-                intent.putExtra("password", password.text.toString())
-                intent.putExtra("name", name.text.toString())
-                intent.putExtra("country", dropdown.selectedItem.toString())
-                intent.putExtra("city", findViewById<Spinner>(R.id.cityTextInputLayout).selectedItem.toString())
-                startActivity(intent)
-            }
+        loginLink.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
 
         signupButton.setOnClickListener {
-            val options = PhoneAuthOptions.newBuilder().setPhoneNumber(phone.text.toString()).setTimeout(60L, TimeUnit.SECONDS).setActivity(this)
-                .setCallbacks(callbacks).build()
-            PhoneAuthProvider.verifyPhoneNumber(options)
+            showLoading(true)
+
+            viewModel.signUpWithPhone(
+                phone.text.toString(),
+                email.text.toString(),
+                password.text.toString(),
+                name.text.toString(),
+                dropdown.selectedItem.toString(),
+                this@SignUpActivity
+            )
+
         }
 
+        // Observe LiveData from ViewModel for changes and update UI accordingly
+        viewModel.userSignUpStatus.observe(this) { status ->
+            showLoading(false)
 
+            when (status) {
+                is SignUpViewModel.SignUpStatus.VerificationCompleted -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
+
+                is SignUpViewModel.SignUpStatus.VerificationFailed -> {
+                    Toast.makeText(this, "Error: ${status.error}", Toast.LENGTH_SHORT).show()
+                }
+
+                is SignUpViewModel.SignUpStatus.CodeSent -> {
+                    Intent(this, VerifyPhoneActivity::class.java).apply {
+                        putExtra("token", status.token)
+                        putExtra("phone", phone.text.toString())
+                        putExtra("email", email.text.toString())
+                        putExtra("password", password.text.toString())
+                        putExtra("name", name.text.toString())
+                        putExtra("country", dropdown.selectedItem.toString())
+                        putExtra(
+                            "city",
+                            findViewById<Spinner>(R.id.cityTextInputLayout).selectedItem.toString()
+                        )
+                        startActivity(this)
+                    }
+                }
+            }
+        }
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val cities = getAllCities(parent?.getItemAtPosition(position).toString())
+    private fun showLoading(show: Boolean) {
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+        val cities = getAllCities(parent.getItemAtPosition(position).toString())
         val adapter = ArrayAdapter(this, R.layout.dropdown_item, cities)
-        val dropdown = findViewById<Spinner>(R.id.cityTextInputLayout)
-        dropdown.setAdapter(adapter)
+        val cityDropdown = findViewById<Spinner>(R.id.cityTextInputLayout)
+        cityDropdown.adapter = adapter
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Handle the case where no item selection occurs
     }
 
-
+    // These could be moved to a utility class or the ViewModel
     private fun getAllCountries(): Array<String> {
         return Locale.getAvailableLocales().map { Locale("", it.country).displayCountry }.distinct().sorted().toTypedArray()
     }
 
     private fun getAllCities(country: String): Array<String> {
-
         val citiesMap = mapOf(
             "USA" to arrayOf("New York", "Los Angeles", "Chicago"),
             "Canada" to arrayOf("Toronto", "Vancouver", "Montreal")
         )
-
         return citiesMap[country] ?: arrayOf("No cities available for this country")
     }
 }

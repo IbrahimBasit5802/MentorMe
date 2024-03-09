@@ -8,32 +8,29 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ibrahimbasit.I210669.MainActivity
 import com.ibrahimbasit.I210669.R
+import com.ibrahimbasit.I210669.auth.data.AuthRepository
+import com.ibrahimbasit.I210669.auth.domain.use_cases.VerifyPhoneUseCase
 import com.ibrahimbasit.I210669.auth.models.User
+import com.ibrahimbasit.I210669.auth.utils.VerifyPhoneViewModelFactory
 
 class VerifyPhoneActivity : AppCompatActivity() {
+    private lateinit var viewModel: VerifyPhoneViewModel
+    private  lateinit var progressBar: ProgressBar
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verify_phone)
-
-        val backButton : View = findViewById(R.id.backArrow);
-        backButton.setOnClickListener {
-            finish()
-        }
-
-        val verifyButton : View = findViewById(R.id.verifyButton);
-        verifyButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-
         val editTexts = listOf(
             findViewById<EditText>(R.id.pin1EditText),
             findViewById<EditText>(R.id.pin2EditText),
@@ -43,9 +40,7 @@ class VerifyPhoneActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.pin6EditText)
         )
 
-
-
-
+        progressBar = findViewById(R.id.verifyProgressBar)
 
         editTexts.forEachIndexed { index, editText ->
             editText.addTextChangedListener(object : TextWatcher {
@@ -81,52 +76,45 @@ class VerifyPhoneActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.number8),
             findViewById<TextView>(R.id.number9)
         )
-        var otp = getIntent().getStringExtra("token")
 
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val firestore = Firebase.firestore
+        val authRepo = AuthRepository(firebaseAuth, firestore)
 
+        val verifyUseCase = VerifyPhoneUseCase(authRepo, intent.getStringExtra("name").toString(), intent.getStringExtra("phone").toString(), intent.getStringExtra("country").toString(), intent.getStringExtra("city").toString())
 
+        val viewModelFactory = VerifyPhoneViewModelFactory(verifyUseCase)
+        viewModel = ViewModelProvider(this, viewModelFactory)[VerifyPhoneViewModel::class.java]
 
-        verifyButton.setOnClickListener {
-            val pin = editTexts.joinToString("") { it.text.toString() }
-            var credential = PhoneAuthProvider.getCredential(otp!!, pin)
-
-            FirebaseAuth.getInstance().signInWithCredential(credential)
-                .addOnSuccessListener {
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                        getIntent().getStringExtra("email")!!,
-                        getIntent().getStringExtra("password")!!).addOnSuccessListener {
-                            // get user uuid, create User model, and save it to the database
-                            var user = User(
-                                getIntent().getStringExtra("name")!!,
-                                FirebaseAuth.getInstance().currentUser?.uid!!,
-                                getIntent().getStringExtra("email")!!,
-                                getIntent().getStringExtra("phone")!!,
-                                getIntent().getStringExtra("country")!!,
-                                getIntent().getStringExtra("city")!!,
-
-                            )
-
-                        val db = Firebase.firestore
-                        db.collection("Users").document(FirebaseAuth.getInstance().currentUser?.uid!!).set(user)
-                            .addOnSuccessListener {
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                startActivity(intent)
-                                finish()
-                            }.addOnFailureListener {
-                                Toast.makeText(this, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
-                            }
-
-                    }.addOnFailureListener {
-                        Toast.makeText(this, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
-                    }
-
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
-                }
+        val backButton : View = findViewById(R.id.backArrow);
+        backButton.setOnClickListener {
+            finish()
         }
 
+        val verifyButton: View = findViewById(R.id.verifyButton)
+        verifyButton.setOnClickListener {
+            showLoading(true)
+            val pin = editTexts.joinToString("") { it.text.toString() }
+            val otp = intent.getStringExtra("token") ?: return@setOnClickListener
+            val credential = PhoneAuthProvider.getCredential(otp, pin)
+            val email = intent.getStringExtra("email") ?: ""
+            val password = intent.getStringExtra("password") ?: ""
+            viewModel.verifyPhoneWithCode(credential, email, password)
+        }
+
+        viewModel.verificationState.observe(this) { state ->
+            showLoading(false)
+            when (state) {
+                is VerifyPhoneViewModel.VerificationState.Success -> {
+                    showLoading(false)
+                    navigateToMainActivity()
+                }
+                is VerifyPhoneViewModel.VerificationState.Failure -> {
+                    showLoading(false)
+                    showError(state.message)
+                }
+            }
+        }
 
 
         numberButtons.forEach { textView ->
@@ -144,6 +132,20 @@ class VerifyPhoneActivity : AppCompatActivity() {
                 editTexts[editTexts.indexOf(this) + 1].requestFocus()
             }
         }
+    }
+
+    private fun showLoading(show: Boolean) {
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        // Optionally handle user deletion here if necessary
     }
 
     private fun deleteButtonClicked(editTexts: List<EditText>) {
