@@ -29,8 +29,8 @@ class VerifyPhoneUseCase(
                                 city = city
                             )
                             // Proceed to store user in Firestore
-                            authRepository.storeUserInFirestore(user) { isStoredSuccessfully, firestoreErrorMessage ->
-                                callback(isStoredSuccessfully, firestoreErrorMessage)
+                            authRepository.storeUserInRealtimeDatabase(user) { isStoredSuccessfully, DatabaseError ->
+                                callback(isStoredSuccessfully, DatabaseError)
                             }
                         } else {
                             callback(false, "Unable to obtain user UUID")
