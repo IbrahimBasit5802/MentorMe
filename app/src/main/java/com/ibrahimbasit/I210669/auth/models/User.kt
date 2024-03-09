@@ -7,7 +7,15 @@ data class User(
     val contactNumber: String,
     val country: String,
     val city: String,
-)
-
-
-
+) {
+    fun toMap(): Map<String, Any> {
+        return mapOf(
+            "name" to name,
+            "uuid" to uuid,
+            "email" to email,
+            "contactNumber" to contactNumber,
+            "country" to country,
+            "city" to city
+        )
+    }
+}

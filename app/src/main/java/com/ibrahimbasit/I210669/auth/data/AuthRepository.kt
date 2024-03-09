@@ -6,11 +6,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ibrahimbasit.I210669.auth.models.User
 import java.util.concurrent.TimeUnit
 
-class AuthRepository(private val firebaseAuth: FirebaseAuth, private val firestore: FirebaseFirestore) {
+class AuthRepository(private val firebaseAuth: FirebaseAuth, private val firestore: FirebaseFirestore, private val firebaseDatabase: FirebaseDatabase) {
 
     interface Callback {
         fun onVerificationCompleted()
@@ -87,6 +88,25 @@ class AuthRepository(private val firebaseAuth: FirebaseAuth, private val firesto
                 callback(false, e.message)
             }
     }
+
+    fun storeUserInRealtimeDatabase(user: User, callback: (Boolean, String?) -> Unit) {
+        // Assuming User data can be converted to a Map or similar structure
+        val userMap = user.toMap() // Implement this method based on your User data structure
+
+        // Reference to the Realtime Database path where you want to store the user information
+        val databaseReference = firebaseDatabase.getReference("Users").child(user.uuid)
+
+        databaseReference.setValue(userMap)
+            .addOnSuccessListener {
+                callback(true, null)
+            }
+            .addOnFailureListener { e ->
+                // If storing to Realtime Database fails, delete the user from authentication
+                FirebaseAuth.getInstance().currentUser?.delete()
+                callback(false, e.message)
+            }
+    }
+
 
     // Get the current user's UID from FirebaseAuth
     fun getCurrentUserUid(): String? {

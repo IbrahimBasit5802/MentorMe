@@ -48,6 +48,7 @@ dependencies {
     implementation("androidx.test.espresso:espresso-intents:3.5.1")
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.3")
+    implementation("com.google.firebase:firebase-database-ktx:20.3.1")
     androidTestImplementation ("androidx.navigation:navigation-testing:2.5.3")
 
     implementation("androidx.core:core-ktx:1.12.0")

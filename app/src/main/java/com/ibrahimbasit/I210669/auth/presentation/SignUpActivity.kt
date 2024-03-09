@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ibrahimbasit.I210669.MainActivity
@@ -33,7 +34,8 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         setContentView(R.layout.activity_sign_up)
         val firebaseAuth = FirebaseAuth.getInstance()
         val firestore = Firebase.firestore
-        val authRepository = AuthRepository(firebaseAuth, firestore)
+        val firebaseDatabase = Firebase.database
+        val authRepository = AuthRepository(firebaseAuth, firestore, firebaseDatabase)
 
         val signUpUseCase = SignUpUseCase(authRepository)
         val viewModelFactory = SignUpViewModelFactory(signUpUseCase)

@@ -22,7 +22,7 @@ class VerifyPhoneViewModel(private val verifyPhoneUseCase: VerifyPhoneUseCase) :
     }
 
     sealed class VerificationState {
-        object Success : VerificationState()
+        data object Success : VerificationState()
         class Failure(val message: String) : VerificationState()
     }
 }

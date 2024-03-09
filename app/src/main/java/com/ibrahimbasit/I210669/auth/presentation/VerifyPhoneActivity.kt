@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ibrahimbasit.I210669.MainActivity
@@ -79,7 +80,8 @@ class VerifyPhoneActivity : AppCompatActivity() {
 
         val firebaseAuth = FirebaseAuth.getInstance()
         val firestore = Firebase.firestore
-        val authRepo = AuthRepository(firebaseAuth, firestore)
+        val firebaseDatabase = Firebase.database
+        val authRepo = AuthRepository(firebaseAuth, firestore, firebaseDatabase)
 
         val verifyUseCase = VerifyPhoneUseCase(authRepo, intent.getStringExtra("name").toString(), intent.getStringExtra("phone").toString(), intent.getStringExtra("country").toString(), intent.getStringExtra("city").toString())
 
