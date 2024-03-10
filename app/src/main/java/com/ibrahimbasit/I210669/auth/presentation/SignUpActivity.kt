@@ -33,9 +33,8 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         val firebaseAuth = FirebaseAuth.getInstance()
-        val firestore = Firebase.firestore
         val firebaseDatabase = Firebase.database
-        val authRepository = AuthRepository(firebaseAuth, firestore, firebaseDatabase)
+        val authRepository = AuthRepository(firebaseAuth, firebaseDatabase)
 
         val signUpUseCase = SignUpUseCase(authRepository)
         val viewModelFactory = SignUpViewModelFactory(signUpUseCase)

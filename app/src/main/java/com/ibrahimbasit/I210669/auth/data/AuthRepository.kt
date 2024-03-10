@@ -11,12 +11,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.ibrahimbasit.I210669.auth.models.User
 import java.util.concurrent.TimeUnit
 
-class AuthRepository(private val firebaseAuth: FirebaseAuth, private val firestore: FirebaseFirestore, private val firebaseDatabase: FirebaseDatabase) {
+class AuthRepository(private val firebaseAuth: FirebaseAuth, private val firebaseDatabase: FirebaseDatabase) {
 
     interface Callback {
         fun onVerificationCompleted()
         fun onVerificationFailed(error: String)
         fun onCodeSent(token: String, resendingToken: PhoneAuthProvider.ForceResendingToken)
+
+
     }
 
     fun signUpWithPhone(phone: String, email: String, password: String, name: String, country: String, activity: AppCompatActivity, callback: Callback) {
@@ -77,17 +79,18 @@ class AuthRepository(private val firebaseAuth: FirebaseAuth, private val firesto
             }
     }
 
-    fun storeUserInFirestore(user: User, callback: (Boolean, String?) -> Unit) {
-        firestore.collection("Users").document(user.uuid).set(user)
-            .addOnSuccessListener {
-                callback(true, null)
-            }
-            .addOnFailureListener { e ->
-                // If storing to Firestore fails, delete the user
-                firebaseAuth.currentUser?.delete()
-                callback(false, e.message)
+    fun loginWithEmail(email: String, password: String, callback: (Boolean, String?) -> Unit) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true, null)
+                } else {
+                    callback(false, task.exception?.message)
+                }
             }
     }
+
+
 
     fun storeUserInRealtimeDatabase(user: User, callback: (Boolean, String?) -> Unit) {
         // Assuming User data can be converted to a Map or similar structure

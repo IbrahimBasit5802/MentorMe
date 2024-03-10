@@ -79,9 +79,8 @@ class VerifyPhoneActivity : AppCompatActivity() {
         )
 
         val firebaseAuth = FirebaseAuth.getInstance()
-        val firestore = Firebase.firestore
         val firebaseDatabase = Firebase.database
-        val authRepo = AuthRepository(firebaseAuth, firestore, firebaseDatabase)
+        val authRepo = AuthRepository(firebaseAuth, firebaseDatabase)
 
         val verifyUseCase = VerifyPhoneUseCase(authRepo, intent.getStringExtra("name").toString(), intent.getStringExtra("phone").toString(), intent.getStringExtra("country").toString(), intent.getStringExtra("city").toString())
 
