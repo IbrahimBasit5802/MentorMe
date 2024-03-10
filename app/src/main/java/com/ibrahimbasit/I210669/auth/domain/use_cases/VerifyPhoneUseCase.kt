@@ -28,7 +28,6 @@ class VerifyPhoneUseCase(
                                 country = country,
                                 city = city
                             )
-                            // Proceed to store user in Firestore
                             authRepository.storeUserInRealtimeDatabase(user) { isStoredSuccessfully, DatabaseError ->
                                 callback(isStoredSuccessfully, DatabaseError)
                             }

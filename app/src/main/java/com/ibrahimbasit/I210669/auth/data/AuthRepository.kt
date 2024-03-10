@@ -1,5 +1,6 @@
 package com.ibrahimbasit.I210669.auth.data
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -99,6 +100,8 @@ class AuthRepository(private val firebaseAuth: FirebaseAuth, private val firebas
         // Reference to the Realtime Database path where you want to store the user information
         val databaseReference = firebaseDatabase.getReference("Users").child(user.uuid)
 
+
+
         databaseReference.setValue(userMap)
             .addOnSuccessListener {
                 callback(true, null)
@@ -108,6 +111,8 @@ class AuthRepository(private val firebaseAuth: FirebaseAuth, private val firebas
                 FirebaseAuth.getInstance().currentUser?.delete()
                 callback(false, e.message)
             }
+
+
     }
 
 
