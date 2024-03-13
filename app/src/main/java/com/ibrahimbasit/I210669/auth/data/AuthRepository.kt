@@ -19,7 +19,6 @@ class AuthRepository(private val firebaseAuth: FirebaseAuth, private val firebas
         fun onVerificationFailed(error: String)
         fun onCodeSent(token: String, resendingToken: PhoneAuthProvider.ForceResendingToken)
 
-
     }
 
     fun signUpWithPhone(phone: String, email: String, password: String, name: String, country: String, activity: AppCompatActivity, callback: Callback) {
@@ -99,8 +98,6 @@ class AuthRepository(private val firebaseAuth: FirebaseAuth, private val firebas
 
         // Reference to the Realtime Database path where you want to store the user information
         val databaseReference = firebaseDatabase.getReference("Users").child(user.uuid)
-
-
 
         databaseReference.setValue(userMap)
             .addOnSuccessListener {

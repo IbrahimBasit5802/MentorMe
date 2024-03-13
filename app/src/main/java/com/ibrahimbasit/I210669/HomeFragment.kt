@@ -1,5 +1,7 @@
 package com.ibrahimbasit.I210669
 
+import UserViewModel
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
@@ -12,8 +14,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.database
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.ibrahimbasit.I210669.auth.models.User
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,6 +41,12 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var userViewModel: UserViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +55,8 @@ class HomeFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+
+    // Ensure to clear the reference to avoid memory leaks
 
     private lateinit var buttonsList: List<Button>
     private var selectedButton: Button? = null
@@ -103,6 +122,16 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+        view.findViewById<TextView>(R.id.name_text).text = userViewModel.userData.value?.name ?: "User Name"
+
+        // Now you can access userData like so:
+
+        // Use userData as needed...
+        userViewModel.userData.observe(viewLifecycleOwner) { user ->
+            // Update UI with user data
+            view.findViewById<TextView>(R.id.name_text).text = user.name
+            // Rest of your UI update code...
+        }
         view.findViewById<View>(R.id.mentorbox).setOnClickListener(clickListener)
         view.findViewById<View>(R.id.mentorbox2).setOnClickListener(clickListener)
         view.findViewById<View>(R.id.mentorbox3).setOnClickListener(clickListener)
@@ -115,6 +144,8 @@ class HomeFragment : Fragment() {
         view.findViewById<View>(R.id.recent_mentor_box1).setOnClickListener(clickListener)
         view.findViewById<View>(R.id.recent_mentor_box2).setOnClickListener(clickListener)
         view.findViewById<View>(R.id.recent_mentor_box3).setOnClickListener(clickListener)
+
+
 
 
         return view

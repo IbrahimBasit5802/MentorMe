@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "659465331819",
+    "firebase_url": "https://i210669-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "i210669",
+    "storage_bucket": "i210669.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659465331819:android:5ddf6bab22ad919ce9bd2e",
+        "android_client_info": {
+          "package_name": "com.ibrahimbasit.I210669"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAROhXLnqxsoRu_XxDwZBEA4s4A9mjXb28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

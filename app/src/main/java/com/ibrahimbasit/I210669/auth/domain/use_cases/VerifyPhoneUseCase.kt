@@ -26,7 +26,8 @@ class VerifyPhoneUseCase(
                                 email = email,
                                 contactNumber = contactNumber,
                                 country = country,
-                                city = city
+                                city = city,
+                                profilePictureUrl = "gs://i210669.appspot.com/user_profile_picture.png"
                             )
                             authRepository.storeUserInRealtimeDatabase(user) { isStoredSuccessfully, DatabaseError ->
                                 callback(isStoredSuccessfully, DatabaseError)

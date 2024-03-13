@@ -49,6 +49,7 @@
                 android:background="@drawable/baseline_more_horiz_24"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/more_button"
 
                 app:layout_constraintBaseline_toBaselineOf="@id/closeButton"
                 android:layout_marginEnd="20dp"/>
@@ -100,7 +101,8 @@
                         android:id="@+id/profilePicture"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@drawable/user_profile_picture"/>
+
+                        android:src="@drawable/user_profile_picture"/>
                     <Button
                         android:layout_width="32dp"
                         android:layout_height="32dp"

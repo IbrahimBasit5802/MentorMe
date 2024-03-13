@@ -49,7 +49,10 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.3")
     implementation("com.google.firebase:firebase-database-ktx:20.3.1")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     androidTestImplementation ("androidx.navigation:navigation-testing:2.5.3")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
