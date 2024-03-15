@@ -38,8 +38,6 @@ class UserViewModel : ViewModel() {
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                    println("here we are")
-                    Log.d("UserViewModel", "onChildChanged snapshot: ${snapshot.value}")
                     val currentUserData = _userData.value ?: User()
                     when (snapshot.key) {
                         "name" -> currentUserData.name = snapshot.getValue(String::class.java) ?: ""
@@ -48,11 +46,11 @@ class UserViewModel : ViewModel() {
                         "country" -> currentUserData.country = snapshot.getValue(String::class.java) ?: ""
                         "city" -> currentUserData.city = snapshot.getValue(String::class.java) ?: ""
                         "profilePictureUrl" -> currentUserData.profilePictureUrl = snapshot.getValue(String::class.java) ?: ""
+                        "coverPhotoUrl" -> currentUserData.coverPhotoUrl = snapshot.getValue(String::class.java) ?: ""
 
                     }
                     _userData.value = currentUserData
 
-                    println("success ig")
                 }
 
 

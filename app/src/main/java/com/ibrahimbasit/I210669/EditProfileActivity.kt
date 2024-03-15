@@ -102,19 +102,15 @@ class EditProfileActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
                 "country" to newCountry,
                 "city" to newCity,
                 "uuid" to it,
-                "profilePictureUrl" to "gs://i210669.appspot.com/user_profile_picture.png"
             )
 
-            println("fucking hell")
             databaseReference.updateChildren(updatedUserData as Map<String, Any>)
                 .addOnSuccessListener {
-                    println("fucking success")
                     Toast.makeText(this, "User data updated successfully", Toast.LENGTH_SHORT).show()
                     Log.d("EditProfileActivity", "User data updated successfully")
                     finish()
                 }
                 .addOnFailureListener { exception ->
-                    println("fucking failure")
 
                     Toast.makeText(this, "Failed to update user data: ${exception.message}", Toast.LENGTH_SHORT).show()
                 }

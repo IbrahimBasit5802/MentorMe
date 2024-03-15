@@ -67,6 +67,7 @@
                 android:imeOptions="actionSearch"
                 android:layout_height="wrap_content"
                 android:id="@+id/search_edit_text"
+                android:inputType="text"
                 app:layout_constraintWidth_percent="0.8"
                 android:drawableStart="@drawable/search_bar_search_icon"
                 android:layout_marginTop="10dp"

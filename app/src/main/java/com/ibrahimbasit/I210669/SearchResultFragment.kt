@@ -1,11 +1,13 @@
 package com.ibrahimbasit.I210669
 
+import SearchViewModel
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ibrahimbasit.I210669.adapters.SearchResultAdapter
@@ -29,13 +31,7 @@ class SearchResultFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: SearchResultAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private val myDataset = listOf(
-        SearchResultItem("Sample 1", "Lead - Technology Officer", true, "$500/Session", true, "Available"),
-        SearchResultItem("Sample 2", "Lead - Technology Officer", false, "$500/Session", false, "Not Available"),
-        SearchResultItem("Sample 3", "Lead - Technology Officer", false, "$500/Session", false, "Not Available"),
-        SearchResultItem("Sample 4", "Lead - Technology Officer", true, "$500/Session", true, "Available"),
-        SearchResultItem("Sample 5", "Lead - Technology Officer", true, "$500/Session", true, "Available")
-    )
+    private lateinit var viewModel: SearchViewModel
 
     // Initialize with empty list or actual data
 
@@ -66,12 +62,17 @@ class SearchResultFragment : Fragment() {
             startActivity(intent)
 
         }
-        viewManager = LinearLayoutManager(context)
-        viewAdapter = SearchResultAdapter(myDataset, clickListener)
 
+        viewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
+        viewManager = LinearLayoutManager(context)
         recyclerView = view.findViewById<RecyclerView>(R.id.search_results_recyclerview).apply {
             layoutManager = viewManager
-            adapter = viewAdapter
+        }
+
+        viewModel.searchResults.observe(viewLifecycleOwner) { results ->
+            // Assuming results is List<Mentor> and SearchResultAdapter is adjusted accordingly
+            viewAdapter = SearchResultAdapter(results, clickListener)
+            recyclerView.adapter = viewAdapter
         }
 
 

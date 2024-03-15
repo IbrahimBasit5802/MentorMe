@@ -12,19 +12,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.database
+import com.google.firebase.database.Query
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.ibrahimbasit.I210669.auth.models.User
+import com.ibrahimbasit.I210669.adapters.TopMentorsAdapter
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -76,6 +76,51 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+        val mentorList = mutableListOf<Mentor>()
+        val databaseRef = Firebase.database.getReference()
+
+        val query = databaseRef.child("Mentors").limitToLast(50)
+
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.featuredMentorsRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        val adapter = TopMentorsAdapter(mentorList)
+        recyclerView.adapter = adapter
+
+        query.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val mentor = snapshot.getValue(Mentor::class.java)
+                if (mentor != null) {
+                    mentorList.add(mentor)
+                    adapter.notifyDataSetChanged()
+                }
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                // Handle changes
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                // Handle removed
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                // Handle moved
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle cancelled
+            }
+        })
+
+
+//        val options: FirebaseRecyclerOptions<Mentor> = Builder<Mentor>()
+//            .setQuery(query, Mentor::class.java)
+//            .build()
+
+
+
+
         setSelectedButton(allButton)
         // ... Initialize other buttons ...
 
@@ -112,10 +157,6 @@ class HomeFragment : Fragment() {
             twelveDp, twelveDp, //bottom-right
             twelveDp, twelveDp  //bottom-left
         )
-        shapeDrawable.shape = RoundRectShape(outerRadius, null, null)
-        view.findViewById<View>(R.id.mentorbox).background = shapeDrawable
-        view.findViewById<View>(R.id.mentorbox2).background = shapeDrawable
-        view.findViewById<View>(R.id.mentorbox3).background = shapeDrawable
 
         val clickListener = View.OnClickListener {clickedView ->
             val intent = Intent(activity, BookSessionActivity::class.java)
@@ -132,9 +173,6 @@ class HomeFragment : Fragment() {
             view.findViewById<TextView>(R.id.name_text).text = user.name
             // Rest of your UI update code...
         }
-        view.findViewById<View>(R.id.mentorbox).setOnClickListener(clickListener)
-        view.findViewById<View>(R.id.mentorbox2).setOnClickListener(clickListener)
-        view.findViewById<View>(R.id.mentorbox3).setOnClickListener(clickListener)
 
 
         view.findViewById<View>(R.id.education_box).setOnClickListener(clickListener)

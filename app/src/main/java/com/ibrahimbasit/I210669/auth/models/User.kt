@@ -7,10 +7,11 @@ data class User(
     var contactNumber: String,
     var country: String,
     var city: String,
-    var profilePictureUrl: String
+    var profilePictureUrl: String,
+    var coverPhotoUrl : String
 ) {
 
-    constructor() : this("", "", "", "", "", "", "gs://i210669.appspot.com/user_profile_picture.png")
+    constructor() : this("", "", "", "", "", "", "gs://i210669.appspot.com/user_profile_picture.png", "gs://i210669.appspot.com/over_photo.png")
 
 
     fun toMap(): Map<String, Any> {
@@ -21,7 +22,8 @@ data class User(
             "contactNumber" to contactNumber,
             "country" to country,
             "city" to city,
-            "profilePictureUrl" to profilePictureUrl
+            "profilePictureUrl" to profilePictureUrl,
+            "coverPhotoUrl" to coverPhotoUrl
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.ibrahimbasit.I210669
 
+import SearchViewModel
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,11 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +29,8 @@ class SearchFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var viewModel: SearchViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +49,8 @@ class SearchFragment : Fragment() {
     }
 
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,28 +63,31 @@ class SearchFragment : Fragment() {
         val mentorText3 : TextView = view.findViewById(R.id.recent_text3)
 
         val backButton : View = view.findViewById(R.id.back_arrow)
+        viewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
+
 
         backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
-        mentorText.setOnClickListener {
-            performSearch(mentorText.text.toString())
-        }
-
-        mentorText2.setOnClickListener {
-            performSearch(mentorText2.text.toString())
-        }
-
-        mentorText3.setOnClickListener {
-            performSearch(mentorText3.text.toString())
-        }
+//        mentorText.setOnClickListener {
+//            performSearch(mentorText.text.toString())
+//        }
+//
+//        mentorText2.setOnClickListener {
+//            performSearch(mentorText2.text.toString())
+//        }
+//
+//        mentorText3.setOnClickListener {
+//            performSearch(mentorText3.text.toString())
+//        }
 
 
         // Trigger search on action done (for example, clicking the keyboard search button)
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                performSearch(searchEditText.text.toString())
+                viewModel.performSearch(searchEditText.text.toString())
+                openSearchResultFragment()
                 true
             } else {
                 false
@@ -83,20 +96,15 @@ class SearchFragment : Fragment() {
 
     }
 
-    private fun performSearch(query: String) {
-        // Create SearchResultFragment and pass the search query as an argument
-        val searchResultFragment = SearchResultFragment().apply {
-            arguments = Bundle().apply {
-                putString("query", query)
-            }
-        }
-
-        // Replace the current fragment with SearchResultFragment
+    private fun openSearchResultFragment() {
+        val searchResultFragment = SearchResultFragment()
         parentFragmentManager.beginTransaction()
-            .replace(R.id.frame_layout, searchResultFragment) // Replace 'fragment_container' with your actual container ID
-            .addToBackStack(null) // Add this transaction to the back stack
+            .replace(R.id.frame_layout, searchResultFragment)
+            .addToBackStack(null)
             .commit()
     }
+
+
 
     companion object {
         /**

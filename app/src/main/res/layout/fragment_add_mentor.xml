@@ -15,7 +15,7 @@
            android:layout_width="match_parent"
            android:layout_height="0dp"
            android:id="@+id/upperPart"
-           app:layout_constraintHeight_percent="0.25"
+           app:layout_constraintHeight_percent="0.2"
            app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toTopOf="parent"
            android:background="@color/splashScreenBgColor">
@@ -49,7 +49,7 @@
                android:layout_height="wrap_content"
                android:text="Add New Mentor"
 
-                android:textSize="30sp"
+                android:textSize="24sp"
                android:id="@+id/headingText"
                android:textColor="@color/headingTextColor"
                android:textStyle="bold"
@@ -64,7 +64,7 @@
                android:text="Help us expand!"
                android:textColor="@color/headingTextColor"
                android:id="@+id/subHeadingText"
-               android:textSize="18sp"
+               android:textSize="14sp"
                app:layout_constraintTop_toBottomOf="@id/headingText"
                 app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintEnd_toEndOf="parent"/>
@@ -79,7 +79,7 @@
            android:layout_width="match_parent"
            android:layout_height="0dp"
            android:background="@drawable/container"
-           app:layout_constraintHeight_percent="0.75"
+           app:layout_constraintHeight_percent="0.8"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toBottomOf="@id/upperPart">
 
@@ -193,7 +193,10 @@
            <EditText
                android:id="@+id/nameEditText"
                android:layout_width="0dp"
-               android:layout_height="wrap_content"
+               android:textSize="10sp"
+
+               android:layout_height="0dp"
+               app:layout_constraintHeight_percent="0.06"
                android:layout_marginStart="24dp"
                android:layout_marginTop="8dp"
                android:layout_marginEnd="24dp"
@@ -231,7 +234,11 @@
            <EditText
                android:id="@+id/descriptionEditText"
                android:layout_width="0dp"
-               android:layout_height="wrap_content"
+               android:layout_height="0dp"
+               app:layout_constraintHeight_percent="0.06"
+               android:textSize="10sp"
+
+
                android:layout_marginStart="24dp"
                android:layout_marginTop="8dp"
                android:layout_marginEnd="24dp"
@@ -244,6 +251,72 @@
                app:layout_constraintEnd_toEndOf="parent"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintTop_toBottomOf="@+id/descriptionLabel"
+               app:layout_constraintVertical_weight="1" />
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+               android:text="Price"
+
+               android:id="@+id/priceLabel"
+               android:textColor="@color/primaryTextColor"
+                app:layout_constraintBottom_toTopOf="@id/priceEditText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionEditText"
+                app:layout_constraintVertical_weight="1"/>
+
+           <EditText
+               android:id="@+id/priceEditText"
+               android:layout_width="0dp"
+               android:layout_height="0dp"
+               app:layout_constraintHeight_percent="0.06"
+               android:layout_marginStart="24dp"
+               android:layout_marginTop="8dp"
+               android:layout_marginEnd="24dp"
+               android:autofillHints=""
+               android:background="@drawable/text_field_background"
+               android:hint="Enter Price"
+               android:textSize="10sp"
+
+               android:inputType="numberDecimal"
+               android:textColorHint="@color/textFieldHintTextColor"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/priceLabel"
+               app:layout_constraintVertical_weight="1" />
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="32dp"
+               android:layout_marginTop="16dp"
+               android:text="Role"
+               android:id="@+id/roleLabel"
+               android:textColor="@color/primaryTextColor"
+               app:layout_constraintBottom_toTopOf="@id/roleEditText"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/priceEditText"
+               app:layout_constraintVertical_weight="1"/>
+
+           <EditText
+               android:id="@+id/roleEditText"
+               android:layout_width="0dp"
+               android:layout_height="0dp"
+               app:layout_constraintHeight_percent="0.06"
+               android:layout_marginStart="24dp"
+               android:layout_marginTop="8dp"
+               android:layout_marginEnd="24dp"
+               android:autofillHints=""
+               android:background="@drawable/text_field_background"
+               android:hint="Enter Role"
+               android:textSize="10sp"
+
+               android:inputType="text"
+               android:textColorHint="@color/textFieldHintTextColor"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/roleLabel"
                app:layout_constraintVertical_weight="1" />
 
            <!-- Status Field -->
@@ -259,36 +332,30 @@
                android:textColor="@color/primaryTextColor"
                app:layout_constraintBottom_toTopOf="@id/statusTextInputLayout"
                app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toBottomOf="@+id/descriptionEditText"
+               app:layout_constraintTop_toBottomOf="@+id/roleEditText"
                app:layout_constraintVertical_weight="1" />
-
-           <com.google.android.material.textfield.TextInputLayout
-               android:id="@+id/statusTextInputLayout"
+           <Spinner
                android:layout_width="0dp"
-               android:layout_height="wrap_content"
+               android:layout_height="0dp"
+               android:id="@+id/statusTextInputLayout"
                android:layout_marginStart="24dp"
                android:layout_marginTop="8dp"
+               android:textSize="10sp"
+
                android:layout_marginEnd="24dp"
-               app:endIconDrawable="@drawable/down_arrow"
                app:layout_constraintEnd_toEndOf="parent"
                app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toBottomOf="@id/statusLabel">
-
-               <EditText
-                   android:id="@+id/statusSelect"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:autofillHints=""
-                   android:background="@drawable/selector_field_background"
-                   android:hint="Available"
-                   android:inputType="text"
-                   android:textColorHint="@color/textFieldHintTextColor" />
-
-           </com.google.android.material.textfield.TextInputLayout>
+               app:layout_constraintTop_toBottomOf="@+id/statusLabel"
+               app:layout_constraintHeight_percent="0.06"
+               android:spinnerMode="dropdown"
+               android:textAlignment="viewStart"
+               android:dropDownSelector="@drawable/down_arrow"
+               android:dropDownWidth="match_parent"/>
             <Button
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.06"
+                android:layout_marginTop="18dp"
                 android:background="@drawable/second_button_background"
                 android:text="Upload"
                 android:fontFamily="@font/poppins_semibold"
@@ -311,6 +378,18 @@
 
 
        </androidx.constraintlayout.widget.ConstraintLayout>
+       <com.google.android.material.progressindicator.CircularProgressIndicator
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/addMentorProgressBar"
+           android:visibility="gone"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 </FrameLayout>

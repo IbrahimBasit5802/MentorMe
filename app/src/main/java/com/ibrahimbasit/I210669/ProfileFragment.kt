@@ -4,9 +4,9 @@ import UserViewModel
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +14,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.ibrahimbasit.I210669.auth.models.User
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
+import kotlin.math.max
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,6 +45,8 @@ class ProfileFragment : Fragment() {
         super.onAttach(context)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +84,36 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun uploadCoverPhoto(userId: String, imageUri: Uri, callback: (Boolean, String) -> Unit) {
+        val storageRef = Firebase.storage.reference.child("cover_photos/$userId.jpg")
+        val uploadTask = storageRef.putFile(imageUri)
+
+        uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let { throw it }
+            }
+            storageRef.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val downloadUri = task.result
+                callback(true, downloadUri.toString())
+            } else {
+                callback(false, "Upload failed: ${task.exception?.message}")
+            }
+        }
+    }
+
+    private fun updateUserCoverPhoto(userId: String, imageUrl: String) {
+        val userRef = Firebase.database.getReference("Users").child(userId)
+        userRef.child("coverPhotoUrl").setValue(imageUrl).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(activity, "Cover photo updated", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(activity, "Failed to update cover photo", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun updateUserProfilePicture(userId: String, imageUrl: String) {
         val userRef = Firebase.database.getReference("Users").child(userId)
         userRef.child("profilePictureUrl").setValue(imageUrl).addOnCompleteListener { task ->
@@ -99,20 +132,33 @@ class ProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
             val imageUri: Uri? = data?.data
+            val sourceButton = data?.getStringExtra("source") // Get source info
             imageUri?.let { uri ->
                 userViewModel.userData.value?.uuid?.let { userId ->
-                    uploadProfileImage(userId, uri) { success, url ->
-                        if (success) {
-                            // Update the user's profile picture URL in the Realtime Database
-                            updateUserProfilePicture(userId, url)
-                        } else {
-                            // Handle upload failure
+
+                        // Decide based on source which image to update
+                        when (sourceButton) {
+                            "editButton" -> {
+                                // Assume this is meant for cover photo update
+                                uploadCoverPhoto(userId, uri) { success, url ->
+                                    if (success) updateUserCoverPhoto(userId, url)
+                                    else Toast.makeText(activity, "Failed to upload cover photo", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            "editButton2" -> {
+                                // For profile picture update
+                                uploadProfileImage(userId, uri) { success, url ->
+                                    if (success) updateUserProfilePicture(userId, url)
+                                    else Toast.makeText(activity, "Failed to upload profile picture", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
-                    }
+
                 }
             }
         }
     }
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -122,12 +168,24 @@ class ProfileFragment : Fragment() {
         val profilePictureImageView: ImageView = view.findViewById(R.id.profilePicture)
 
         userViewModel.userData.value?.profilePictureUrl?.let { url ->
-            Glide.with(this)
+            println("default url: $url")
+            Picasso.get()
                 .load(url)
-                .placeholder(R.drawable.user_profile_picture) // Placeholder image while loading
-                .error(R.drawable.user_profile_picture) // Image to display if loading fails
+                .fit()
                 .into(profilePictureImageView)
+
         }
+
+        val coverPhotoImageView: ImageView = view.findViewById(R.id.coverPhoto)
+
+        userViewModel.userData.value?.coverPhotoUrl.let { url ->
+
+                Picasso.get()
+                    .load(url)
+                    .resize(2008, 608)
+                    .into(coverPhotoImageView)
+            }
+
 
 
 
@@ -149,8 +207,10 @@ class ProfileFragment : Fragment() {
 
         editButton.setOnClickListener {
 
-            // This is typically done using an Intent to open the image chooser
-
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "image/*"
+            }
+            startActivityForResult(intent, REQUEST_CODE_IMAGE_PICK)
         }
 
 
@@ -175,20 +235,26 @@ class ProfileFragment : Fragment() {
 
 
         userViewModel.userData.observe(viewLifecycleOwner) { user ->
-            println("does it work")
             // Update UI with user data
             view.findViewById<TextView>(R.id.nameTextView).text = user.name
             view.findViewById<TextView>(R.id.locationTextView).text = "${user.city}, ${user.country}"
             user.profilePictureUrl.let { url ->
-                Glide.with(this)
+                Picasso.get()
                     .load(url)
-                    .centerCrop()
-                    .placeholder(R.drawable.user_profile_picture) // Placeholder image while loading
-                    .error(R.drawable.user_profile_picture) // Image to display if loading fails
+                    .fit()
                     .into(profilePictureImageView)
+
+            }
+            user.coverPhotoUrl.let { url ->
+                Picasso.get()
+                    .load(url)
+                    .resize(2008, 608)
+                    .into(coverPhotoImageView)
             }
             // Rest of your UI update code...
         }
+
+
 
 
         view.findViewById<View>(R.id.mentorbox).setOnClickListener(clickListener)
