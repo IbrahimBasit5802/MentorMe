@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -139,6 +140,7 @@ class ProfileFragment : Fragment() {
                         // Decide based on source which image to update
                         when (sourceButton) {
                             "editButton" -> {
+                                Log.d("ProfileFragment", "Cover photo update")
                                 // Assume this is meant for cover photo update
                                 uploadCoverPhoto(userId, uri) { success, url ->
                                     if (success) updateUserCoverPhoto(userId, url)
@@ -173,18 +175,28 @@ class ProfileFragment : Fragment() {
                 .load(url)
                 .fit()
                 .into(profilePictureImageView)
+            Log.d("ProfileFragment", "Profile picture loaded")
 
         }
 
         val coverPhotoImageView: ImageView = view.findViewById(R.id.coverPhoto)
 
         userViewModel.userData.value?.coverPhotoUrl.let { url ->
+            Picasso.get()
+                .load(url)
+                .resize(2008, 608)
+                .into(coverPhotoImageView, object : Callback {
+                    override fun onSuccess() {
+                        Log.d("ProfileFragment", "Image loaded successfully")
+                    }
 
-                Picasso.get()
-                    .load(url)
-                    .resize(2008, 608)
-                    .into(coverPhotoImageView)
-            }
+                    override fun onError(e: Exception?) {
+                        Log.e("ProfileFragment", "Error loading image", e)
+                    }
+                })
+
+
+        }
 
 
 

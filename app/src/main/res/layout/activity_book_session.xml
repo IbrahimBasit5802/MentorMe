@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="UX Designer at"
-            android:id="@+id/text2"
+            android:id="@+id/mentor_role"
             android:textColor="@color/primaryTextColor"
             android:textSize="24sp"
             android:fontFamily="@font/noto_javanese_regular"
@@ -91,17 +91,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider3"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Google"
-            android:id="@+id/mentor_company"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="24sp"
-            android:fontFamily="@font/noto_javanese_regular"
-            android:layout_marginStart="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text2"/>
+
 
 
         <View
@@ -134,7 +124,7 @@
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mentor_company"
+            app:layout_constraintTop_toBottomOf="@id/mentor_role"
             android:background="#73d5cf"
             android:padding="8dp" />
 

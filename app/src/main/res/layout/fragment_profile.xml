@@ -70,7 +70,8 @@
                     android:elevation="2dp"
                     android:translationZ="2dp"
                     android:background="@drawable/over_photo"
-                    android:id="@+id/coverPhoto"/>
+                    android:id="@+id/coverPhoto"
+                    android:contentDescription="TODO" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
@@ -101,6 +102,7 @@
                         android:id="@+id/profilePicture"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        android:contentDescription=""
 
                         android:src="@drawable/user_profile_picture"/>
                     <Button

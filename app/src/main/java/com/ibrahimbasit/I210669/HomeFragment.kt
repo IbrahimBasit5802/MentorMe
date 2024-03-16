@@ -90,7 +90,8 @@ class HomeFragment : Fragment() {
         query.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val mentor = snapshot.getValue(Mentor::class.java)
-                if (mentor != null) {
+                val mentorId = snapshot.key // This is the ID you're looking for
+                if (mentor != null && mentorId != null) {
                     mentorList.add(mentor)
                     adapter.notifyDataSetChanged()
                 }

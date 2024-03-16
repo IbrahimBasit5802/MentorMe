@@ -1,10 +1,13 @@
 package com.ibrahimbasit.I210669.adapters
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ibrahimbasit.I210669.BookSessionActivity
 import com.ibrahimbasit.I210669.R
 import com.ibrahimbasit.I210669.Mentor
 
@@ -18,6 +21,9 @@ class TopMentorsAdapter(private val mentorList: List<Mentor>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: MentorViewHolder, position: Int) {
         val mentor = mentorList[position]
         holder.bind(mentor)
+
+
+
     }
 
     override fun getItemCount(): Int = mentorList.size
@@ -41,6 +47,14 @@ class TopMentorsAdapter(private val mentorList: List<Mentor>) : RecyclerView.Ada
 
             }
             priceTextView.text = mentor.price.toString()
+
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, BookSessionActivity::class.java).apply {
+                    putExtra("mentor_data", mentor)
+                }
+                Log.d("TopMentorsAdapter", "Item clicked")
+                itemView.context.startActivity(intent)
+            }
 
 
         }
