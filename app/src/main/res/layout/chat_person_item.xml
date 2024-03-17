@@ -1,0 +1,56 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:tag="item1"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="8dp"
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/jack_icon"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="John Cooper"
+        android:fontFamily="@font/opensans_extrabold"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/headingTextColor"
+        android:layout_toEndOf="@id/profile_image"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/message_status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_text"
+        android:layout_marginTop="8dp"
+        android:paddingTop="20dp"
+        android:layout_toEndOf="@id/profile_image"
+        android:text="1 New Message"
+        android:layout_marginVertical="8dp"
+        android:textColor="#ab3b3b"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/profile_image"
+        android:background="#98e4db"
+        android:padding="8dp" />
+
+
+</RelativeLayout>

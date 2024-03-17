@@ -1,6 +1,7 @@
 package com.ibrahimbasit.I210669
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,13 @@ import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,51 +43,56 @@ class ChatFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_chat, container, false)
+        val chatRecyclerView = view.findViewById<RecyclerView>(R.id.chatPersonRecyclerView)
+        chatRecyclerView.layoutManager = LinearLayoutManager(context)
+        val chatSessionsList = mutableListOf<ChatSession>()
 
-        val clickListener = View.OnClickListener { clickedView ->
-            val tag = clickedView.tag.toString()
+        // Initialize the adapter with an empty list
+        val adapter = ChatPersonAdapter(chatSessionsList)
+        chatRecyclerView.adapter = adapter
 
+        // Get current user ID
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
-            val chatPersonFragment = ChatPersonFragment.newInstance(tag, "param2")
-            fragmentManager?.beginTransaction()
-                ?.replace(R.id.frame_layout, chatPersonFragment)
-                ?.addToBackStack(null)
-                ?.commit()
-        }
+        // Retrieve chat sessions
+        val chatSessionsRef =
+            currentUserId?.let { FirebaseDatabase.getInstance().reference.child("Users").child(it).child("chatSessions") }
+        if (chatSessionsRef != null) {
+            chatSessionsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val chatSessionIds = snapshot.children.map { it.key }.filterNotNull()
+                    // Now fetch the details for each chat session ID
 
+                    for (sessionId in chatSessionIds) {
+                        val sessionRef = FirebaseDatabase.getInstance().reference.child("Chats").child(sessionId)
+                        sessionRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(sessionSnapshot: DataSnapshot) {
+                                val chatSession = sessionSnapshot.getValue(ChatSession::class.java)
+                                println("This is gay")
 
-        val clickListener2 = View.OnClickListener { clickedView ->
-            val tag = clickedView.tag.toString()
+                                chatSession?.let { chatSessionsList.add(it) }
+                                // Once all sessions are added, update the adapter
+                                adapter.notifyDataSetChanged()
+                            }
 
+                            override fun onCancelled(sessionError: DatabaseError) {
+                                Log.d("ChatFragment", "Error fetching chat session details")
+                            }
+                        })
+                    }
+                }
 
-            val communityChatFragment = CommunityChatFragment.newInstance(tag, "param2")
-            fragmentManager?.beginTransaction()
-                ?.replace(R.id.frame_layout, communityChatFragment)
-                ?.addToBackStack(null)
-                ?.commit()
-        }
-
-        val scrollViewLayout = view.findViewById<LinearLayout>(R.id.chatList)
-
-        val communityScrollView = view.findViewById<LinearLayout>(R.id.communityList)
-
-        for (i in 0 until scrollViewLayout.childCount) {
-            val child = scrollViewLayout.getChildAt(i)
-            child.setOnClickListener(clickListener)
-        }
-
-        for (i in 0 until communityScrollView.childCount) {
-            val child = communityScrollView.getChildAt(i)
-            child.setOnClickListener(clickListener2)
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle errors here
+                }
+            })
         }
 
         return view
     }
+
 
     companion object {
         /**

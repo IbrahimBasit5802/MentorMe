@@ -8,11 +8,10 @@ data class User(
     var country: String,
     var city: String,
     var profilePictureUrl: String,
-    var coverPhotoUrl : String
+    var coverPhotoUrl: String,
+    var chatSessions: Map<String, Boolean> = emptyMap() // Map of chat session IDs to boolean (true if active)
 ) {
-
     constructor() : this("", "", "", "", "", "", "gs://i210669.appspot.com/user_profile_picture.png", "gs://i210669.appspot.com/over_photo.png")
-
 
     fun toMap(): Map<String, Any> {
         return mapOf(
@@ -23,7 +22,8 @@ data class User(
             "country" to country,
             "city" to city,
             "profilePictureUrl" to profilePictureUrl,
-            "coverPhotoUrl" to coverPhotoUrl
+            "coverPhotoUrl" to coverPhotoUrl,
+            "chatSessions" to chatSessions
         )
     }
 }

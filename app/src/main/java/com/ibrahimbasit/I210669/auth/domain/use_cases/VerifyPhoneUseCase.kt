@@ -28,7 +28,8 @@ class VerifyPhoneUseCase(
                                 country = country,
                                 city = city,
                                 profilePictureUrl = "gs://i210669.appspot.com/user_profile_picture.png",
-                                coverPhotoUrl = "gs://i210669.appspot.com/over_photo.png"
+                                coverPhotoUrl = "gs://i210669.appspot.com/over_photo.png",
+                                chatSessions = emptyMap()
                             )
                             authRepository.storeUserInRealtimeDatabase(user) { isStoredSuccessfully, DatabaseError ->
                                 callback(isStoredSuccessfully, DatabaseError)

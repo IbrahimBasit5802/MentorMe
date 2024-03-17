@@ -131,8 +131,10 @@ class AddMentorFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val availability = statusSpinner.selectedItem.toString() == "Available"
 
         // Create a new Mentor object
-        val mentor = Mentor(name, role, availability, "", price, description, 0f)
+        val mentor = Mentor("", name, role, availability, "", price, description, 0f)
         val mentorId = databaseReference.push().key ?: return
+
+        mentor.mentorId = mentorId
 
         // First, add the mentor to the database
         databaseReference.child(mentorId).setValue(mentor).addOnCompleteListener { task ->
