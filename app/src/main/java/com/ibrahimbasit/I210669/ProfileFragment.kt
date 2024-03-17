@@ -68,39 +68,23 @@ class ProfileFragment : Fragment() {
 
     private fun uploadProfileImage(userId: String, imageUri: Uri, callback: (Boolean, String) -> Unit) {
         val storageRef = Firebase.storage.reference.child("profile_images/$userId.jpg")
-        val uploadTask = storageRef.putFile(imageUri)
-
-        uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let { throw it }
-            }
-            storageRef.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result
+        storageRef.putFile(imageUri).addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { downloadUri ->
                 callback(true, downloadUri.toString())
-            } else {
-                callback(false, "Upload failed: ${task.exception?.message}")
             }
+        }.addOnFailureListener { exception ->
+            callback(false, "Upload failed: ${exception.message}")
         }
     }
 
     private fun uploadCoverPhoto(userId: String, imageUri: Uri, callback: (Boolean, String) -> Unit) {
         val storageRef = Firebase.storage.reference.child("cover_photos/$userId.jpg")
-        val uploadTask = storageRef.putFile(imageUri)
-
-        uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let { throw it }
-            }
-            storageRef.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result
+        storageRef.putFile(imageUri).addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { downloadUri ->
                 callback(true, downloadUri.toString())
-            } else {
-                callback(false, "Upload failed: ${task.exception?.message}")
             }
+        }.addOnFailureListener { exception ->
+            callback(false, "Upload failed: ${exception.message}")
         }
     }
 
@@ -133,29 +117,25 @@ class ProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
             val imageUri: Uri? = data?.data
-            val sourceButton = data?.getStringExtra("source") // Get source info
             imageUri?.let { uri ->
                 userViewModel.userData.value?.uuid?.let { userId ->
 
-                        // Decide based on source which image to update
-                        when (sourceButton) {
-                            "editButton" -> {
-                                Log.d("ProfileFragment", "Cover photo update")
-                                // Assume this is meant for cover photo update
-                                uploadCoverPhoto(userId, uri) { success, url ->
-                                    if (success) updateUserCoverPhoto(userId, url)
-                                    else Toast.makeText(activity, "Failed to upload cover photo", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                            "editButton2" -> {
-                                // For profile picture update
-                                uploadProfileImage(userId, uri) { success, url ->
-                                    if (success) updateUserProfilePicture(userId, url)
-                                    else Toast.makeText(activity, "Failed to upload profile picture", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        }
+                    uploadProfileImage(userId, uri) { success, url ->
+                        if (success) updateUserProfilePicture(userId, url)
+                        else Toast.makeText(activity, "Failed to upload profile picture", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
 
+        else if (requestCode == REQUEST_CODE_COVER_PICK && resultCode == Activity.RESULT_OK) {
+            val imageUri: Uri? = data?.data
+            imageUri?.let { uri ->
+                userViewModel.userData.value?.uuid?.let { userId ->
+                    uploadCoverPhoto(userId, uri) { success, url ->
+                        if (success) updateUserCoverPhoto(userId, url)
+                        else Toast.makeText(activity, "Failed to upload cover photo", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -222,7 +202,7 @@ class ProfileFragment : Fragment() {
             val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
                 type = "image/*"
             }
-            startActivityForResult(intent, REQUEST_CODE_IMAGE_PICK)
+            startActivityForResult(intent, REQUEST_CODE_COVER_PICK)
         }
 
 
@@ -285,6 +265,7 @@ class ProfileFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         private const val REQUEST_CODE_IMAGE_PICK = 1234 // Choose a unique integer.
+        private const val REQUEST_CODE_COVER_PICK = 5802
 
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
