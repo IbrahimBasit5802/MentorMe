@@ -18,6 +18,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ibrahimbasit.I210669.MainActivity
+import com.ibrahimbasit.I210669.MentorSignUp
 import com.ibrahimbasit.I210669.R
 import com.ibrahimbasit.I210669.auth.data.AuthRepository
 import com.ibrahimbasit.I210669.auth.domain.use_cases.SignUpUseCase
@@ -48,6 +49,13 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         val password = findViewById<EditText>(R.id.passwordEditText)
         val name = findViewById<EditText>(R.id.nameEditText)
         val signupButton: Button = findViewById(R.id.signUpButton)
+        val mentorSignUp : TextView = findViewById(R.id.mentorSignUpText)
+
+        mentorSignUp.setOnClickListener {
+            val intent = Intent(this, MentorSignUp::class.java)
+            startActivity(intent)
+        }
+
         progressBar = findViewById(R.id.signUpProgressBar)
 
         val countries = getAllCountries()

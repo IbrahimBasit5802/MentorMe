@@ -1,5 +1,6 @@
 package com.ibrahimbasit.I210669//package com.ibrahimbasit.I210669
 //
+import UserViewModel
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.ibrahimbasit.I210669.auth.models.User
 import com.squareup.picasso.Picasso
 import java.util.UUID
 
@@ -28,6 +30,8 @@ class SelectSessionActivity : AppCompatActivity() {
     private lateinit var buttonsList: List<Button>
     private var selectedButton: Button? = null
     private lateinit var mentorViewModel: MentorViewModel
+    private lateinit var userViewModel : UserViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_session)
@@ -35,8 +39,23 @@ class SelectSessionActivity : AppCompatActivity() {
 
 
         mentorViewModel = ViewModelProvider(this).get(MentorViewModel::class.java)
+        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         mentorViewModel.loadMentor(mentor!!.mentorId)
 
+        val user : User = User()
+
+        userViewModel.userData.observe(this) {
+            if (it != null) {
+                user.name = it.name
+                user.email = it.email
+                user.contactNumber = it.contactNumber
+                user.profilePictureUrl = it.profilePictureUrl
+                user.country = it.country
+                user.city = it.city
+                user.coverPhotoUrl = it.coverPhotoUrl
+                user.chatSessions = it.chatSessions
+            }
+        }
 
         val backButton : View = findViewById(R.id.backButton)
         backButton.setOnClickListener {
@@ -119,10 +138,15 @@ class SelectSessionActivity : AppCompatActivity() {
             val newChatSession = mentor?.let { it1 ->
                 ChatSession(
                     id = chatSessionId,
-                    name = it1.name,
+                    mentorId = it1.mentorId,
+                    userId = currentUserId!!,
+                    mentorName = it1.name,
+                    userName = user.name,
                     lastMessage = "You have booked a session with ${it1.name}!",
+                    lastMessageSender = "Mentor",
                     newMessagesCount = 1,
-                    profilePictureUrl = mentor.profilePictureUrl
+                    mentorProfilePictureUrl = mentor.profilePictureUrl,
+                    userProfilePictureUrl = user.profilePictureUrl
                 )
             }
 

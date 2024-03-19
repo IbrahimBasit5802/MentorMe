@@ -74,136 +74,15 @@
            app:layout_constraintTop_toBottomOf="@id/upperPart"
            app:layout_constraintStart_toStartOf="parent">
 
-           <View
-               android:id="@+id/chatPersonImage"
-               android:layout_width="50dp"
-               android:layout_height="50dp"
-                android:background="@drawable/jack_icon"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/chatRecyclerView"
+                android:scrollbars="none"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="10dp"
-               android:layout_marginBottom="20dp"
-               android:layout_marginEnd="10dp"
-               app:layout_constraintEnd_toStartOf="@id/jackMessage"
-               />
-
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-                android:text="How can I help you?"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="14sp"
-               app:layout_constraintBottom_toTopOf="@id/time1"
-               app:layout_constraintStart_toEndOf="@id/chatPersonImage"
-               android:layout_marginBottom="5dp"
-               android:background="@drawable/white_message_background"
-               android:padding="12dp"
-               android:layout_marginStart="10dp"
-                android:id="@+id/jackMessage"
-               />
-
-           <TextView
-               android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-               android:id="@+id/time1"
-               android:text="10:32"
-                android:textColor="@color/textFieldHintTextColor"
-                android:textSize="10sp"
-               android:layout_marginStart="15dp"
-               app:layout_constraintStart_toStartOf="@id/jackMessage"
-                app:layout_constraintBottom_toBottomOf="parent"
-               />
-
-
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-                android:id="@+id/time2"
-                android:text="10:30"
-                android:textColor="@color/textFieldHintTextColor"
-                android:textSize="10sp"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintBottom_toTopOf="@id/chatPersonImage"
-                android:layout_marginEnd="30dp"/>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-                android:id="@+id/jackMessage2"
-               android:text="I need your guidance."
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@id/time2"
-               app:layout_constraintEnd_toEndOf="parent"
-               android:background="@drawable/message_background"
-                android:padding="12dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="5dp"/>
-
-
-           <View
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/chatPersonImage2"
-                android:background="@drawable/jack_icon"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/jackMessage2"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginEnd="10dp"
                 />
-
-
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-                android:id="@+id/jackMessage3"
-                android:text="Yes"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@id/time3"
-                app:layout_constraintStart_toEndOf="@id/chatPersonImage2"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/white_message_background"
-                android:padding="12dp"
-                android:layout_marginStart="10dp"
-               />
-
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/time3"
-               android:text="10:32"
-               android:textColor="@color/textFieldHintTextColor"
-               android:textSize="10sp"
-               android:layout_marginStart="10dp"
-               app:layout_constraintBottom_toTopOf="@id/jackMessage2"
-               android:layout_marginBottom="5dp"
-               app:layout_constraintStart_toStartOf="@id/jackMessage3"
-               />
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/time4"
-               android:text="10:30"
-               android:textColor="@color/textFieldHintTextColor"
-               android:textSize="10sp"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintBottom_toTopOf="@id/chatPersonImage2"
-               android:layout_marginEnd="30dp"/>
-
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/jackMessage4"
-               android:text="Hello, you there?"
-               android:textColor="@color/secondaryTextColor"
-               android:textSize="14sp"
-               app:layout_constraintBottom_toTopOf="@id/time4"
-               app:layout_constraintEnd_toEndOf="parent"
-               android:background="@drawable/message_background"
-               android:padding="12dp"
-               android:layout_marginEnd="10dp"
-               android:layout_marginBottom="5dp"/>
 
 
 
@@ -245,7 +124,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"/>
 
-           <View
+           <Button
                android:layout_width="24dp"
                android:layout_height="24dp"
                 android:id="@+id/sendButton"
@@ -255,7 +134,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginTop="10dp"/>
 
-           <View
+           <Button
                android:layout_width="24dp"
                android:layout_height="24dp"
                 android:id="@+id/micButton"
@@ -264,7 +143,7 @@
                 app:layout_constraintEnd_toStartOf="@id/sendButton"
                 android:layout_marginEnd="5dp"
                 android:layout_marginTop="10dp"/>
-           <View
+           <Button
                android:layout_width="24dp"
                android:layout_height="24dp"
                android:id="@+id/cameraButton"
@@ -294,6 +173,8 @@
        </androidx.constraintlayout.widget.ConstraintLayout>
 
    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 

@@ -1,4 +1,4 @@
-package com.ibrahimbasit.I210669
+package com.ibrahimbasit.I210669.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ibrahimbasit.I210669.ChatSession
+import com.ibrahimbasit.I210669.R
 import com.squareup.picasso.Picasso
 
-class ChatPersonAdapter(private val chatList: List<ChatSession>, private val listener: OnItemClickListener) : RecyclerView.Adapter<ChatPersonAdapter.ChatPersonViewHolder>() {
+class MentorChatPersonAdapter(private val chatList: List<ChatSession>, private val listener: OnItemClickListener) : RecyclerView.Adapter<MentorChatPersonAdapter.MentorChatPersonViewHolder>() {
 
-    inner class ChatPersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class MentorChatPersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val profileImageView: ImageView = itemView.findViewById(R.id.profile_image)
         val nameTextView: TextView = itemView.findViewById(R.id.name_text)
         val messageStatusTextView: TextView = itemView.findViewById(R.id.message_status_text)
@@ -21,22 +23,16 @@ class ChatPersonAdapter(private val chatList: List<ChatSession>, private val lis
         fun onItemClick(chatSession: ChatSession)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatPersonViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MentorChatPersonViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.chat_person_item, parent, false)
-        val viewHolder = ChatPersonViewHolder(itemView)
-        itemView.setOnClickListener {
-            val position = viewHolder.adapterPosition
-            if(position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(chatList[position])
-            }
-        }
-        return viewHolder
+
+        return MentorChatPersonViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: ChatPersonViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MentorChatPersonViewHolder, position: Int) {
         val currentItem = chatList[position]
         // Set image using Glide or similar library
-        holder.nameTextView.text = currentItem.mentorName
+        holder.nameTextView.text = currentItem.userName
         val newMessagesText = when {
             currentItem.newMessagesCount > 0 -> "${currentItem.newMessagesCount} New Message(s)"
             else -> "No New Messages"
@@ -44,7 +40,10 @@ class ChatPersonAdapter(private val chatList: List<ChatSession>, private val lis
 
         holder.messageStatusTextView.text = newMessagesText
 
-        Picasso.get().load(currentItem.mentorProfilePictureUrl).fit().into(holder.profileImageView)
+        Picasso.get().load(currentItem.userProfilePictureUrl).fit().into(holder.profileImageView)
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(currentItem)
+        }
 
 
     }

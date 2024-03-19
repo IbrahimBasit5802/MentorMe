@@ -50,7 +50,16 @@ class ChatFragment : Fragment() {
         val chatSessionsList = mutableListOf<ChatSession>()
 
         // Initialize the adapter with an empty list
-        val adapter = ChatPersonAdapter(chatSessionsList)
+        val adapter = ChatPersonAdapter(chatSessionsList, object : ChatPersonAdapter.OnItemClickListener {
+            override fun onItemClick(chatSession: ChatSession) {
+                val fragment = ChatPersonFragment.newInstance(chatSession.id, chatSession.mentorName)
+                fragmentManager?.beginTransaction()
+                    ?.replace(R.id.frame_layout, fragment)
+                    ?.addToBackStack(null) // If you want to add it to back stack
+                    ?.commit()
+            }
+        })
+
         chatRecyclerView.adapter = adapter
 
         // Get current user ID
@@ -70,7 +79,6 @@ class ChatFragment : Fragment() {
                         sessionRef.addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(sessionSnapshot: DataSnapshot) {
                                 val chatSession = sessionSnapshot.getValue(ChatSession::class.java)
-                                println("This is gay")
 
                                 chatSession?.let { chatSessionsList.add(it) }
                                 // Once all sessions are added, update the adapter
