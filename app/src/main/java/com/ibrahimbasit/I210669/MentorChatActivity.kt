@@ -3,12 +3,16 @@ package com.ibrahimbasit.I210669
 import ChatMessageAdapter
 import MentorChatMessageAdapter
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -16,10 +20,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +36,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.UUID
 
@@ -41,8 +48,6 @@ class MentorChatActivity : AppCompatActivity() {
     private var chatSessionId: String? = null
     var mediaRecorder: MediaRecorder? = null
     private var audioFilePath: String? = null
-    private val REQUEST_RECORD_AUDIO_PERMISSION = 200
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mentor_chat)
@@ -79,6 +84,60 @@ class MentorChatActivity : AppCompatActivity() {
         chatPersonRecyclerView = findViewById(R.id.chatRecyclerView)
         chatPersonRecyclerView.layoutManager = layoutManager
 
+        val swipeToDeleteCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false // We don't want move functionality
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                // Implement deletion logic here
+                val message = chatMessageAdapter.getItemAtPosition(position)
+                if (message.senderId == FirebaseAuth.getInstance().currentUser?.uid) {
+                    // Calculate the time difference between the current time and the message's timestamp
+                    val currentTime = System.currentTimeMillis()
+                    val messageTime = message.timestamp
+                    val timeDifference = currentTime - messageTime
+
+                    // Check if the message was sent within the last 5 minutes
+                    val isWithin5Minutes = timeDifference <= (5 * 60 * 1000)
+
+                    if (isWithin5Minutes) {
+                        // If the message is within 5 minutes, delete it
+                        deleteMessage(position, message)
+                    } else {
+                        // Handle message deletion restriction here (e.g., show a toast message)
+                        Toast.makeText(this@MentorChatActivity, "You can only delete messages sent within the last 5 minutes", Toast.LENGTH_SHORT).show()
+                        chatMessageAdapter.notifyItemChanged(position) // Restore swiped item if it's not deleted
+                    }
+                } else {
+                    chatMessageAdapter.notifyItemChanged(position) // Restore swiped item if it's not the user's message
+                }
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(chatPersonRecyclerView)
+
+        val gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onLongPress(e: MotionEvent) {
+                super.onLongPress(e)
+                handleLongPress(e)
+            }
+
+        })
+
+        chatPersonRecyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                gestureDetector.onTouchEvent(e)
+                return false
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        })
+
         // Initialize and set the adapter
         chatMessageAdapter =
             FirebaseAuth.getInstance().currentUser?.let {
@@ -105,13 +164,30 @@ class MentorChatActivity : AppCompatActivity() {
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                // Handle changes if needed
+                val updatedMessage = snapshot.getValue(ChatMessage::class.java)
+                updatedMessage?.let { msg ->
+                    // Find the message in the list by its ID
+                    val index = chatMessages.indexOfFirst { it.id == msg.id }
+                    if (index != -1) {
+                        // Replace the old message with the updated one
+                        chatMessages[index] = msg
+                        // Notify the adapter of the change
+                        chatMessageAdapter.notifyItemChanged(index)
+                    }
+                }
             }
-
             override fun onChildRemoved(snapshot: DataSnapshot) {
+
+                val message = snapshot.getValue(ChatMessage::class.java)
+                message?.let {
+                    val index = chatMessages.indexOfFirst { it.id == message.id }
+                    if (index != -1) {
+                        chatMessages.removeAt(index)
+                        chatMessageAdapter.notifyItemRemoved(index)
+                    }
+                }
                 // Handle message removal if applicable
             }
-
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
                 // Handle message moves if needed
             }
@@ -215,6 +291,297 @@ class MentorChatActivity : AppCompatActivity() {
             }
 
         }
+
+        val imageuploadButton = findViewById<Button>(R.id.imageUploadButton)
+
+        imageuploadButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "image/*"
+            }
+            startActivityForResult(intent, ChatPersonFragment.REQUEST_CODE_IMAGE_PICK)
+        }
+
+        val attachFileButton = findViewById<Button>(R.id.attachFileButton)
+        attachFileButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "*/*" // Allows any file type. Adjust if needed.
+                addCategory(Intent.CATEGORY_OPENABLE)
+            }
+            startActivityForResult(intent, ChatPersonFragment.REQUEST_CODE_FILE_PICK)
+        }
+    }
+
+    private fun handleLongPress(event: MotionEvent) {
+        val childView = chatPersonRecyclerView.findChildViewUnder(event.x, event.y)
+        if (childView != null) {
+            val position = chatPersonRecyclerView.getChildAdapterPosition(childView)
+            // Ensure position is valid
+            if (position != RecyclerView.NO_POSITION) {
+                val message = chatMessageAdapter.getItemAtPosition(position)
+                // Check if the message is a text message
+                if (message.type == "text" && message.senderId == FirebaseAuth.getInstance().currentUser?.uid) {
+                    // Calculate time difference to ensure it's within the last 5 minutes
+                    val currentTime = System.currentTimeMillis()
+                    val messageTime = message.timestamp
+                    val timeDifference = currentTime - messageTime
+
+                    if (timeDifference <= (5 * 60 * 1000)) {
+                        // Only proceed with editing if it's a text message and sent within the last 5 minutes
+                        editMessage(message, position)
+                    } else {
+                        // Optionally, inform the user that the message can't be edited
+                        Toast.makeText(this, "You can only edit messages sent within the last 5 minutes", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun editMessage(message: ChatMessage, position: Int) {
+        // Show a dialog to edit the message
+        val editText = EditText(this).apply {
+            setText(message.message)
+        }
+
+        this.let {
+            AlertDialog.Builder(it)
+                .setTitle("Edit Message")
+                .setView(editText)
+                .setPositiveButton("Update") { _, _ ->
+                    val updatedMessageText = editText.text.toString()
+                    if (updatedMessageText.isNotEmpty() && updatedMessageText != message.message) {
+                        // Update the message in Firebase
+                        FirebaseDatabase.getInstance().getReference("Messages")
+                            .child(chatSessionId!!)
+                            .child(message.id)
+                            .child("message").setValue(updatedMessageText)
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Message updated", Toast.LENGTH_SHORT).show()
+                            }
+                        // Optionally, mark the message as edited
+                        FirebaseDatabase.getInstance().getReference("Messages")
+                            .child(chatSessionId!!)
+                            .child(message.id)
+                            .child("isEdited").setValue(true)
+                    }
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+    }
+    private fun deleteMessage(position: Int, message: ChatMessage) {
+        // Delete from Firebase Database
+        FirebaseDatabase.getInstance().getReference("Messages").child(chatSessionId!!).child(message.id).removeValue()
+            .addOnSuccessListener {
+                Toast.makeText(this, "Message deleted", Toast.LENGTH_SHORT).show()
+            }
+
+        // If the message has a mediaUrl, delete the media from Firebase Storage
+        message.mediaUrl?.let { mediaUrl ->
+            val mediaRef = FirebaseStorage.getInstance().getReferenceFromUrl(mediaUrl)
+            mediaRef.delete().addOnSuccessListener {
+                Log.d("ChatFragment", "Associated media deleted successfully.")
+            }.addOnFailureListener {
+                Log.e("ChatFragment", "Failed to delete associated media.", it)
+            }
+        }
+
+    }
+
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == ChatPersonFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            // Convert bitmap to Uri (consider saving the bitmap to a file and getting Uri from file)
+            // For demonstration, assuming you have a method to get Uri from Bitmap
+            val imageUri = getImageUriFromBitmap(this, imageBitmap)
+            uploadImageToFirebase(imageUri)
+        }
+
+        if (requestCode == ChatPersonFragment.REQUEST_CODE_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
+            val imageUri: Uri? = data?.data
+            imageUri?.let { uri ->
+                uploadImageToFirebase(uri)
+            }
+        }
+
+        if (requestCode == ChatPersonFragment.REQUEST_CODE_FILE_PICK && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { uri ->
+                uploadFileToFirebase(uri)
+            }
+        }
+    }
+
+
+    private fun uploadFileToFirebase(fileUri: Uri) {
+        val fileId = UUID.randomUUID().toString() // Unique ID for the file
+        val storageRef = FirebaseStorage.getInstance().reference.child("files/$fileId")
+        val uploadTask = storageRef.putFile(fileUri)
+
+        uploadTask.addOnSuccessListener {
+            storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                sendMessageWithFile(downloadUri.toString(), fileUri.lastPathSegment ?: "file")
+            }
+        }.addOnFailureListener {
+            // Handle failure
+        }
+    }
+    private fun sendMessageWithFile(fileUrl: String, fileName: String) {
+        val ref =
+            FirebaseDatabase.getInstance().getReference("Chats").child(chatSessionId!!)
+        ref.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val data = task.result?.getValue(ChatSession::class.java)
+                val receiverId =
+                    data?.mentorId // Assuming this is the correct field for receiver ID
+
+                if (receiverId != null) {
+                    // Prepare the ChatMessage object
+                    val messageId = databaseReference.push().key
+                    val senderId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                    val timestamp = System.currentTimeMillis()
+                    val chatMessage = ChatMessage(
+                        messageId!!,
+                        senderId,
+                        receiverId,
+                        fileName,
+                        timestamp,
+                        "file",
+                        fileUrl,
+                        isEdited = false,
+                        isDeleted = false
+                    )
+
+                    // Push the message to Firebase
+                    messageId.let {
+                        databaseReference.child(it).setValue(chatMessage)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    // Re-enable the send button
+                                    Toast.makeText(
+                                        this,
+                                        "Message sent",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    // Message sent successfully
+                                } else {
+                                    // Handle failure
+                                    Toast.makeText(
+                                        this,
+                                        "Failed to send message",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                    }
+                } else {
+                    Toast.makeText(this, "Receiver ID not found", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            } else {
+                Toast.makeText(
+                    this,
+                    "Failed to retrieve chat session",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun uploadImageToFirebase(fileUri: Uri) {
+        val fileId = UUID.randomUUID().toString()
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/$fileId")
+        val uploadTask = storageRef.putFile(fileUri)
+
+        uploadTask.addOnSuccessListener {
+            storageRef.downloadUrl.addOnSuccessListener { uri ->
+                sendMessageWithImage(uri.toString())
+            }
+        }.addOnFailureListener {
+            // Handle failure
+        }
+    }
+    private fun sendMessageWithImage(imageUrl: String) {
+        val ref =
+            FirebaseDatabase.getInstance().getReference("Chats").child(chatSessionId!!)
+        ref.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val data = task.result?.getValue(ChatSession::class.java)
+                val receiverId =
+                    data?.mentorId // Assuming this is the correct field for receiver ID
+
+                if (receiverId != null) {
+                    // Prepare the ChatMessage object
+                    val messageId = databaseReference.push().key
+                    val senderId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                    val timestamp = System.currentTimeMillis()
+                    val chatMessage = ChatMessage(
+                        messageId!!,
+                        senderId,
+                        receiverId,
+                        "image",
+                        timestamp,
+                        "image",
+                        imageUrl,
+                        isEdited = false,
+                        isDeleted = false
+                    )
+
+                    // Push the message to Firebase
+                    messageId.let {
+                        databaseReference.child(it).setValue(chatMessage)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    // Re-enable the send button
+                                    Toast.makeText(
+                                        this,
+                                        "Message sent",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    // Message sent successfully
+                                } else {
+                                    // Handle failure
+                                    Toast.makeText(
+                                        this,
+                                        "Failed to send message",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                    }
+                } else {
+                    Toast.makeText(this, "Receiver ID not found", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            } else {
+                Toast.makeText(
+                    this,
+                    "Failed to retrieve chat session",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    // Utility function to convert Bitmap to Uri
+    private fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri {
+        val tempDir = File(context.externalCacheDir, "temp_images")
+        if (!tempDir.exists()) tempDir.mkdir()
+        val tempFile = File(tempDir, "temp_image.jpg")
+        try {
+            val outputStream = FileOutputStream(tempFile)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.flush()
+            outputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return Uri.fromFile(tempFile)
     }
 
 
@@ -334,5 +701,14 @@ class MentorChatActivity : AppCompatActivity() {
             )
         }
         // If permission is already granted, you might want to start some initialization here
+    }
+
+    companion object {
+        const val REQUEST_IMAGE_CAPTURE = 1
+        const val REQUEST_CAMERA_PERMISSION = 101
+        const val REQUEST_RECORD_AUDIO_PERMISSION = 200
+        const val REQUEST_CODE_IMAGE_PICK = 1234 // Choose a unique integer.
+        const val REQUEST_CODE_FILE_PICK = 1001 // A unique integer value
+
     }
 }

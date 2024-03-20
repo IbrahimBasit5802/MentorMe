@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/fileIconSent"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription=""
+        app:layout_constraintEnd_toStartOf="@id/fileNameSent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/round_insert_drive_file_24" />
+
+    <TextView
+        android:id="@+id/fileNameSent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="File Name.pdf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/fileIconSent"
+        app:layout_constraintTop_toTopOf="@id/fileIconSent" />
+
+    <TextView
+        android:id="@+id/fileMessageTimeSent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="12:34 PM"
+        app:layout_constraintEnd_toEndOf="@id/fileNameSent"
+        app:layout_constraintTop_toBottomOf="@id/fileNameSent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

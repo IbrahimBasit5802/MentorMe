@@ -11,7 +11,9 @@ data class Mentor(
     val price: Float,
     val description: String,
     val rating: Float,
-    val chatSessions: Map<String, Boolean> = emptyMap() // Map of chat session IDs to boolean (true if active)
+    val chatSessions: Map<String, Boolean> = emptyMap(),
+    var fcmToken: String? = null
+// Map of chat session IDs to boolean (true if active)
 ) : Serializable {
     constructor() : this("", "", "", false, "", 0.0f, "", 0.0f)
 

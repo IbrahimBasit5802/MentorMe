@@ -104,7 +104,7 @@
               app:layout_constraintTop_toBottomOf="@id/middlePart"
                 app:layout_constraintStart_toStartOf="parent">
 
-           <View
+           <Button
                android:layout_width="24dp"
                android:layout_height="24dp"
                android:id="@+id/attachFileButton"
@@ -114,7 +114,7 @@
                 android:layout_marginStart="5dp"
                android:layout_marginTop="10dp"/>
 
-           <View
+           <Button
                android:layout_width="24dp"
                android:layout_height="24dp"
                android:id="@+id/imageUploadButton"

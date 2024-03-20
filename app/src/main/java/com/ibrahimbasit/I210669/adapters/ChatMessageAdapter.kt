@@ -1,5 +1,12 @@
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -25,6 +33,9 @@ class ChatMessageAdapter(private val userId: String, private val messages: List<
     private val VIEW_TYPE_AUDIO_RECEIVED = 4
     private val VIEW_TYPE_IMAGE_SENT = 5
     private val VIEW_TYPE_IMAGE_RECEIVED = 6
+    private val VIEW_TYPE_FILE_SENT = 7
+    private val VIEW_TYPE_FILE_RECEIVED = 8
+
 
 
     override fun getItemCount(): Int {
@@ -38,10 +49,21 @@ class ChatMessageAdapter(private val userId: String, private val messages: List<
             message.senderId != userId && message.type == "voice" -> VIEW_TYPE_AUDIO_RECEIVED
             message.senderId == userId && message.type == "image" -> VIEW_TYPE_IMAGE_SENT
             message.senderId != userId && message.type == "image" -> VIEW_TYPE_IMAGE_RECEIVED
+            message.senderId == userId && message.type == "file" -> VIEW_TYPE_FILE_SENT
+            message.senderId != userId && message.type == "file" -> VIEW_TYPE_FILE_RECEIVED
             message.senderId == userId -> VIEW_TYPE_MESSAGE_SENT
             else -> VIEW_TYPE_MESSAGE_RECEIVED
         }
     }
+
+
+
+    fun getItemAtPosition(position: Int): ChatMessage {
+        return messages[position]
+    }
+
+
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -52,6 +74,8 @@ class ChatMessageAdapter(private val userId: String, private val messages: List<
             VIEW_TYPE_AUDIO_RECEIVED -> LayoutInflater.from(parent.context).inflate(R.layout.voice_note_received, parent, false)
             VIEW_TYPE_IMAGE_SENT -> LayoutInflater.from(parent.context).inflate(R.layout.image_sent_item, parent, false)
             VIEW_TYPE_IMAGE_RECEIVED -> LayoutInflater.from(parent.context).inflate(R.layout.image_received_item, parent, false)
+            VIEW_TYPE_FILE_SENT -> LayoutInflater.from(parent.context).inflate(R.layout.file_sent_item, parent, false)
+            VIEW_TYPE_FILE_RECEIVED -> LayoutInflater.from(parent.context).inflate(R.layout.file_received_item, parent, false)
             else -> throw IllegalArgumentException("Invalid view type")
         }
         return when (viewType) {
@@ -61,6 +85,8 @@ class ChatMessageAdapter(private val userId: String, private val messages: List<
             VIEW_TYPE_AUDIO_RECEIVED -> ReceivedAudioMessageHolder(view)
             VIEW_TYPE_IMAGE_SENT -> ImageMessageSentHolder(view)
             VIEW_TYPE_IMAGE_RECEIVED -> ImageMessageReceivedHolder(view)
+            VIEW_TYPE_FILE_SENT -> FileMessageSentHolder(view)
+            VIEW_TYPE_FILE_RECEIVED -> FileMessageReceivedHolder(view)
             else -> throw IllegalArgumentException("Invalid view type for creating view holder")
         }
     }
@@ -103,8 +129,73 @@ class ChatMessageAdapter(private val userId: String, private val messages: List<
             VIEW_TYPE_AUDIO_RECEIVED -> (holder as ReceivedAudioMessageHolder).bind(message)
             VIEW_TYPE_IMAGE_SENT -> (holder as ImageMessageSentHolder).bind(message)
             VIEW_TYPE_IMAGE_RECEIVED -> (holder as ImageMessageReceivedHolder).bind(message)
+            VIEW_TYPE_FILE_SENT -> (holder as FileMessageSentHolder).bind(message)
+            VIEW_TYPE_FILE_RECEIVED -> (holder as FileMessageReceivedHolder).bind(message)
         }
     }
+
+    fun downloadAndOpenFile(context: Context, fileUrl: String?, fileName: String?) {
+        if (fileUrl == null || fileName == null) return
+
+        val request = DownloadManager.Request(Uri.parse(fileUrl))
+            .setTitle(fileName)
+            .setDescription("Downloading")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setAllowedOverMetered(true)
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+
+        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val downloadId = downloadManager.enqueue(request)
+
+        val onComplete = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val downloadedFileUri = downloadManager.getUriForDownloadedFile(downloadId)
+
+                if (downloadedFileUri != null) {
+                    val openFileIntent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(downloadedFileUri, context?.contentResolver?.getType(downloadedFileUri))
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    }
+                    context?.startActivity(openFileIntent)
+                }
+            }
+        }
+
+        context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+    }
+
+    private inner class FileMessageSentHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val fileName: TextView = view.findViewById(R.id.fileNameSent)
+        private val messageTime: TextView = view.findViewById(R.id.fileMessageTimeSent)
+
+        fun bind(message: ChatMessage) {
+            fileName.text = message.message // Assuming you have a fileName field in your ChatMessage model.
+            messageTime.text = formatTimestamp(message.timestamp)
+        }
+    }
+
+    private inner class FileMessageReceivedHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val fileName: TextView = view.findViewById(R.id.fileNameReceived)
+        private val messageTime: TextView = view.findViewById(R.id.fileMessageTimeReceived)
+        private val profileImage: ImageView = view.findViewById(R.id.receiveDp)
+
+        init {
+            view.setOnClickListener {
+                val message = messages[adapterPosition]
+                downloadAndOpenFile(view.context, message.mediaUrl, message.message)
+            }
+        }
+
+        fun bind(message: ChatMessage) {
+            fileName.text = message.message // Assuming you have a fileName field in your ChatMessage model.
+            messageTime.text = formatTimestamp(message.timestamp)
+            // Load the sender's profile picture
+            Firebase.database.reference.child("Mentors").child(message.senderId).get().addOnSuccessListener { dataSnapshot ->
+                val profilePictureUrl = dataSnapshot.child("profilePictureUrl").value.toString()
+                Picasso.get().load(profilePictureUrl).into(profileImage)
+            }        }
+    }
+
 
     private inner class ImageMessageSentHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgMessage: ImageView = view.findViewById(R.id.imgMessage)
