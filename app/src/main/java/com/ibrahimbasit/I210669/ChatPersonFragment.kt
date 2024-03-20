@@ -296,7 +296,7 @@ class ChatPersonFragment : Fragment() {
 
                                             // find senderId name
                                             val reff = FirebaseDatabase.getInstance().getReference("Users/$senderId")
-                                            val user = reff.get().addOnSuccessListener {
+                                            reff.get().addOnSuccessListener {
                                                 val user = it.getValue(User::class.java)
                                                 user?.let {
                                                     sendPushNotification(receiverId, messageText, user.name)
@@ -407,8 +407,6 @@ class ChatPersonFragment : Fragment() {
                     val client = OkHttpClient()
                     client.newCall(request).enqueue(object : Callback {
                         override fun onResponse(call: Call, response: Response) {
-                            println("received data: ${response.body?.string()}")
-                            Log.d("ChatFragment", "Push notification sent successfully")
                             // Handle successful response
                             Log.d("ChatFragment", "Push notification sent successfully")
                         }
