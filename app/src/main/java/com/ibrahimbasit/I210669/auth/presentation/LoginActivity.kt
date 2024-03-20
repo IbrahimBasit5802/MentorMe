@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
         val firebaseAuth = FirebaseAuth.getInstance()
         val realtimeDatabase = Firebase.database
 
-        val repo = AuthRepository(firebaseAuth, realtimeDatabase)
+        val repo = AuthRepository(firebaseAuth, realtimeDatabase, this@LoginActivity)
         val loginUsecase = LoginUseCase(repo)
         val viewModelFactory = LoginActivityViewModelFactory(loginUsecase)
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]

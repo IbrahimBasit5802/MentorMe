@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,6 +26,7 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.ibrahimbasit.I210669.adapters.TopMentorsAdapter
+import com.ibrahimbasit.I210669.auth.presentation.LoginActivity
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -70,6 +72,13 @@ class HomeFragment : Fragment() {
         val entreButton = view.findViewById<Button>(R.id.entrepreneurship_button)
         val personalGrowthButton = view.findViewById<Button>(R.id.personal_growth_button)
         val notificationButton : View = view.findViewById(R.id.notification_button)
+
+        val logout : Button =  view.findViewById(R.id.logoutButton)
+        logout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(context, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         notificationButton.setOnClickListener {
             val intent = Intent(activity, NotificationActivity::class.java)

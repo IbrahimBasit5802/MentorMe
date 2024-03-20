@@ -7,17 +7,30 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessagingService
+import kotlin.math.log
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
+
+
     override fun onNewToken(token: String) {
+        Log.d("FCM", "Refreshed token: $token")
         super.onNewToken(token)
+        // store token in shared preferences
+        val pref = applicationContext.getSharedPreferences("MyPref", 0)
+        val editor = pref.edit()
+        editor.putString("fcmToken", token)
+        editor.apply()
+        // store token in database
+        editor.commit()
+
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         userId?.let {
             val userRef = FirebaseDatabase.getInstance().getReference("Users/$userId")
             userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
+                        Log.d("FCM", "User ID exists in database.")
                         // User ID exists in Users, set the FCM token here
                         snapshot.ref.child("fcmToken").setValue(token)
                     } else {
@@ -47,4 +60,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
         // Save the token in your server or Firebase database
     }
+
+
 }

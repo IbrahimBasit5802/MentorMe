@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 
 class MentorSignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -148,6 +149,9 @@ class MentorSignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         // First, add the mentor to the database
         if (mentor != null) {
+            val pref = applicationContext.getSharedPreferences("MyPref", 0)
+            val token = pref.getString("fcmToken", null)
+            mentor.fcmToken = token
             databaseReference.child(mentor.mentorId).setValue(mentor).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // If mentor data is successfully added, upload the image next

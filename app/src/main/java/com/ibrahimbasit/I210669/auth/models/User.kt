@@ -26,6 +26,7 @@ data class User(
             "profilePictureUrl" to profilePictureUrl,
             "coverPhotoUrl" to coverPhotoUrl,
             "chatSessions" to chatSessions
+
         )
     }
 }

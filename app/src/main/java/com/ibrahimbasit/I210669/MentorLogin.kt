@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MentorLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +30,13 @@ class MentorLogin : AppCompatActivity() {
         mentorLogin.setOnClickListener {
             loginWithEmail(email.text.toString(), password.text.toString()) { success, message ->
                 if (success) {
+                    // get mentor reference and update fcmToken
+                    val mentorRef = FirebaseAuth.getInstance().currentUser?.uid?.let { it1 ->
+                        val db = FirebaseDatabase.getInstance().getReference("Mentors/$it1")
+                        val pref = applicationContext.getSharedPreferences("MyPref", 0)
+                        val token = pref.getString("fcmToken", null)
+                        db.child("fcmToken").setValue(token)
+                    }
                     val intent = Intent(this, MentorMainActivity::class.java)
                     startActivity(intent)
                 } else {

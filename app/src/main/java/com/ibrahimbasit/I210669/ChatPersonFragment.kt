@@ -40,6 +40,16 @@ import android.provider.MediaStore
 import android.view.GestureDetector
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.ibrahimbasit.I210669.auth.models.User
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.Response
+import org.json.JSONObject
 import java.io.FileOutputStream
 import java.util.UUID
 
@@ -283,6 +293,15 @@ class ChatPersonFragment : Fragment() {
                                                 "Message sent",
                                                 Toast.LENGTH_SHORT
                                             ).show()
+
+                                            // find senderId name
+                                            val reff = FirebaseDatabase.getInstance().getReference("Users/$senderId")
+                                            val user = reff.get().addOnSuccessListener {
+                                                val user = it.getValue(User::class.java)
+                                                user?.let {
+                                                    sendPushNotification(receiverId, messageText, user.name)
+                                                }
+                                            }
                                             // Message sent successfully
                                             messageBox.setText("") // Clear the message box
                                         } else {
@@ -356,6 +375,58 @@ class ChatPersonFragment : Fragment() {
             startActivityForResult(intent, REQUEST_CODE_FILE_PICK)
         }
     }
+
+    private fun sendPushNotification(receiverId: String, message: String, title: String) {
+        val ref = FirebaseDatabase.getInstance().getReference("Mentors/$receiverId")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(Mentor::class.java)
+                user?.fcmToken?.let { token ->
+                    // Construct the JSON payload
+                    val payload = JSONObject()
+                    payload.put("to", token)
+                    val notification = JSONObject()
+                    notification.put("title", title)
+                    notification.put("body", message)
+                    payload.put("notification", notification)
+
+                    // Construct the request
+                    val requestBody = RequestBody.create(
+                        "application/json; charset=utf-8".toMediaTypeOrNull(),
+                        payload.toString()
+                    )
+
+                    val request = Request.Builder()
+                        .url("https://fcm.googleapis.com/fcm/send")
+                        .post(requestBody)
+                        .addHeader("Authorization", "key=AAAAmYsyZGs:APA91bEyVSd58xKFr4MU-yJlMTQs5nfRFFLWeGZ7N1ncKjno1x5vc3Qob-WnfDR2wlP1uvx4XgZ4tg6Pc-hC8tWPcPoi33KnAeqLggAqLTKE7P0ax1Q1ZaK6yBxbpqa1-r323nRbbAvX")
+                        .addHeader("Content-Type", "application/json")
+                        .build()
+
+                    // Create an OkHttp client and send the request
+                    val client = OkHttpClient()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onResponse(call: Call, response: Response) {
+                            println("received data: ${response.body?.string()}")
+                            Log.d("ChatFragment", "Push notification sent successfully")
+                            // Handle successful response
+                            Log.d("ChatFragment", "Push notification sent successfully")
+                        }
+
+                        override fun onFailure(call: Call, e: IOException) {
+                            // Handle failure
+                            Log.d("ChatFragment", "Failed to send push notification", e)
+                        }
+                    })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
+
 
     private fun handleLongPress(event: MotionEvent) {
         val childView = chatPersonRecyclerView.findChildViewUnder(event.x, event.y)

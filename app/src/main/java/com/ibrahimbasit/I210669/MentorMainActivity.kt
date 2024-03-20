@@ -3,6 +3,7 @@ package com.ibrahimbasit.I210669
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
@@ -14,6 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.ibrahimbasit.I210669.adapters.MentorChatPersonAdapter
+import com.ibrahimbasit.I210669.auth.presentation.LoginActivity
 
 class MentorMainActivity : AppCompatActivity() {
     private lateinit var mentorViewModel: MentorViewModel
@@ -47,6 +49,12 @@ class MentorMainActivity : AppCompatActivity() {
         // Get current user ID
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
+        val logout : Button = findViewById(R.id.logoutButton)
+        logout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
         // Retrieve chat sessions
         currentUserId?.let {
             FirebaseDatabase.getInstance().reference.child("Mentors").child(it)
