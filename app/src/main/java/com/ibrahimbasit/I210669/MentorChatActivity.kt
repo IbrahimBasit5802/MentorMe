@@ -1,6 +1,5 @@
 package com.ibrahimbasit.I210669
 
-import ChatMessageAdapter
 import MentorChatMessageAdapter
 import android.Manifest
 import android.app.Activity
@@ -22,12 +21,15 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.akexorcist.screenshotdetection.ScreenshotDetectionDelegate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -50,7 +52,9 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.UUID
 
-class MentorChatActivity : AppCompatActivity() {
+class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.ScreenshotDetectionListener  {
+    private lateinit var screenshotDetectionDelegate: ScreenshotDetectionDelegate
+
     private lateinit var databaseReference: DatabaseReference
     private lateinit var chatMessageAdapter: MentorChatMessageAdapter
     private val chatMessages: MutableList<ChatMessage> = mutableListOf()
@@ -58,20 +62,82 @@ class MentorChatActivity : AppCompatActivity() {
     private var chatSessionId: String? = null
     var mediaRecorder: MediaRecorder? = null
     private var audioFilePath: String? = null
+
+    override fun onStart() {
+        super.onStart()
+        screenshotDetectionDelegate.startScreenshotDetection()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        screenshotDetectionDelegate.stopScreenshotDetection()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_CODE_READ_EXTERNAL_STORAGE_PERMISSION -> {
+                if (grantResults.getOrNull(0) == PackageManager.PERMISSION_DENIED) {
+                    showReadExternalStoragePermissionDeniedMessage()
+                }
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
+    private fun checkReadExternalStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestReadExternalStoragePermission()
+        }
+    }
+
+    private fun requestReadExternalStoragePermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            REQUEST_CODE_READ_EXTERNAL_STORAGE_PERMISSION
+        )
+    }
+
+    private fun showReadExternalStoragePermissionDeniedMessage() {
+        Toast.makeText(this, "Read external storage permission has denied", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onScreenCaptured(path: String) {
+        val ref =
+            FirebaseDatabase.getInstance().getReference("Chats").child(chatSessionId!!)
+        ref.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val data = task.result?.getValue(ChatSession::class.java)
+                val receiverId =
+                    data?.userId
+                val senderId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
+                val reff = FirebaseDatabase.getInstance().getReference("Mentors/$senderId")
+                val user = reff.get().addOnSuccessListener {
+                    val user = it.getValue(Mentor::class.java)
+                    user?.let {
+                        if (receiverId != null) {
+                            sendPushNotification(receiverId, "Took a screenshot", user.name)
+                        }
+                    }
+        }
+            }
+        }
+    }
+
+    override fun onScreenCapturedWithDeniedPermission() {
+        Toast.makeText(this@MentorChatActivity, "Screenshot detection permission denied", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mentor_chat)
+        screenshotDetectionDelegate = ScreenshotDetectionDelegate(this, this)
+        checkReadExternalStoragePermission()
         checkAndRequestPermissions()
         chatSessionId = intent.getStringExtra("chatSessionId")
         val sessionName : String = intent.getStringExtra("chatSessionName") ?: "Chat"
         val chatPersonName: TextView = findViewById(R.id.nameHeading)
         chatPersonName.text = sessionName
         val cameraButton: View = findViewById(R.id.cameraButton)
-        cameraButton.setOnClickListener {
-            val intent = Intent(this, CameraActivity::class.java)
-            startActivity(intent)
-        }
-
         val videoButton: View = findViewById(R.id.videoCallButton)
         videoButton.setOnClickListener {
             val intent = Intent(this, VideoCallActivity::class.java)
@@ -290,6 +356,16 @@ class MentorChatActivity : AppCompatActivity() {
                 }
             }
         }
+
+
+
+        cameraButton.setOnClickListener {
+//            val intent = Intent(context, CameraXActivity::class.java)
+//            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+            val intent = Intent(this, CameraActivity::class.java)
+            startActivityForResult(intent, CAMERA_ACTIVITY_REQUEST_CODE)
+
+        }
         val micButton : Button = findViewById(R.id.micButton)
 
         micButton.setOnTouchListener {
@@ -459,7 +535,7 @@ class MentorChatActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == ChatPersonFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             // Convert bitmap to Uri (consider saving the bitmap to a file and getting Uri from file)
             // For demonstration, assuming you have a method to get Uri from Bitmap
@@ -467,16 +543,30 @@ class MentorChatActivity : AppCompatActivity() {
             uploadImageToFirebase(imageUri)
         }
 
-        if (requestCode == ChatPersonFragment.REQUEST_CODE_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
             val imageUri: Uri? = data?.data
             imageUri?.let { uri ->
                 uploadImageToFirebase(uri)
             }
         }
 
-        if (requestCode == ChatPersonFragment.REQUEST_CODE_FILE_PICK && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE_FILE_PICK && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
                 uploadFileToFirebase(uri)
+            }
+        }
+
+        if (requestCode == CAMERA_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Get the imagePath from the data intent
+                val imagePath = data?.getStringExtra("imagePath")
+                var path : String = ""
+                if (imagePath != null) {
+                    path = imagePath
+                }
+                uploadImageToFirebase(path.toUri())
+            } else {
+                // Handle if the result is not OK
             }
         }
     }
@@ -794,8 +884,12 @@ class MentorChatActivity : AppCompatActivity() {
         const val REQUEST_IMAGE_CAPTURE = 1
         const val REQUEST_CAMERA_PERMISSION = 101
         const val REQUEST_RECORD_AUDIO_PERMISSION = 200
+        private const val REQUEST_CODE_READ_EXTERNAL_STORAGE_PERMISSION = 3009
+
         const val REQUEST_CODE_IMAGE_PICK = 1234 // Choose a unique integer.
         const val REQUEST_CODE_FILE_PICK = 1001 // A unique integer value
+        private val CAMERA_ACTIVITY_REQUEST_CODE = 102
+
 
     }
 }

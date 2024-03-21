@@ -35,8 +35,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.view.GestureDetector
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.akexorcist.screenshotdetection.ScreenshotDetectionDelegate
 import com.ibrahimbasit.I210669.auth.models.User
 import okhttp3.Call
 import okhttp3.Callback
@@ -61,7 +63,9 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ChatPersonFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChatPersonFragment : Fragment() {
+class ChatPersonFragment : Fragment(), ScreenshotDetectionDelegate.ScreenshotDetectionListener  {
+    private lateinit var screenshotDetectionDelegate: ScreenshotDetectionDelegate
+
     private lateinit var databaseReference: DatabaseReference
     private lateinit var chatMessageAdapter: ChatMessageAdapter
     private val chatMessages: MutableList<ChatMessage> = mutableListOf()
@@ -80,6 +84,8 @@ class ChatPersonFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        screenshotDetectionDelegate = ScreenshotDetectionDelegate(requireActivity(), this)
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -89,6 +95,71 @@ class ChatPersonFragment : Fragment() {
         }
 
         checkAndRequestPermissions()
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        screenshotDetectionDelegate.startScreenshotDetection()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        screenshotDetectionDelegate.stopScreenshotDetection()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            ChatPersonFragment.REQUEST_CODE_READ_EXTERNAL_STORAGE_PERMISSION -> {
+                if (grantResults.getOrNull(0) == PackageManager.PERMISSION_DENIED) {
+                    showReadExternalStoragePermissionDeniedMessage()
+                }
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
+    private fun checkReadExternalStoragePermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestReadExternalStoragePermission()
+        }
+    }
+
+    private fun requestReadExternalStoragePermission() {
+        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            ChatPersonFragment.REQUEST_CODE_READ_EXTERNAL_STORAGE_PERMISSION
+        )
+    }
+
+    private fun showReadExternalStoragePermissionDeniedMessage() {
+        Toast.makeText(requireContext(), "Read external storage permission has denied", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onScreenCaptured(path: String) {
+        val ref =
+            FirebaseDatabase.getInstance().getReference("Chats").child(chatSessionId!!)
+        ref.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val data = task.result?.getValue(ChatSession::class.java)
+                val receiverId =
+                    data?.userId
+                val senderId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
+                val reff = FirebaseDatabase.getInstance().getReference("Users/$senderId")
+                val user = reff.get().addOnSuccessListener {
+                    val user = it.getValue(Mentor::class.java)
+                    user?.let {
+                        if (receiverId != null) {
+                            sendPushNotification(receiverId, "Took a screenshot", user.name)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onScreenCapturedWithDeniedPermission() {
+        Toast.makeText(requireContext(), "Screenshot detection permission denied", Toast.LENGTH_SHORT).show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -892,6 +963,8 @@ class ChatPersonFragment : Fragment() {
         const val REQUEST_CAMERA_PERMISSION = 101
         const val REQUEST_RECORD_AUDIO_PERMISSION = 200
         private val CAMERA_ACTIVITY_REQUEST_CODE = 102
+        private const val REQUEST_CODE_READ_EXTERNAL_STORAGE_PERMISSION = 3009
+
 
         const val REQUEST_CODE_IMAGE_PICK = 1234 // Choose a unique integer.
         const val REQUEST_CODE_FILE_PICK = 1001 // A unique integer value
