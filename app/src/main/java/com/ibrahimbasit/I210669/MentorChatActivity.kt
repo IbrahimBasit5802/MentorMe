@@ -532,6 +532,13 @@ class MentorChatActivity : AppCompatActivity() {
                                         "Message sent",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    val reff = FirebaseDatabase.getInstance().getReference("Mentors/$senderId")
+                                    reff.get().addOnSuccessListener {
+                                        val user = it.getValue(User::class.java)
+                                        user?.let {
+                                            sendPushNotification(receiverId, "File", user.name)
+                                        }
+                                    }
                                     // Message sent successfully
                                 } else {
                                     // Handle failure
@@ -607,6 +614,14 @@ class MentorChatActivity : AppCompatActivity() {
                                         "Message sent",
                                         Toast.LENGTH_SHORT
                                     ).show()
+
+                                    val reff = FirebaseDatabase.getInstance().getReference("Mentors/$senderId")
+                                    reff.get().addOnSuccessListener {
+                                        val user = it.getValue(User::class.java)
+                                        user?.let {
+                                            sendPushNotification(receiverId, "Image", user.name)
+                                        }
+                                    }
                                     // Message sent successfully
                                 } else {
                                     // Handle failure
@@ -731,6 +746,13 @@ class MentorChatActivity : AppCompatActivity() {
                                         "Message sent",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    val reff = FirebaseDatabase.getInstance().getReference("Mentors/$senderId")
+                                    reff.get().addOnSuccessListener {
+                                        val user = it.getValue(User::class.java)
+                                        user?.let {
+                                            sendPushNotification(receiverId, "Audio Message", user.name)
+                                        }
+                                    }
                                     // Message sent successfully
                                 } else {
                                     // Handle failure

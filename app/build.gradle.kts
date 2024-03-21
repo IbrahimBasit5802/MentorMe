@@ -56,7 +56,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.firebaseui:firebase-ui-database:8.0.2")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-
+    implementation("io.agora.rtc:full-sdk:3.5.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
     implementation ("com.squareup.picasso:picasso:2.8")
     implementation("androidx.core:core-ktx:1.12.0")

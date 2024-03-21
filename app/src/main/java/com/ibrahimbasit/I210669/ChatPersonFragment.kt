@@ -3,8 +3,6 @@ package com.ibrahimbasit.I210669
 import ChatMessageAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.AudioManager
-import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
@@ -18,7 +16,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,9 +33,9 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
-import android.provider.MediaStore
 import android.view.GestureDetector
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.ibrahimbasit.I210669.auth.models.User
 import okhttp3.Call
@@ -355,6 +352,9 @@ class ChatPersonFragment : Fragment() {
         cameraButton.setOnClickListener {
 //            val intent = Intent(context, CameraXActivity::class.java)
 //            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+            val intent = Intent(context, CameraActivity::class.java)
+            startActivityForResult(intent, CAMERA_ACTIVITY_REQUEST_CODE)
+
         }
 
         val imageuploadButton = view.findViewById<Button>(R.id.imageUploadButton)
@@ -555,6 +555,13 @@ class ChatPersonFragment : Fragment() {
                                         "Message sent",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    val reff = FirebaseDatabase.getInstance().getReference("Users/$senderId")
+                                    reff.get().addOnSuccessListener {
+                                        val user = it.getValue(User::class.java)
+                                        user?.let {
+                                            sendPushNotification(receiverId, "File", user.name)
+                                        }
+                                    }
                                     // Message sent successfully
                                 } else {
                                     // Handle failure
@@ -604,6 +611,20 @@ class ChatPersonFragment : Fragment() {
         if (requestCode == REQUEST_CODE_FILE_PICK && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
                 uploadFileToFirebase(uri)
+            }
+        }
+
+        if (requestCode == CAMERA_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Get the imagePath from the data intent
+                val imagePath = data?.getStringExtra("imagePath")
+                var path : String = ""
+                if (imagePath != null) {
+                    path = imagePath
+                }
+                uploadImageToFirebase(path.toUri())
+            } else {
+                // Handle if the result is not OK
             }
         }
     }
@@ -659,6 +680,14 @@ class ChatPersonFragment : Fragment() {
                                         "Message sent",
                                         Toast.LENGTH_SHORT
                                     ).show()
+
+                                    val reff = FirebaseDatabase.getInstance().getReference("Users/$senderId")
+                                    reff.get().addOnSuccessListener {
+                                        val user = it.getValue(User::class.java)
+                                        user?.let {
+                                            sendPushNotification(receiverId, "Image", user.name)
+                                        }
+                                    }
                                     // Message sent successfully
                                 } else {
                                     // Handle failure
@@ -786,6 +815,13 @@ class ChatPersonFragment : Fragment() {
                                         "Message sent",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    val reff = FirebaseDatabase.getInstance().getReference("Users/$senderId")
+                                    reff.get().addOnSuccessListener {
+                                        val user = it.getValue(User::class.java)
+                                        user?.let {
+                                            sendPushNotification(receiverId, "Audio Message", user.name)
+                                        }
+                                    }
                                     // Message sent successfully
                                 } else {
                                     // Handle failure
@@ -855,6 +891,8 @@ class ChatPersonFragment : Fragment() {
         const val REQUEST_IMAGE_CAPTURE = 1
         const val REQUEST_CAMERA_PERMISSION = 101
         const val REQUEST_RECORD_AUDIO_PERMISSION = 200
+        private val CAMERA_ACTIVITY_REQUEST_CODE = 102
+
         const val REQUEST_CODE_IMAGE_PICK = 1234 // Choose a unique integer.
         const val REQUEST_CODE_FILE_PICK = 1001 // A unique integer value
 
