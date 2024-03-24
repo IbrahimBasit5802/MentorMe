@@ -39,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.ibrahimbasit.I210669.auth.models.User
+import com.ibrahimbasit.I210669.MentorCallActivity
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -115,7 +116,7 @@ class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.Scre
                     val user = it.getValue(Mentor::class.java)
                     user?.let {
                         if (receiverId != null) {
-                            sendPushNotification(receiverId, "Took a screenshot", user.name)
+                            sendPushNotification(receiverId, "Took a screenshot", user.name, senderId)
                         }
                     }
         }
@@ -141,11 +142,6 @@ class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.Scre
         val videoButton: View = findViewById(R.id.videoCallButton)
         videoButton.setOnClickListener {
             val intent = Intent(this, VideoCallActivity::class.java)
-            startActivity(intent)
-        }
-        val callButton: View = findViewById(R.id.callButton)
-        callButton.setOnClickListener {
-            val intent = Intent(this, CallScreenActivity::class.java)
             startActivity(intent)
         }
 
@@ -326,7 +322,7 @@ class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.Scre
                                             val user = reff.get().addOnSuccessListener {
                                                 val user = it.getValue(Mentor::class.java)
                                                 user?.let {
-                                                    sendPushNotification(receiverId, messageText, user.name)
+                                                    sendPushNotification(receiverId, messageText, user.name, senderId)
                                                 }
                                             }
                                         } else {
@@ -402,9 +398,24 @@ class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.Scre
             }
             startActivityForResult(intent, ChatPersonFragment.REQUEST_CODE_FILE_PICK)
         }
+        val callButton: View = findViewById(R.id.callButton)
+
+        callButton.setOnClickListener {
+            val dbRef = FirebaseDatabase.getInstance().getReference("Chats").child(chatSessionId!!)
+            dbRef.get().addOnSuccessListener { itt ->
+                val chatSession = itt.getValue(ChatSession::class.java)
+                chatSession?.let {
+                    val intent = Intent(this@MentorChatActivity, MentorCallActivity::class.java).apply {
+                        putExtra("userId", it.userId)
+                    }
+                    startActivity(intent)
+
+                }
+            }
+        }
     }
 
-    private fun sendPushNotification(receiverId: String, message: String, title: String) {
+    private fun sendPushNotification(receiverId: String, message: String, title: String, senderId : String) {
         val ref = FirebaseDatabase.getInstance().getReference("Users/$receiverId")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -413,6 +424,15 @@ class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.Scre
                     // Construct the JSON payload
                     val payload = JSONObject()
                     payload.put("to", token)
+                    // Adding data payload
+                    val dataPayload = JSONObject().apply {
+                        put("chatSessionId", chatSessionId)
+                        put("senderId", senderId)
+                        put("isMentor", true)
+
+                        put("type", "chat") // Use this to differentiate the notification type
+                    }
+                    payload.put("data", dataPayload)
                     val notification = JSONObject()
                     notification.put("title", title)
                     notification.put("body", message)
@@ -626,7 +646,7 @@ class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.Scre
                                     reff.get().addOnSuccessListener {
                                         val user = it.getValue(User::class.java)
                                         user?.let {
-                                            sendPushNotification(receiverId, "File", user.name)
+                                            sendPushNotification(receiverId, "File", user.name, senderId)
                                         }
                                     }
                                     // Message sent successfully
@@ -709,7 +729,7 @@ class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.Scre
                                     reff.get().addOnSuccessListener {
                                         val user = it.getValue(User::class.java)
                                         user?.let {
-                                            sendPushNotification(receiverId, "Image", user.name)
+                                            sendPushNotification(receiverId, "Image", user.name, senderId)
                                         }
                                     }
                                     // Message sent successfully
@@ -840,7 +860,7 @@ class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.Scre
                                     reff.get().addOnSuccessListener {
                                         val user = it.getValue(User::class.java)
                                         user?.let {
-                                            sendPushNotification(receiverId, "Audio Message", user.name)
+                                            sendPushNotification(receiverId, "Audio Message", user.name, senderId)
                                         }
                                     }
                                     // Message sent successfully

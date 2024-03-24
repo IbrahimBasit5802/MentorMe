@@ -1,5 +1,7 @@
 package com.ibrahimbasit.I210669
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -7,7 +9,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessagingService
-import kotlin.math.log
+import com.google.firebase.messaging.RemoteMessage
+
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -60,6 +63,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
         // Save the token in your server or Firebase database
     }
-
+    
 
 }

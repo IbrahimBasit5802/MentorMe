@@ -53,7 +53,7 @@
            android:id="@+id/videoCallButton"
               android:layout_marginEnd="20dp"/>
 
-       <View
+       <Button
            android:layout_width="36dp"
            android:layout_height="30dp"
            android:background="@drawable/call_button"
