@@ -8,10 +8,10 @@ object AgoraEngine {
     private var rtcEngine: RtcEngine? = null
     private const val APP_ID = "f20c3ac6233140a3b77738abbe050a64" // Replace with your Agora App ID
 
-    fun initialize(context: Context, rtcEngineEventHandler: IRtcEngineEventHandler): RtcEngine {
+    fun initialize(context: Context, eventHandler: IRtcEngineEventHandler): RtcEngine {
         if (rtcEngine == null) {
             synchronized(this) {
-                rtcEngine = RtcEngine.create(context.applicationContext, APP_ID, rtcEngineEventHandler)
+                rtcEngine = RtcEngine.create(context.applicationContext, APP_ID, eventHandler)
             }
         }
         return rtcEngine!!

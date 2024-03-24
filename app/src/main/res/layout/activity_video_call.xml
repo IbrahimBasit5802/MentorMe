@@ -19,6 +19,14 @@
             app:layout_constraintTop_toTopOf="parent"
             android:background="#c6c6c6">
 
+            <io.agora.rtc.mediaio.AgoraTextureView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/remote_video_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
 
 
 
@@ -35,11 +43,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <View
+            <io.agora.rtc.mediaio.AgoraTextureView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintWidth_percent="0.4"
                 app:layout_constraintHeight_percent="0.3"
+                android:id="@+id/local_video_view"
                 android:background="@drawable/white_message_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/middlePart"
@@ -86,9 +95,10 @@
                     android:background="@drawable/camera_screen_icon_circle"
                     />
 
-                <View
+                <Button
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:id="@+id/micIcon"
                     android:background="@drawable/outline_mic_off_24"
                     android:layout_gravity="center"/>
 

@@ -14,6 +14,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ibrahimbasit.I210669.auth.presentation.LoginActivity
+import com.ibrahimbasit.I210669.AgoraEngine
+import io.agora.rtc.IRtcEngineEventHandler
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -24,6 +26,9 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         bar  = findViewById(R.id.progressBar)
+
+
+        // intialize agora engine
 
 
         val mentor : TextView = findViewById(R.id.mentorTextView)
@@ -37,6 +42,9 @@ class SplashScreenActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         };
+
+        AgoraEngine.initialize(this, object : IRtcEngineEventHandler() {
+        })
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             showLoading(true)
