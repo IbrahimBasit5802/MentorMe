@@ -1,35 +1,32 @@
 package com.ibrahimbasit.I210669
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.ibrahimbasit.I210669.AgoraEngine
+import com.ibrahimbasit.I210669.R
 import com.ibrahimbasit.I210669.AgoraVideoEngine
-import com.squareup.picasso.Picasso
 import io.agora.rtc.IRtcEngineEventHandler
 import io.agora.rtc.RtcEngine
-import io.agora.rtc.mediaio.AgoraTextureView
 import io.agora.rtc.video.VideoCanvas
 import io.agora.rtc.video.VideoEncoderConfiguration
 
-class VideoCallActivity : AppCompatActivity() {
-
+class MentorVideoCallActivity : AppCompatActivity() {
     private lateinit var rtcEngine: RtcEngine
     private var isMuted = false
     private var isVideoEnabled = true
     private lateinit var channelName: String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_video_call)
+        setContentView(R.layout.activity_mentor_video_call)
 
-        val mentorId = intent.getStringExtra("mentorId") ?: return // Return or handle the null case
-        channelName = (FirebaseAuth.getInstance().currentUser?.uid ?: "") + mentorId
+        val userId = intent.getStringExtra("userId") ?: return // Return or handle the null case
+        channelName = userId + (FirebaseAuth.getInstance().currentUser?.uid ?: "")
 
 
 
@@ -64,12 +61,14 @@ class VideoCallActivity : AppCompatActivity() {
         rtcEngine.enableVideo()
 
         // Setup video profile, for example 360P
-        rtcEngine.setVideoEncoderConfiguration(VideoEncoderConfiguration(
+        rtcEngine.setVideoEncoderConfiguration(
+            VideoEncoderConfiguration(
             VideoEncoderConfiguration.VD_640x360,
             VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_30,
             VideoEncoderConfiguration.STANDARD_BITRATE,
             VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT
-        ))
+        )
+        )
 
         // Set up the local video feed
         val localContainer = findViewById<FrameLayout>(R.id.local_video_view)
@@ -93,8 +92,7 @@ class VideoCallActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         leaveChannel()
+
         AgoraVideoEngine.destroy()
     }
 }
-
-

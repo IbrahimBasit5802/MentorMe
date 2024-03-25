@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -12,10 +13,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.messaging.FirebaseMessaging
 import com.ibrahimbasit.I210669.auth.presentation.LoginActivity
-import com.ibrahimbasit.I210669.AgoraEngine
+import com.ibrahimbasit.I210669.AgoraVideoEngine
+import com.ibrahimbasit.I210669.AgoraVideoEngine.rtcEngine
 import io.agora.rtc.IRtcEngineEventHandler
+import io.agora.rtc.RtcEngine
+import io.agora.rtc.video.VideoCanvas
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -43,8 +46,31 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(intent)
         };
 
+        AgoraVideoEngine.initialize(this@SplashScreenActivity, object : IRtcEngineEventHandler() {
+            override fun onError(err: Int) {
+                super.onError(err)
+                Log.d("Shujaan Gay", "Error: $err")
+            }
+
+            override fun onUserJoined(uid: Int, elapsed: Int) {
+                runOnUiThread {
+                    // Ensure the remote container is ready
+                    val remoteContainer = findViewById<FrameLayout>(R.id.remote_video_view)
+                    val remoteSurfaceView = RtcEngine.CreateRendererView(baseContext)
+                    remoteContainer.addView(remoteSurfaceView)
+                    rtcEngine?.setupRemoteVideo(VideoCanvas(
+                        remoteSurfaceView,
+                        VideoCanvas.RENDER_MODE_HIDDEN,
+                        uid
+                    ))
+                }
+            }
+        })
+
         AgoraEngine.initialize(this, object : IRtcEngineEventHandler() {
         })
+
+
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             showLoading(true)

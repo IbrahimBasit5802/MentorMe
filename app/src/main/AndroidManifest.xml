@@ -49,6 +49,9 @@
             android:name=".MentorCallActivity"
             android:exported="false" />
         <activity
+            android:name= ".MentorVideoCallActivity"
+            android:exported="false" />
+        <activity
             android:name=".MentorMainActivity"
             android:exported="false" />
         <activity
