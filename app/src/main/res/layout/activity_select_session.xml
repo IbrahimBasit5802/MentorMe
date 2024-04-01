@@ -165,14 +165,15 @@
         app:layout_constraintStart_toStartOf="parent"
         >
 
-        <ImageView
+        <CalendarView
+            android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/calendar"
-            app:layout_constraintStart_toStartOf="parent"
+            android:elevation="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/calendarView"
-            android:scaleType="centerCrop"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

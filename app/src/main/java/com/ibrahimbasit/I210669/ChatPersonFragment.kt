@@ -457,13 +457,13 @@ class ChatPersonFragment : Fragment(), ScreenshotDetectionDelegate.ScreenshotDet
 
         }
 
-        val videoButton: View = view.findViewById(R.id.videoCallButton)
+        val videoButton: Button = view.findViewById(R.id.videoCallButton)
         videoButton.setOnClickListener {
             val dbRef = FirebaseDatabase.getInstance().getReference("Chats").child(chatSessionId!!)
             dbRef.get().addOnSuccessListener { itt ->
                 val chatSession = itt.getValue(ChatSession::class.java)
                 chatSession?.let {
-                    val intent = Intent(context, CallScreenActivity::class.java).apply {
+                    val intent = Intent(context, VideoCallActivity::class.java).apply {
                         putExtra("mentorId", it.mentorId)
                     }
                     startActivity(intent)

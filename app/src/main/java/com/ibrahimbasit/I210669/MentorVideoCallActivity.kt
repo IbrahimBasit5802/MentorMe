@@ -1,6 +1,7 @@
 package com.ibrahimbasit.I210669
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.enableEdgeToEdge
@@ -30,8 +31,26 @@ class MentorVideoCallActivity : AppCompatActivity() {
 
 
 
-        rtcEngine = AgoraVideoEngine.getInstance()!!
+        rtcEngine = RtcEngine.create(this@MentorVideoCallActivity, "f20c3ac6233140a3b77738abbe050a64", object : IRtcEngineEventHandler() {
+            override fun onError(err: Int) {
+                super.onError(err)
+                Log.d("Shujaan Gay", "Error: $err")
+            }
 
+            override fun onUserJoined(uid: Int, elapsed: Int) {
+                runOnUiThread {
+                    // Ensure the remote container is ready
+                    val remoteContainer = findViewById<FrameLayout>(R.id.remote_video_view)
+                    val remoteSurfaceView = RtcEngine.CreateRendererView(baseContext)
+                    remoteContainer.addView(remoteSurfaceView)
+                    AgoraVideoEngine.rtcEngine?.setupRemoteVideo(VideoCanvas(
+                        remoteSurfaceView,
+                        VideoCanvas.RENDER_MODE_HIDDEN,
+                        uid
+                    ))
+                }
+            }
+        })
 
 
         val closeButton: View = findViewById(R.id.closeButton)
@@ -89,10 +108,5 @@ class MentorVideoCallActivity : AppCompatActivity() {
     }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
-        leaveChannel()
 
-        AgoraVideoEngine.destroy()
-    }
 }

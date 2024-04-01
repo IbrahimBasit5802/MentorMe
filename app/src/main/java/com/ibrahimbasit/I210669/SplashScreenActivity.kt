@@ -13,6 +13,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.ibrahimbasit.I210669.auth.presentation.LoginActivity
 import com.ibrahimbasit.I210669.AgoraVideoEngine
 import com.ibrahimbasit.I210669.AgoraVideoEngine.rtcEngine
@@ -30,9 +32,26 @@ class SplashScreenActivity : AppCompatActivity() {
 
         bar  = findViewById(R.id.progressBar)
 
+        Firebase.database.setPersistenceEnabled(true)
 
-        // intialize agora engine
 
+        val m = Firebase.database.getReference("Mentors")
+        m.keepSynced(true)
+
+        val u = Firebase.database.getReference("Users")
+        u.keepSynced(true)
+
+        val c = Firebase.database.getReference("Chats")
+        c.keepSynced(true)
+
+        val msgs = Firebase.database.getReference("Messages")
+        msgs.keepSynced(true)
+
+        val reviews = Firebase.database.getReference("Reviews")
+        reviews.keepSynced(true)
+
+        val bookings = Firebase.database.getReference("Bookings")
+        bookings.keepSynced(true)
 
         val mentor : TextView = findViewById(R.id.mentorTextView)
         mentor.setOnClickListener {
@@ -46,26 +65,6 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(intent)
         };
 
-        AgoraVideoEngine.initialize(this@SplashScreenActivity, object : IRtcEngineEventHandler() {
-            override fun onError(err: Int) {
-                super.onError(err)
-                Log.d("Shujaan Gay", "Error: $err")
-            }
-
-            override fun onUserJoined(uid: Int, elapsed: Int) {
-                runOnUiThread {
-                    // Ensure the remote container is ready
-                    val remoteContainer = findViewById<FrameLayout>(R.id.remote_video_view)
-                    val remoteSurfaceView = RtcEngine.CreateRendererView(baseContext)
-                    remoteContainer.addView(remoteSurfaceView)
-                    rtcEngine?.setupRemoteVideo(VideoCanvas(
-                        remoteSurfaceView,
-                        VideoCanvas.RENDER_MODE_HIDDEN,
-                        uid
-                    ))
-                }
-            }
-        })
 
         AgoraEngine.initialize(this, object : IRtcEngineEventHandler() {
         })

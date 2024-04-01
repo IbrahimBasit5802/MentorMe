@@ -72,12 +72,7 @@ class CallScreenActivity : AppCompatActivity() {
         rtcEngine.leaveChannel()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
 
-        leaveChannel()
-        AgoraEngine.destroy()
-    }
 
     private fun joinChannel() {
         // Replace "yourChannelName" with the actual channel name.

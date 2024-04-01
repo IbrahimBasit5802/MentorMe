@@ -40,6 +40,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.ibrahimbasit.I210669.auth.models.User
 import com.ibrahimbasit.I210669.MentorCallActivity
+import com.ibrahimbasit.I210669.MentorVideoCallActivity
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -139,11 +140,8 @@ class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.Scre
         val chatPersonName: TextView = findViewById(R.id.nameHeading)
         chatPersonName.text = sessionName
         val cameraButton: View = findViewById(R.id.cameraButton)
-        val videoButton: View = findViewById(R.id.videoCallButton)
-        videoButton.setOnClickListener {
-            val intent = Intent(this, VideoCallActivity::class.java)
-            startActivity(intent)
-        }
+        val videoButton: Button = findViewById(R.id.videoCallButton)
+
 
         val backButton: View = findViewById(R.id.backButton)
         backButton.setOnClickListener {
@@ -406,6 +404,20 @@ class MentorChatActivity : AppCompatActivity(), ScreenshotDetectionDelegate.Scre
                 val chatSession = itt.getValue(ChatSession::class.java)
                 chatSession?.let {
                     val intent = Intent(this@MentorChatActivity, MentorCallActivity::class.java).apply {
+                        putExtra("userId", it.userId)
+                    }
+                    startActivity(intent)
+
+                }
+            }
+        }
+
+        videoButton.setOnClickListener {
+            val dbRef = FirebaseDatabase.getInstance().getReference("Chats").child(chatSessionId!!)
+            dbRef.get().addOnSuccessListener { itt ->
+                val chatSession = itt.getValue(ChatSession::class.java)
+                chatSession?.let {
+                    val intent = Intent(this, MentorVideoCallActivity::class.java).apply {
                         putExtra("userId", it.userId)
                     }
                     startActivity(intent)
