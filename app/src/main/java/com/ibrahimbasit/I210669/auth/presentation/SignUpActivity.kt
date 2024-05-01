@@ -23,6 +23,15 @@ import com.ibrahimbasit.I210669.R
 import com.ibrahimbasit.I210669.auth.data.AuthRepository
 import com.ibrahimbasit.I210669.auth.domain.use_cases.SignUpUseCase
 import com.ibrahimbasit.I210669.auth.utils.SignUpViewModelFactory
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import org.json.JSONObject
+import java.io.IOException
 import java.util.Locale
 
 class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -69,18 +78,16 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
 
         signupButton.setOnClickListener {
-            showLoading(true)
+            val email = email.text.toString()
+            val password = password.text.toString()
+            val name = name.text.toString()
+            val country = dropdown.selectedItem.toString()
+            val city = findViewById<Spinner>(R.id.cityTextInputLayout).selectedItem.toString()
+            val contactNumber = phone.text.toString()
 
-            viewModel.signUpWithPhone(
-                phone.text.toString(),
-                email.text.toString(),
-                password.text.toString(),
-                name.text.toString(),
-                dropdown.selectedItem.toString(),
-                this@SignUpActivity
-            )
-
+            signUpUser(email, password, name, country, city, contactNumber)
         }
+
 
         // Observe LiveData from ViewModel for changes and update UI accordingly
         viewModel.userSignUpStatus.observe(this) { status ->
@@ -114,6 +121,49 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             }
         }
     }
+
+    private fun signUpUser(email: String, password: String, name: String, country: String, city: String, contactNumber: String) {
+        val client = OkHttpClient()
+        val jsonObject = JSONObject().apply {
+            put("email", email)
+            put("password", password)
+            put("name", name)
+            put("country", country)
+            put("city", city)
+            put("contactNumber", contactNumber)
+        }
+
+        val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
+        val body = jsonObject.toString().toRequestBody(JSON)
+        val request = Request.Builder()
+            .url("http://192.168.1.8:3000/registerUser")
+            .post(body)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(applicationContext, "Failed to register user: ${e.message}", Toast.LENGTH_SHORT).show()
+                    showLoading(false)
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                runOnUiThread {
+                    if (response.isSuccessful) {
+                        Toast.makeText(applicationContext, "User registered successfully", Toast.LENGTH_SHORT).show()
+                        intent.putExtra("email", email)
+                        startActivity(Intent(this@SignUpActivity, MainActivity::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(applicationContext, "Registration failed: ${response.body?.string()}", Toast.LENGTH_SHORT).show()
+                    }
+                    showLoading(false)
+                }
+            }
+        })
+    }
+
 
     private fun showLoading(show: Boolean) {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE

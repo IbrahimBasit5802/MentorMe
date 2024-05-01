@@ -17,8 +17,10 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        var userMail = intent.getStringExtra("email")
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
+        userViewModel.getUserProfile(userMail.toString())
 
         setContentView(binding.root)
 

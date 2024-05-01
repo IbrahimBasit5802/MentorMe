@@ -1,9 +1,11 @@
 package com.ibrahimbasit.I210669
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -22,6 +24,22 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.Response
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.InputStream
 
 class MentorSignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private val REQUEST_CODE_IMAGE_PICK = 1234 // Choose a unique integer.
@@ -82,7 +100,8 @@ class MentorSignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             if (imageUri != null) {
                 showLoading(true)
 
-                registerEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString())
+                registerMentor(emailEditText.text.toString(), passwordEditText.text.toString(), nameEditText.text.toString(), roleEditText.text.toString(), statusSpinner.selectedItem.toString() == "Available", priceEditText.text.toString().toFloat(), descriptionEditText.text.toString(), imageUri)
+
             }
 
 
@@ -104,6 +123,125 @@ class MentorSignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 }
             }
     }
+    fun registerMentor(email: String, password: String, name: String, role: String, availability: Boolean, price: Float, description: String, imageUri: Uri?) {
+        val client = OkHttpClient()
+        val jsonObject = JSONObject().apply {
+            put("email", email)
+            put("password", password)
+            put("name", name)
+            put("role", role)
+            put("status", availability)
+            put("price", price)
+            put("description", description)
+        }
+
+        val JSON = "application/json; charset=utf-8".toMediaType()
+        val body = RequestBody.create(JSON, jsonObject.toString())
+        val request = Request.Builder()
+            .url("http://192.168.1.8:3000/registerMentor")
+            .post(body)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(applicationContext, "Registration failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                    showLoading(false)
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string() ?: ""
+                try {
+                    val jsonObj = JSONObject(responseBody)
+                    val success = jsonObj.getBoolean("success")
+
+                    if (response.isSuccessful && success) {
+                        if (jsonObj.has("mentorId") && imageUri != null) {
+                            val mentorId = jsonObj.getString("mentorId")
+                            uploadImageToServer(mentorId, imageUri)
+                        } else {
+                            // Handle cases where the 'mentorId' is missing or imageUri is null
+                            runOnUiThread {
+                                Toast.makeText(applicationContext, "Registration incomplete: Missing mentor ID or image.", Toast.LENGTH_SHORT).show()
+                                showLoading(false)
+                            }
+                        }
+                    } else {
+                        // Use the message from the JSON response to show error
+                        val message = jsonObj.getString("msg")  // Make sure your server sends this field
+                        runOnUiThread {
+                            Toast.makeText(applicationContext, "Registration failed: $message", Toast.LENGTH_SHORT).show()
+                            showLoading(false)
+                        }
+                    }
+                } catch (e: JSONException) {
+                    runOnUiThread {
+                        Toast.makeText(applicationContext, "Error parsing response: ${e.message}", Toast.LENGTH_SHORT).show()
+                        showLoading(false)
+                    }
+                }
+            }
+
+
+        })
+    }
+    private fun uploadImageToServer(mentorId: String, imageUri: Uri) {
+        val inputStream = getInputStreamFromUri(applicationContext, imageUri)
+        if (inputStream != null) {
+            val bytes = inputStream.readBytes()  // Convert input stream to byte array
+            val requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("image", "profile.jpg", RequestBody.create("image/jpeg".toMediaTypeOrNull(), bytes))
+                .build()
+
+            val request = Request.Builder()
+                .url("http://192.168.1.8:3000/uploadMentorImage/$mentorId")
+                .post(requestBody)
+                .build()
+
+            OkHttpClient().newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    runOnUiThread {
+                        Toast.makeText(applicationContext, "Image upload failed: ${e.message}", Toast.LENGTH_LONG).show()
+                        showLoading(false)
+                    }
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    runOnUiThread {
+                        if (response.isSuccessful) {
+                            Toast.makeText(applicationContext, "Mentor registered successfully", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@MentorSignUp, MentorMainActivity::class.java))
+                            finish()
+                        } else {
+                            Log.d("MentorSignUp", "Failed to upload image: ${response.body?.string()}")
+                            Toast.makeText(applicationContext, "Failed to update profile picture: ${response.body?.string()}", Toast.LENGTH_SHORT).show()
+                        }
+                        showLoading(false)
+                    }
+                }
+            })
+        } else {
+            runOnUiThread {
+                Toast.makeText(applicationContext, "Failed to read image file", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+
+
+    private fun getInputStreamFromUri(context: Context, uri: Uri): InputStream? {
+        return try {
+            context.contentResolver.openInputStream(uri)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
+
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

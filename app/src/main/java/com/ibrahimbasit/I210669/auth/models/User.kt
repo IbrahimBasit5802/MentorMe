@@ -1,8 +1,10 @@
 package com.ibrahimbasit.I210669.auth.models
 
+import com.google.gson.annotations.SerializedName
+
 data class User(
     var name: String,
-    val uuid: String,
+    @SerializedName("uuid") val userId: String,
     var email: String,
     var contactNumber: String,
     var country: String,
@@ -14,19 +16,4 @@ data class User(
 // Map of chat session IDs to boolean (true if active)
 ) {
     constructor() : this("", "", "", "", "", "", "gs://i210669.appspot.com/user_profile_picture.png", "gs://i210669.appspot.com/over_photo.png")
-
-    fun toMap(): Map<String, Any> {
-        return mapOf(
-            "name" to name,
-            "uuid" to uuid,
-            "email" to email,
-            "contactNumber" to contactNumber,
-            "country" to country,
-            "city" to city,
-            "profilePictureUrl" to profilePictureUrl,
-            "coverPhotoUrl" to coverPhotoUrl,
-            "chatSessions" to chatSessions
-
-        )
-    }
 }

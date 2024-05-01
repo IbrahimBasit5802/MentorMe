@@ -2,73 +2,51 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import com.ibrahimbasit.I210669.auth.models.User
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
 
 class UserViewModel : ViewModel() {
     private val _userData = MutableLiveData<User>()
     val userData: LiveData<User> = _userData
-    private val dbRef = Firebase.database.reference
+    private val client = OkHttpClient()
+    private val gson = Gson()
 
-    init {
-        val user = FirebaseAuth.getInstance().currentUser
-        user?.uid?.let { userId ->
-            val userRef = dbRef.child("Users").child(userId)
+    fun getUserProfile(email: String) {
+        val requestBody = FormBody.Builder()
+            .add("email", email)
+            .build()
 
-            // Fetch the initial user data
-            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    _userData.value = snapshot.getValue(User::class.java)
-                }
+        val request = Request.Builder()
+            .url("http://192.168.1.8:3000/getProfile")
+            .post(requestBody)
+            .build()
 
-                override fun onCancelled(error: DatabaseError) {
-                    // Handle errors
-                }
-            })
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("UserViewModel", "Failed to fetch user data", e)
+            }
 
-            // Listen for changes in the user data
-            userRef.addChildEventListener(object : ChildEventListener {
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                }
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                    val currentUserData = _userData.value ?: User()
-                    when (snapshot.key) {
-                        "name" -> currentUserData.name = snapshot.getValue(String::class.java) ?: ""
-                        "email" -> currentUserData.email = snapshot.getValue(String::class.java) ?: ""
-                        "contactNumber" -> currentUserData.contactNumber = snapshot.getValue(String::class.java) ?: ""
-                        "country" -> currentUserData.country = snapshot.getValue(String::class.java) ?: ""
-                        "city" -> currentUserData.city = snapshot.getValue(String::class.java) ?: ""
-                        "profilePictureUrl" -> currentUserData.profilePictureUrl = snapshot.getValue(String::class.java) ?: ""
-                        "coverPhotoUrl" -> currentUserData.coverPhotoUrl = snapshot.getValue(String::class.java) ?: ""
-
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    response.body?.string()?.let { responseBody ->
+                        val user = parseUserDataFromJson(responseBody) // Parse JSON to User
+                        _userData.postValue(user)
                     }
-                    _userData.value = currentUserData
-
+                } else {
+                    Log.e("UserViewModel", "Error fetching user data: ${response.message}")
                 }
-
-
-
-                override fun onChildRemoved(snapshot: DataSnapshot) {
-                    // Handle if needed
-                }
-
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                    // Handle if needed
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Handle errors
-                }
-            })
-        }
+            }
+        })
     }
 
+    private fun parseUserDataFromJson(json: String): User {
+        return gson.fromJson(json, User::class.java)
+    }
 }
-
